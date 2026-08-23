@@ -1,0 +1,144 @@
+{
+  "slug": "default",
+  "nome": "Radar Jurídico (padrão)",
+  "config": {
+    "firmName": "[Nome do Escritório]",
+    "lawyerName": "[Nome do Advogado(a) responsável]",
+    "oab": "OAB/UF 000.000",
+    "whatsappNumber": "5511999999999",
+    "metaPixelId": "",
+    "theme": "light"
+  },
+  "eventos": {
+    "leadQualificado": "Lead",
+    "duvidaCapturada": "Contact"
+  },
+  "hero": {
+    "greeting": "Oi! Vamos entender seu caso 👋",
+    "headline": "Descubra em **2 minutos** *se você tem direito* a algo, antes de falar com um advogado.",
+    "subheadline": "Responda algumas perguntas rápidas. No final, você já sabe o que esperar e recebe um resumo pronto pra levar direto pra conversa no WhatsApp.",
+    "trustNote": "**Sem custo** pra fazer essa pré-triagem."
+  },
+  "areaOrder": ["trabalhista", "consumerista", "bancario", "previdenciario", "outro"],
+  "areas": {
+    "trabalhista": {
+      "label": "Trabalhista",
+      "chip": "⚖",
+      "selectorText": "Trabalhista (demissão, verbas, assédio)",
+      "situacaoQ": "Qual é a sua situação com a empresa hoje?",
+      "situacaoOpts": [
+        { "v": "atual", "t": "Ainda trabalho lá" },
+        { "v": "demitido", "t": "Fui demitido(a)" },
+        { "v": "pediu", "t": "Pedi demissão" },
+        { "v": "sem_carteira", "t": "Nunca tive carteira assinada" }
+      ],
+      "doresQ": "O que mais te incomoda na sua situação?",
+      "doresOpts": [
+        { "v": "verbas", "t": "Não recebi as verbas rescisórias corretas" },
+        { "v": "horaextra", "t": "Fazia hora extra e não era pago" },
+        { "v": "assedio", "t": "Sofri assédio ou tratamento desrespeitoso" },
+        { "v": "fgts", "t": "Meu FGTS ou INSS não foi recolhido direito" }
+      ]
+    },
+    "consumerista": {
+      "label": "Consumidor",
+      "chip": "🛡",
+      "selectorText": "Consumidor (nome negativado, cobrança indevida)",
+      "situacaoQ": "O que melhor descreve o seu problema?",
+      "situacaoOpts": [
+        { "v": "negativado", "t": "Fui negativado(a) sem dever" },
+        { "v": "cobranca", "t": "Cobrança indevida ou repetida" },
+        { "v": "produto", "t": "Produto ou serviço com defeito não resolvido" },
+        { "v": "entrega", "t": "Compra que não foi entregue" }
+      ],
+      "doresQ": "O que mais pesa nessa situação?",
+      "doresOpts": [
+        { "v": "nome_sujo", "t": "Meu nome está sujo e nem sei bem por quê" },
+        { "v": "sem_retorno", "t": "Já tentei resolver com a empresa e não consegui" },
+        { "v": "credito", "t": "Isso está travando meu crédito" },
+        { "v": "pagando_de_novo", "t": "Estão me cobrando por algo que já paguei" }
+      ]
+    },
+    "bancario": {
+      "label": "Bancário",
+      "chip": "🏦",
+      "selectorText": "Bancário (contratos, juros, empréstimo)",
+      "situacaoQ": "Qual é a situação com o banco ou financeira?",
+      "situacaoOpts": [
+        { "v": "tarifas", "t": "Taxas e tarifas abusivas no contrato" },
+        { "v": "consignado", "t": "Empréstimo consignado com descontos indevidos" },
+        { "v": "financiamento", "t": "Financiamento com juros muito acima do combinado" },
+        { "v": "cobranca_desconhecida", "t": "Cobranças que não reconheço" }
+      ],
+      "doresQ": "O que mais te preocupa nisso?",
+      "doresOpts": [
+        { "v": "nao_entende", "t": "Não entendo os valores cobrados no contrato" },
+        { "v": "enganado", "t": "Sinto que fui enganado(a) na contratação" },
+        { "v": "renda_comprometida", "t": "Os descontos comprometem minha renda" },
+        { "v": "sem_solucao", "t": "Já tentei resolver no banco e não teve solução" }
+      ]
+    },
+    "previdenciario": {
+      "label": "Previdenciário",
+      "chip": "📋",
+      "selectorText": "Previdenciário (INSS, aposentadoria, benefício)",
+      "situacaoQ": "Qual é a sua situação com o INSS?",
+      "situacaoOpts": [
+        { "v": "negado", "t": "Meu benefício foi negado" },
+        { "v": "cortado", "t": "Meu benefício foi cortado ou suspenso" },
+        { "v": "nao_sei", "t": "Não sei se já tenho direito a me aposentar" },
+        { "v": "valor_errado", "t": "O valor do benefício parece errado" }
+      ],
+      "doresQ": "O que mais te preocupa agora?",
+      "doresOpts": [
+        { "v": "sem_saber", "t": "Não sei se tenho direito a algo" },
+        { "v": "ja_negado", "t": "Já pedi e o INSS negou" },
+        { "v": "urgencia_financeira", "t": "Preciso do benefício e está demorando" },
+        { "v": "documentos", "t": "Não sei quais documentos preciso reunir" }
+      ]
+    },
+    "outro": {
+      "label": "Outra área",
+      "chip": "📌",
+      "selectorText": "Outro assunto jurídico",
+      "situacaoQ": "Me conta rapidamente: qual é a sua situação?",
+      "situacaoOpts": [
+        { "v": "inicio", "t": "Estou no começo, ainda entendendo o problema" },
+        { "v": "documentos", "t": "Já tenho documentos e provas reunidas" },
+        { "v": "processo", "t": "Já cheguei a abrir um processo" },
+        { "v": "indicacao", "t": "Fui indicado(a) e quero uma avaliação" }
+      ],
+      "doresQ": "O que mais te preocupa nessa situação?",
+      "doresOpts": [
+        { "v": "nao_sei_direito", "t": "Não sei se tenho direito a algo" },
+        { "v": "tempo", "t": "Está demorando mais do que eu esperava" },
+        { "v": "financeiro", "t": "O impacto financeiro está pesando" },
+        { "v": "orientacao", "t": "Só preciso de orientação clara" }
+      ]
+    }
+  },
+  "urgencia": [
+    { "v": "recente", "t": "Menos de 6 meses" },
+    { "v": "medio", "t": "Entre 6 meses e 2 anos" },
+    { "v": "antigo", "t": "Mais de 2 anos" },
+    { "v": "incerto", "t": "Não sei ao certo" }
+  ],
+  "aspiracao": [
+    { "v": "recuperar", "t": "Recuperar o que é meu por direito" },
+    { "v": "paz", "t": "Ter paz e parar de pensar nisso" },
+    { "v": "justica", "t": "Corrigir uma injustiça" },
+    { "v": "entender", "t": "Só quero entender minha situação" }
+  ],
+  "honorarios": [
+    { "v": "nao_sei", "t": "Não sei, quero entender", "icon": "🤔" },
+    { "v": "exito", "t": "Já ouvi falar que só se paga se ganhar", "icon": "🏆" },
+    { "v": "receio", "t": "Tenho receio de gastar sem necessidade", "icon": "😟" },
+    { "v": "tanto_faz", "t": "Não me importo, só quero resolver", "icon": "🚀" }
+  ],
+  "compromisso": [
+    { "v": "alto", "t": "Sim, quero resolver o quanto antes", "icon": "🔥" },
+    { "v": "medio", "t": "Sim, mas quero entender melhor antes", "icon": "🧐" },
+    { "v": "baixo", "t": "Ainda não tenho certeza", "icon": "🤷" },
+    { "v": "duvida", "t": "Só quero tirar uma dúvida por enquanto", "icon": "💭" }
+  ]
+}
