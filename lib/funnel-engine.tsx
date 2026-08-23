@@ -107,10 +107,11 @@ function computeScore(urgencia: string | null, doresCount: number, compromisso: 
   return Math.min(score, 96);
 }
 
-async function postJson(url: string, body: unknown) {
+async function postJson(url: string, body: unknown): Promise<{ ok: boolean; id?: string; [k: string]: unknown }> {
   try {
-    await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-    return { ok: true };
+    const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    const data = await res.json().catch(() => ({}));
+    return { ok: true, ...data };
   } catch (e) {
     console.error("[Radar Jurídico] falha ao enviar pra " + url, e);
     return { ok: false };
@@ -222,17 +223,21 @@ export default function FunnelEngine({ data, previewMode }: { data: FunnelData; 
       situacao: areaData ? labelFrom(areaData.situacaoOpts, answers.situacao) : null,
       urgencia: labelFrom(data.urgencia, answers.urgencia)
     };
+    // Mesmo id usado nas duas pontas (Pixel no navegador + Conversions API
+    // no servidor) pro Meta deduplicar em vez de contar o evento em dobro.
+    const eventId = typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : String(Date.now());
     try {
       const w = window as any;
       if (w.fbq) {
-        if (STANDARD_META_EVENTS.includes(evName)) w.fbq("track", evName, params);
-        else w.fbq("trackCustom", evName, params);
+        if (STANDARD_META_EVENTS.includes(evName)) w.fbq("track", evName, params, { eventID: eventId });
+        else w.fbq("trackCustom", evName, params, { eventID: eventId });
       }
     } catch {
       /* noop */
     }
     postJson("/api/conversion", {
       evento: evName,
+      event_id: eventId,
       funil: data.slug,
       enviado_em: new Date().toISOString(),
       utm: utmRef.current,
@@ -405,6 +410,7 @@ export default function FunnelEngine({ data, previewMode }: { data: FunnelData; 
               fireEvent("leadQualificado", {
                 nome: form.nome,
                 whatsapp: form.whatsapp,
+                lead_id: result?.id,
                 situacao: labelFrom(areaData.situacaoOpts, answers.situacao),
                 dores: answers.dores.map((v) => labelFrom(areaData.doresOpts, v)),
                 prioridade: score
@@ -450,7 +456,7 @@ export default function FunnelEngine({ data, previewMode }: { data: FunnelData; 
               pergunta_audio_mime: form.audioMime || null
             };
             const result = previewMode ? { ok: true } : await postJson("/api/lead", payload);
-            fireEvent("duvidaCapturada", { nome: form.nome, whatsapp: form.whatsapp });
+            fireEvent("duvidaCapturada", { nome: form.nome, whatsapp: form.whatsapp, lead_id: result?.id });
             return result;
           }}
         />

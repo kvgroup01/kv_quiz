@@ -59,7 +59,7 @@ Os arquivos em `content/funnels/*.json` também servem como *seed*: se o KV não
 
 ## Sobre o Meta Pixel e a Conversions API
 
-O **Pixel ID** é público e fica no JSON do funil (editável no builder) — é assim que o Meta espera que funcione. O **token da Conversions API é secreto** e só existe na variável de ambiente `META_CAPI_TOKEN`, nunca no navegador do lead. Quando configurado, todo evento de conversão (`Lead` ao qualificar, `Contact` ao capturar uma dúvida — nomes editáveis no builder) é mandado tanto pelo pixel do navegador quanto pelo servidor, com o WhatsApp com hash SHA-256, como a Meta exige.
+O **Pixel ID** é público e fica no JSON do funil (editável no builder) — é assim que o Meta espera que funcione. O **token da Conversions API é secreto** e só existe na variável de ambiente `META_CAPI_TOKEN`, nunca no navegador do lead. Quando configurado, todo evento de conversão (`Lead` ao qualificar, `Contact` ao capturar uma dúvida, nomes editáveis no builder) é mandado tanto pelo pixel do navegador quanto pelo servidor, com o mesmo `event_id` nos dois lados (pro Meta deduplicar em vez de contar em dobro) e o máximo de parâmetros de correspondência que dá pra mandar sem pedir e-mail: WhatsApp, nome (dividido em primeiro/último nome), país, IP e user-agent de quem respondeu, `external_id` (o id do lead no Kanban), `fbp`/`fbc` e as UTMs da URL, tudo com hash SHA-256 onde o Meta exige.
 
 ## LGPD
 
