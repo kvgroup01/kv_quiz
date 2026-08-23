@@ -23,33 +23,30 @@ function waLink(lead: Lead) {
   return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
 }
 
+// Card enxuto de propósito: com muita informação (dores, UTMs, dúvida,
+// áudio) o card virava uma bagunça sobreposta. Aqui só o essencial pra
+// escanear a coluna — o resto mora no modal (onOpen).
 function LeadCard({ lead, onDragStart, onOpen }: { lead: Lead; onDragStart: (e: React.DragEvent, id: string) => void; onOpen: (lead: Lead) => void }) {
-  const utmEntries = Object.entries(lead.utm || {}).filter(([, v]) => v);
   return (
-    <div className="kanban-card" draggable onDragStart={(e) => onDragStart(e, lead.id)}>
+    <div className="kanban-card" draggable onDragStart={(e) => onDragStart(e, lead.id)} onClick={() => onOpen(lead)}>
       <div className="kanban-card-top">
         <b>{lead.nome}</b>
-        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <span className="kanban-date">{fmtDate(lead.criadoEm)}</span>
-          <button type="button" className="kanban-expand" title="Ver detalhes" onClick={() => onOpen(lead)}>⤢</button>
-        </div>
+        <span className="kanban-date">{fmtDate(lead.criadoEm)}</span>
       </div>
       <div className="kanban-whats">{lead.whatsapp}</div>
-      <div className="kanban-meta">
+      <div className="kanban-meta-row">
         {lead.tipo === "qualificado" ? <span className="kanban-tag hot">🔥 Qualificado</span> : <span className="kanban-tag">💬 Dúvida</span>}
+        <span className="kanban-area-clip">{lead.area}</span>
       </div>
-      <div className="kanban-meta">{lead.area} · {lead.situacao}</div>
-      {lead.urgencia && <div className="kanban-meta">Tempo: {lead.urgencia}</div>}
-      {lead.dores?.length > 0 && (
-        <div className="kanban-tags">{lead.dores.map((d, i) => <span key={i} className="kanban-tag">{d}</span>)}</div>
-      )}
-      {utmEntries.length > 0 && (
-        <div className="kanban-tags">
-          {utmEntries.map(([k, v]) => <span key={k} className="kanban-tag utm">{k.replace("utm_", "")}: {v}</span>)}
-        </div>
-      )}
-      {lead.perguntaTexto && <p className="kanban-question">"{lead.perguntaTexto}"</p>}
-      <a className="btn primary small kanban-wa-btn" href={waLink(lead)} target="_blank" rel="noopener">Chamar no WhatsApp →</a>
+      <a
+        className="btn primary small kanban-wa-btn"
+        href={waLink(lead)}
+        target="_blank"
+        rel="noopener"
+        onClick={(e) => e.stopPropagation()}
+      >
+        Chamar no WhatsApp →
+      </a>
     </div>
   );
 }
@@ -238,19 +235,19 @@ export default function KanbanPage() {
         .kanban-col-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; font-weight:600; font-size:0.9rem; letter-spacing:-0.01em; }
         .kanban-col-header .capi-badge{ font-size:0.65rem; font-weight:600; color:var(--mono-text); background:var(--mono-bg); border-radius:6px; padding:2px 6px; margin-left:6px; }
         .kanban-count{ background:var(--mono-bg); color:var(--mono-text); border-radius:999px; padding:2px 8px; font-size:0.75rem; }
-        .kanban-card{ background:var(--bg-card-hover); border-radius:14px; padding:14px; margin-bottom:10px; border:1px solid var(--option-border); cursor:grab; }
+        .kanban-card{ background:var(--bg-card-hover); border-radius:14px; padding:14px; margin-bottom:10px; border:1px solid var(--option-border); cursor:pointer; transition:border-color .12s; }
+        .kanban-card:hover{ border-color:var(--purple-mid); }
         .kanban-card-top{ display:flex; justify-content:space-between; gap:8px; font-size:0.9rem; align-items:flex-start; }
         .kanban-date{ color:var(--ink-soft); font-size:0.72rem; white-space:nowrap; }
-        .kanban-expand{ border:1px solid var(--option-border); background:var(--bg-card); color:var(--ink-soft); border-radius:6px; width:22px; height:22px; cursor:pointer; font-size:0.8rem; line-height:1; }
-        .kanban-expand:hover{ background:var(--bg-card-hover); color:var(--ink); }
         .kanban-whats{ font-size:0.82rem; color:var(--ink-soft); margin-top:2px; }
-        .kanban-meta{ font-size:0.8rem; color:var(--ink-soft); margin-top:4px; }
+        .kanban-meta-row{ display:flex; align-items:center; gap:6px; margin-top:6px; min-width:0; }
+        .kanban-area-clip{ font-size:0.8rem; color:var(--ink-soft); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
         .kanban-tags{ display:flex; flex-wrap:wrap; gap:4px; margin-top:6px; }
-        .kanban-tag{ font-size:0.68rem; background:var(--mono-bg); color:var(--mono-text); border-radius:6px; padding:2px 6px; }
+        .kanban-tag{ font-size:0.68rem; background:var(--mono-bg); color:var(--mono-text); border-radius:6px; padding:2px 6px; flex-shrink:0; }
         .kanban-tag.utm{ background:var(--danger-bg); color:var(--danger-text); }
         .kanban-tag.hot{ background:var(--danger-bg); color:var(--danger-text); font-weight:600; }
         .kanban-question{ font-size:0.85rem; font-style:italic; margin:8px 0 0; color:var(--ink); }
-        .kanban-wa-btn{ margin-top:10px; }
+        .kanban-wa-btn{ margin-top:10px; cursor:pointer; }
         .kanban-modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.5); display:flex; align-items:flex-start; justify-content:center; padding:5vh 20px; z-index:100; overflow-y:auto; }
         .kanban-modal{ background:var(--bg); border:1px solid var(--option-border); border-radius:16px; padding:24px; max-width:480px; width:100%; box-shadow:var(--shadow); }
         .kanban-modal-head{ display:flex; justify-content:space-between; align-items:center; gap:12px; }
