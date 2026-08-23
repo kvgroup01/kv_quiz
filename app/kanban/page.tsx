@@ -247,7 +247,7 @@ export default function KanbanPage() {
         .kanban-tag.utm{ background:var(--danger-bg); color:var(--danger-text); }
         .kanban-tag.hot{ background:var(--danger-bg); color:var(--danger-text); font-weight:600; }
         .kanban-question{ font-size:0.85rem; font-style:italic; margin:8px 0 0; color:var(--ink); }
-        .kanban-wa-btn{ margin-top:10px; cursor:pointer; }
+        .kanban-wa-btn{ display:block; width:100%; margin-top:10px; cursor:pointer; }
         .kanban-modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.5); display:flex; align-items:flex-start; justify-content:center; padding:5vh 20px; z-index:100; overflow-y:auto; }
         .kanban-modal{ background:var(--bg); border:1px solid var(--option-border); border-radius:16px; padding:24px; max-width:480px; width:100%; box-shadow:var(--shadow); }
         .kanban-modal-head{ display:flex; justify-content:space-between; align-items:center; gap:12px; }

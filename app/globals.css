@@ -415,6 +415,10 @@ p.plain-note{ color:var(--ink-soft); font-size:0.85rem; margin:0 0 18px; }
   font-family:"Inter Tight", sans-serif; font-weight:600; font-size:0.85rem;
   border-radius:10px; padding:9px 16px; cursor:pointer; border:1px solid var(--option-border);
   background:var(--bg-card); color:var(--ink); transition:background .12s, transform .08s;
+  /* .btn também estiliza <a> (ex: botão de WhatsApp no Kanban) — sem isso,
+     um link fica display:inline por padrão e sua margem vertical é ignorada,
+     sobrepondo o conteúdo acima em vez de empurrar o layout pra baixo. */
+  display:inline-block; text-align:center; text-decoration:none;
 }
 .btn:hover{ background:var(--bg-card-hover); }
 .btn:active{ transform:scale(0.97); }
