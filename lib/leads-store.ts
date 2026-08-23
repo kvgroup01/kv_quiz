@@ -8,9 +8,9 @@ import type { Lead, NewLead, LeadStatus } from "./lead-schema";
 const INDEX_KEY = "leads:index";
 const leadKey = (id: string) => `lead:${id}`;
 
-export async function createLead(data: NewLead): Promise<Lead> {
+export async function createLead(data: NewLead, initialStatus: string): Promise<Lead> {
   const id = crypto.randomUUID();
-  const lead: Lead = { ...data, id, criadoEm: new Date().toISOString(), status: "novo" };
+  const lead: Lead = { ...data, id, criadoEm: new Date().toISOString(), status: initialStatus };
   await kv.set(leadKey(id), lead);
   await kv.zadd(INDEX_KEY, { score: Date.now(), member: id });
   return lead;

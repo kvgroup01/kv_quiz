@@ -168,7 +168,6 @@ export default function FunnelEngine({ data, previewMode }: { data: FunnelData; 
   });
   const [loadingDone, setLoadingDone] = useState(false);
   const [ringDone, setRingDone] = useState(false);
-  const leadEventFired = useRef(false);
   const utmRef = useRef<Utm>({});
 
   const step = ORDER[stepIndex];
@@ -342,12 +341,12 @@ export default function FunnelEngine({ data, previewMode }: { data: FunnelData; 
     );
   }
 
-  function buildWhatsAppMessage() {
+  function buildWhatsAppMessage(nome?: string) {
     if (!areaData) return "";
     const situ = labelFrom(areaData.situacaoOpts, answers.situacao);
     const dores = answers.dores.map((v) => labelFrom(areaData.doresOpts, v));
     const urgencia = labelFrom(data.urgencia, answers.urgencia);
-    let msg = "Olá! Fiz a pré-triagem no site.\n";
+    let msg = nome ? `Olá! Meu nome é ${nome} e fiz a pré-triagem no site.\n` : "Olá! Fiz a pré-triagem no site.\n";
     msg += "Área: " + areaData.label + "\n";
     msg += "Situação: " + situ + "\n";
     if (dores.length) msg += "Principais pontos: " + dores.join(", ") + "\n";
@@ -362,17 +361,8 @@ export default function FunnelEngine({ data, previewMode }: { data: FunnelData; 
     if (!areaData) return null;
     const highIntent = answers.compromisso === "alto" || answers.compromisso === "medio";
     const score = computeScore(answers.urgencia, answers.dores.length, answers.compromisso);
-    const waLink = "https://wa.me/" + data.config.whatsappNumber + "?text=" + encodeURIComponent(buildWhatsAppMessage());
 
     if (highIntent) {
-      if (!leadEventFired.current) {
-        leadEventFired.current = true;
-        fireEvent("leadQualificado", {
-          situacao: labelFrom(areaData.situacaoOpts, answers.situacao),
-          dores: answers.dores.map((v) => labelFrom(areaData.doresOpts, v)),
-          prioridade: score
-        });
-      }
       return (
         <div className="screen">
           <div className="result-banner">
@@ -390,8 +380,38 @@ export default function FunnelEngine({ data, previewMode }: { data: FunnelData; 
             </p>
           </div>
           <div className="insight-row">⚖️ Uma avaliação de caso real depende sempre da análise de documentos e provas.</div>
-          <div className="insight-row">💬 Ao clicar abaixo, seu resumo já vai pronto pro atendente, sem precisar repetir tudo.</div>
-          <a className="cta whatsapp" href={waLink} target="_blank" rel="noopener">Falar com um advogado no WhatsApp →</a>
+          <div className="insight-row">💬 Só falta seu nome e WhatsApp pra gente já te conectar com o atendente, com esse resumo pronto.</div>
+          <LeadContactForm
+            previewMode={!!previewMode}
+            buildWaLink={(nome) => "https://wa.me/" + data.config.whatsappNumber + "?text=" + encodeURIComponent(buildWhatsAppMessage(nome))}
+            onSubmit={async (form) => {
+              const payload = {
+                tipo: "qualificado",
+                funil: data.slug,
+                enviado_em: new Date().toISOString(),
+                area: areaData.label,
+                situacao: labelFrom(areaData.situacaoOpts, answers.situacao),
+                urgencia: labelFrom(data.urgencia, answers.urgencia),
+                dores: answers.dores.map((v) => labelFrom(areaData.doresOpts, v)),
+                compromisso: labelFrom(data.compromisso, answers.compromisso),
+                utm: utmRef.current,
+                nome: form.nome,
+                whatsapp: form.whatsapp,
+                pergunta_texto: null,
+                pergunta_audio_base64: null,
+                pergunta_audio_mime: null
+              };
+              const result = previewMode ? { ok: true } : await postJson("/api/lead", payload);
+              fireEvent("leadQualificado", {
+                nome: form.nome,
+                whatsapp: form.whatsapp,
+                situacao: labelFrom(areaData.situacaoOpts, answers.situacao),
+                dores: answers.dores.map((v) => labelFrom(areaData.doresOpts, v)),
+                prioridade: score
+              });
+              return result;
+            }}
+          />
           <p className="disclaimer">
             Esta pré-triagem é uma ferramenta de organização de informações e não constitui consulta, parecer ou aconselhamento jurídico.
             A existência de direito e as chances de êxito só podem ser avaliadas por um advogado, caso a caso, com base na análise de documentos.
@@ -414,7 +434,7 @@ export default function FunnelEngine({ data, previewMode }: { data: FunnelData; 
           previewMode={!!previewMode}
           onSubmit={async (form) => {
             const payload = {
-              tipo: "duvida_lead",
+              tipo: "duvida",
               funil: data.slug,
               enviado_em: new Date().toISOString(),
               area: areaData.label,
@@ -619,6 +639,49 @@ function RingScreen({ score, done, onDone, onContinue }: { score: number; done: 
       </div>
       <p className="ring-label">Quanto antes você falar com um advogado, maiores as chances de não perder prazos importantes.</p>
       {(done || shown >= score) && <button className="cta" style={{ marginTop: 18 }} onClick={onContinue}>Continuar →</button>}
+    </div>
+  );
+}
+
+// ---------- captura de nome/whatsapp do lead qualificado ----------
+
+interface ContactForm { nome: string; whatsapp: string }
+
+function LeadContactForm({
+  onSubmit, previewMode, buildWaLink
+}: { onSubmit: (f: ContactForm) => Promise<{ ok: boolean; demo?: boolean }>; previewMode: boolean; buildWaLink: (nome: string) => string }) {
+  const [nome, setNome] = useState("");
+  const [whatsapp, setWhatsapp] = useState("");
+  const [sending, setSending] = useState(false);
+
+  const canSubmit = nome.trim().length > 1 && whatsapp.trim().length >= 8;
+
+  // Um clique só: salva o lead e já leva pro WhatsApp na mesma tela, sem
+  // precisar de um segundo clique num link separado. Navegação na própria
+  // aba (em vez de window.open numa nova aba) pra nunca esbarrar em bloqueio
+  // de pop-up do navegador depois do await da chamada à API.
+  async function handleSubmit() {
+    if (!canSubmit || sending) return;
+    setSending(true);
+    const form = { nome: nome.trim(), whatsapp: whatsapp.trim() };
+    await onSubmit(form);
+    window.location.href = buildWaLink(form.nome);
+  }
+
+  return (
+    <div className="doubt-box" style={{ marginTop: 6, marginBottom: 16 }}>
+      <div className="field">
+        <label>Seu nome</label>
+        <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Como podemos te chamar?" />
+      </div>
+      <div className="field">
+        <label>Seu WhatsApp</label>
+        <input type="tel" value={whatsapp} onChange={(e) => setWhatsapp(e.target.value)} placeholder="(11) 91234-5678" />
+      </div>
+      <button className="cta whatsapp doubt-submit" disabled={!canSubmit || sending} onClick={handleSubmit}>
+        {sending ? "Enviando..." : "Falar com um advogado no WhatsApp →"}
+      </button>
+      {previewMode && <p className="demo-note">🔧 Modo preview: nada é salvo de verdade, mas o link do WhatsApp abre normalmente.</p>}
     </div>
   );
 }

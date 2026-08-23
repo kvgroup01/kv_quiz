@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createLead } from "@/lib/leads-store";
-import type { NewLead } from "@/lib/lead-schema";
+import { getColumns } from "@/lib/kanban-columns-store";
+import type { NewLead, LeadTipo } from "@/lib/lead-schema";
 
 export async function POST(req: NextRequest) {
   let body: any;
@@ -12,6 +13,7 @@ export async function POST(req: NextRequest) {
 
   const newLead: NewLead = {
     funil: String(body.funil || "default"),
+    tipo: (body.tipo === "qualificado" ? "qualificado" : "duvida") as LeadTipo,
     area: String(body.area || ""),
     situacao: String(body.situacao || ""),
     urgencia: String(body.urgencia || ""),
@@ -32,7 +34,8 @@ export async function POST(req: NextRequest) {
   let stored = null;
   let storeError: string | null = null;
   try {
-    stored = await createLead(newLead);
+    const columns = await getColumns();
+    stored = await createLead(newLead, columns[0].id);
   } catch (e: any) {
     // Sem Vercel KV configurado ainda — não derruba o lead, só avisa.
     storeError = "KV não configurado (veja README) — a dúvida não foi salva no Kanban.";
@@ -45,7 +48,7 @@ export async function POST(req: NextRequest) {
       await fetch(webhook, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tipo: "duvida_lead", ...newLead, enviado_em: new Date().toISOString() })
+        body: JSON.stringify({ ...newLead, enviado_em: new Date().toISOString() })
       });
     } catch (e) {
       console.error("[api/lead] Falha ao reenviar pro webhook:", e);

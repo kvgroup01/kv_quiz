@@ -34,5 +34,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/kanban/:path*", "/api/leads/:path*"]
+  matcher: ["/kanban/:path*", "/api/leads/:path*", "/api/kanban/:path*"]
 };
