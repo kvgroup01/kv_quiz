@@ -4,33 +4,19 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import type { FunnelData, Option, AreaContent } from "./funnel-schema";
 
-const SCREEN_TRANSITION_MS = 420;
-// Curva aproximada da transição push/pop do UINavigationController da Apple
-// (a mesma usada por libs que recriam a navegação nativa do iOS na web).
+const SCREEN_TRANSITION_MS = 260;
 const APPLE_EASE: [number, number, number, number] = [0.32, 0.72, 0, 1];
 
-// Estilo "push" do iOS: a tela nova desliza por cima cobrindo a antiga (que
-// recua com leve paralaxe e escurece um pouco); ao voltar, é o oposto — a
-// tela atual desliza pra fora revelando a anterior, que já estava por baixo.
+// Transição sequencial (a tela antiga termina de sair antes da nova
+// começar a entrar — AnimatePresence com mode="wait"). Nada de posições
+// absolutas/z-index com duas telas sobrepostas ao mesmo tempo: essa
+// abordagem "cover" chegou a ficar visualmente travada em alguns
+// navegadores/dispositivos, então trocamos por algo mais simples e à prova
+// de bugs — só um fade com leve deslocamento horizontal.
 const screenVariants: Variants = {
-  enter: (dir: number) => ({
-    x: dir >= 0 ? "100%" : "-28%",
-    opacity: 1,
-    zIndex: dir >= 0 ? 2 : 1
-  }),
-  center: { x: 0, opacity: 1, position: "relative" as const, zIndex: 1 },
-  exit: (dir: number) => ({
-    x: dir >= 0 ? "-28%" : "100%",
-    opacity: dir >= 0 ? 0.7 : 1,
-    zIndex: dir >= 0 ? 1 : 2,
-    position: "absolute" as const,
-    top: 0,
-    left: 0,
-    right: 0,
-    // tela saindo nunca deve receber clique perdido (evita registrar duas
-    // respostas quando o usuário clica rápido demais durante a transição)
-    pointerEvents: "none" as const
-  })
+  enter: (dir: number) => ({ opacity: 0, x: dir >= 0 ? 16 : -16 }),
+  center: { opacity: 1, x: 0 },
+  exit: (dir: number) => ({ opacity: 0, x: dir >= 0 ? -16 : 16 })
 };
 
 // ---------- helpers de conteúdo ----------
@@ -202,7 +188,9 @@ export default function FunnelEngine({ data, previewMode }: { data: FunnelData; 
     if (navLocked.current) return;
     navLocked.current = true;
     fn();
-    setTimeout(() => { navLocked.current = false; }, SCREEN_TRANSITION_MS);
+    // mode="wait" faz a saída terminar antes da entrada começar, então o
+    // tempo total até a nova tela assentar é o dobro da duração de cada uma.
+    setTimeout(() => { navLocked.current = false; }, SCREEN_TRANSITION_MS * 2);
   }
 
   function goTo(id: StepId) {
@@ -511,8 +499,8 @@ export default function FunnelEngine({ data, previewMode }: { data: FunnelData; 
           <button id="back-btn" type="button" onClick={goBack}>← Voltar</button>
         )}
       </div>
-      <div id="stage" style={{ position: "relative", overflowX: "hidden" }}>
-        <AnimatePresence initial={false} custom={direction}>
+      <div id="stage">
+        <AnimatePresence mode="wait" initial={false} custom={direction}>
           <motion.div
             key={step}
             custom={direction}
