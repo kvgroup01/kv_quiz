@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
+import { COOKIE_NAME, expectedToken } from "./lib/auth";
 
 // Protege o Kanban de dúvidas (nome, whatsapp, texto/áudio dos leads é dado
-// pessoal) com autenticação básica. Configure KANBAN_USER e KANBAN_PASSWORD
-// nas variáveis de ambiente — em PRODUÇÃO, sem isso o acesso fica bloqueado
-// por padrão em vez de ficar público sem querer. Em desenvolvimento local
-// (npm run dev) deixamos passar sem senha, pra não travar quem só quer
-// testar a ferramenta na própria máquina.
+// pessoal) com login próprio (tela em /login, não o pop-up nativo do
+// navegador). Configure KANBAN_USER e KANBAN_PASSWORD nas variáveis de
+// ambiente — em PRODUÇÃO, sem isso o acesso fica bloqueado por padrão em vez
+// de ficar público sem querer. Em desenvolvimento local (npm run dev)
+// deixamos passar sem senha, pra não travar quem só quer testar na própria
+// máquina.
 
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const user = process.env.KANBAN_USER;
   const pass = process.env.KANBAN_PASSWORD;
   const isProd = process.env.NODE_ENV === "production" && !!process.env.VERCEL;
@@ -20,17 +22,21 @@ export function middleware(req: NextRequest) {
     );
   }
 
-  const authHeader = req.headers.get("authorization");
-  const expected = "Basic " + btoa(`${user}:${pass}`);
-
-  if (authHeader === expected) {
+  const token = await expectedToken();
+  const cookie = req.cookies.get(COOKIE_NAME)?.value;
+  if (cookie && token && cookie === token) {
     return NextResponse.next();
   }
 
-  return new NextResponse("Autenticação necessária.", {
-    status: 401,
-    headers: { "WWW-Authenticate": 'Basic realm="Radar Juridico Kanban"' }
-  });
+  // Rotas de API são chamadas via fetch() pela própria página já carregada —
+  // não faz sentido redirecionar, só devolver 401 pra ela tratar.
+  if (req.nextUrl.pathname.startsWith("/api/")) {
+    return NextResponse.json({ ok: false, error: "Não autenticado." }, { status: 401 });
+  }
+
+  const loginUrl = new URL("/login", req.url);
+  loginUrl.searchParams.set("redirect", req.nextUrl.pathname);
+  return NextResponse.redirect(loginUrl);
 }
 
 export const config = {
