@@ -53,11 +53,27 @@ export interface FunnelData {
   hero: HeroContent;
   areaOrder: string[];
   areas: Record<string, AreaContent>;
+  /** Pergunta de cada tela. Opcionais pra não quebrar funis publicados antes
+   * desse campo existir — sem valor, o motor/builder usa o texto padrão. */
+  urgenciaQ?: string;
   urgencia: Option[];
+  aspiracaoQ?: string;
   aspiracao: Option[];
+  honorariosQ?: string;
   honorarios: Option[];
+  compromissoQ?: string;
   compromisso: Option[];
 }
+
+// Texto usado quando o funil ainda não tem urgenciaQ/aspiracaoQ/etc. salvo
+// (funis publicados antes desses campos existirem) — motor e builder usam
+// os mesmos defaults pra nunca ficarem dessincronizados.
+export const DEFAULT_QUESTIONS = {
+  urgenciaQ: "Há quanto tempo isso está acontecendo ou aconteceu?",
+  aspiracaoQ: "Se isso for resolvido, o que mudaria mais pra você?",
+  honorariosQ: "Você sabe como funciona o pagamento de honorários num caso assim?",
+  compromissoQ: "Se identificarmos que você pode ter direito a algo, você teria disponibilidade para falar com um advogado nos próximos dias?"
+};
 
 export function emptyOption(prefix: string, i: number): Option {
   return { v: `${prefix}_${i}_${Date.now()}`, t: "", icon: "🔹" };

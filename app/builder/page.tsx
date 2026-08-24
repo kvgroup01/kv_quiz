@@ -4,7 +4,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import AppNav from "@/components/AppNav";
-import { blankArea, type AreaContent, type FunnelData, type Option } from "@/lib/funnel-schema";
+import { blankArea, DEFAULT_QUESTIONS, type AreaContent, type FunnelData, type Option } from "@/lib/funnel-schema";
 
 const LS_KEY = "radar_juridico_funnels_v1";
 
@@ -505,30 +505,30 @@ function BuilderInner() {
 
                     {step === "urgencia" && (
                       <>
-                        <h2 className="plain-q">Há quanto tempo isso está acontecendo ou aconteceu?</h2>
-                        <p className="plain-note">Pergunta fixa (afeta a pontuação de prioridade), só o texto das opções é editável.</p>
+                        <EditableHeadline tag="h2" className="plain-q" value={active.urgenciaQ || DEFAULT_QUESTIONS.urgenciaQ} onChange={(v) => updateActive({ urgenciaQ: v })} />
+                        <p className="plain-note">Cuidado ao adicionar/remover opções aqui: elas afetam o cálculo da prioridade de atendimento.</p>
                         <OptionCanvasList opts={active.urgencia} onChange={(opts) => updateActive({ urgencia: opts })} />
                       </>
                     )}
 
                     {step === "aspiracao" && (
                       <>
-                        <h2 className="plain-q">Se isso for resolvido, o que mudaria mais pra você?</h2>
+                        <EditableHeadline tag="h2" className="plain-q" value={active.aspiracaoQ || DEFAULT_QUESTIONS.aspiracaoQ} onChange={(v) => updateActive({ aspiracaoQ: v })} />
                         <OptionCanvasList opts={active.aspiracao} onChange={(opts) => updateActive({ aspiracao: opts })} />
                       </>
                     )}
 
                     {step === "honorarios" && (
                       <>
-                        <h2 className="plain-q">Você sabe como funciona o pagamento de honorários num caso assim?</h2>
+                        <EditableHeadline tag="h2" className="plain-q" value={active.honorariosQ || DEFAULT_QUESTIONS.honorariosQ} onChange={(v) => updateActive({ honorariosQ: v })} />
                         <OptionCanvasList opts={active.honorarios} onChange={(opts) => updateActive({ honorarios: opts })} />
                       </>
                     )}
 
                     {step === "compromisso" && (
                       <>
-                        <h2 className="plain-q">Se identificarmos que você pode ter direito a algo, teria disponibilidade pra falar com um advogado?</h2>
-                        <p className="plain-note">Pergunta fixa (define quem vai pro WhatsApp x pro formulário de dúvida), só o texto é editável.</p>
+                        <EditableHeadline tag="h2" className="plain-q" value={active.compromissoQ || DEFAULT_QUESTIONS.compromissoQ} onChange={(v) => updateActive({ compromissoQ: v })} />
+                        <p className="plain-note">Cuidado ao adicionar/remover opções aqui: a primeira e a segunda decidem quem vai pro WhatsApp e quem vai pro formulário de dúvida.</p>
                         <OptionCanvasList opts={active.compromisso} onChange={(opts) => updateActive({ compromisso: opts })} />
                       </>
                     )}

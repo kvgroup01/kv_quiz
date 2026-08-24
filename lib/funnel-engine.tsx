@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
-import type { FunnelData, Option, AreaContent } from "./funnel-schema";
+import { DEFAULT_QUESTIONS, type FunnelData, type Option, type AreaContent } from "./funnel-schema";
 
 const SCREEN_TRANSITION_MS = 260;
 const APPLE_EASE: [number, number, number, number] = [0.32, 0.72, 0, 1];
@@ -479,14 +479,14 @@ export default function FunnelEngine({ data, previewMode }: { data: FunnelData; 
       break;
     case "urgencia":
       body = (
-        <SingleSelect question="Há quanto tempo isso está acontecendo ou aconteceu?" opts={data.urgencia} value={answers.urgencia}
+        <SingleSelect question={data.urgenciaQ || DEFAULT_QUESTIONS.urgenciaQ} opts={data.urgencia} value={answers.urgencia}
           note="Prazos legais variam de caso a caso, por isso essa informação importa."
           onPick={(v) => { setAnswers((s) => ({ ...s, urgencia: v })); goTo("aspiracao"); }} />
       );
       break;
     case "aspiracao":
       body = (
-        <SingleSelect question="Se isso for resolvido, o que mudaria mais pra você?" opts={data.aspiracao} value={answers.aspiracao}
+        <SingleSelect question={data.aspiracaoQ || DEFAULT_QUESTIONS.aspiracaoQ} opts={data.aspiracao} value={answers.aspiracao}
           onPick={(v) => { setAnswers((s) => ({ ...s, aspiracao: v })); goTo("loading1"); }} />
       );
       break;
@@ -494,7 +494,7 @@ export default function FunnelEngine({ data, previewMode }: { data: FunnelData; 
     case "honorarios":
       body = (
         <div className="screen">
-          <SingleSelect question="Você sabe como funciona o pagamento de honorários num caso assim?" opts={data.honorarios} value={answers.honorarios}
+          <SingleSelect question={data.honorariosQ || DEFAULT_QUESTIONS.honorariosQ} opts={data.honorarios} value={answers.honorarios}
             onPick={(v) => { setAnswers((s) => ({ ...s, honorarios: v })); goTo("dores"); }} />
           <div className="fact-card show" style={{ marginTop: 14 }}>
             <div className="chip">💡</div>
@@ -509,7 +509,7 @@ export default function FunnelEngine({ data, previewMode }: { data: FunnelData; 
     case "compromisso":
       body = (
         <SingleSelect
-          question="Se identificarmos que você pode ter direito a algo, você teria disponibilidade para falar com um advogado nos próximos dias?"
+          question={data.compromissoQ || DEFAULT_QUESTIONS.compromissoQ}
           opts={data.compromisso} value={answers.compromisso}
           onPick={(v) => { setAnswers((s) => ({ ...s, compromisso: v })); goTo("result"); }} />
       );
