@@ -30,3 +30,8 @@ export async function updateLeadStatus(id: string, status: LeadStatus): Promise<
   await kv.set(leadKey(id), updated);
   return updated;
 }
+
+export async function deleteLead(id: string): Promise<void> {
+  await kv.del(leadKey(id));
+  await kv.zrem(INDEX_KEY, id);
+}

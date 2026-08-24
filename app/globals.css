@@ -623,3 +623,52 @@ textarea.b-inline-edit{ resize:vertical; }
   border-radius:7px; border:1px solid var(--option-border); background:var(--bg-card); color:var(--ink); width:100%;
 }
 .b-graph-chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; align-items:center; font-size:0.76rem; color:var(--ink-soft); }
+
+/* ---------- kanban de leads (usado por /kanban e /kanban/banco) ---------- */
+
+.kanban-board{ display:grid; gap:16px; margin-top:16px; overflow-x:auto; }
+.kanban-col{ background:var(--bg-card); border:1px solid var(--option-border); border-radius:16px; padding:14px; min-height:200px; }
+.kanban-col-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; font-weight:600; font-size:0.9rem; letter-spacing:-0.01em; }
+.kanban-col-header .capi-badge{ font-size:0.65rem; font-weight:600; color:var(--mono-text); background:var(--mono-bg); border-radius:6px; padding:2px 6px; margin-left:6px; }
+.kanban-count{ background:var(--mono-bg); color:var(--mono-text); border-radius:999px; padding:2px 8px; font-size:0.75rem; }
+.kanban-card{ background:var(--bg-card-hover); border-radius:14px; padding:14px; margin-bottom:10px; border:1px solid var(--option-border); cursor:pointer; transition:border-color .12s; }
+.kanban-card:hover{ border-color:var(--purple-mid); }
+.kanban-card-top{ display:flex; justify-content:space-between; gap:8px; font-size:0.9rem; align-items:flex-start; }
+.kanban-card-top-right{ display:flex; align-items:center; gap:6px; flex-shrink:0; }
+.kanban-card-delete{
+  border:none; background:none; cursor:pointer; color:var(--ink-soft); font-size:0.8rem;
+  padding:2px 4px; border-radius:6px; line-height:1; opacity:0; transition:opacity .12s;
+}
+.kanban-card:hover .kanban-card-delete{ opacity:1; }
+.kanban-card-delete:hover{ background:var(--danger-bg); color:var(--danger-text); }
+.kanban-date{ color:var(--ink-soft); font-size:0.72rem; white-space:nowrap; }
+.kanban-whats{ font-size:0.82rem; color:var(--ink-soft); margin-top:2px; }
+.kanban-meta-row{ display:flex; align-items:center; gap:6px; margin-top:6px; min-width:0; flex-wrap:wrap; }
+.kanban-area-clip{ font-size:0.8rem; color:var(--ink-soft); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.kanban-tags{ display:flex; flex-wrap:wrap; gap:4px; margin-top:6px; }
+.kanban-tag{ font-size:0.68rem; background:var(--mono-bg); color:var(--mono-text); border-radius:6px; padding:2px 6px; flex-shrink:0; }
+.kanban-tag.utm{ background:var(--danger-bg); color:var(--danger-text); }
+.kanban-tag.hot{ background:var(--danger-bg); color:var(--danger-text); font-weight:600; }
+.kanban-tag.funnel{ background:var(--progress-track); color:var(--purple-mid); }
+.kanban-question{ font-size:0.85rem; font-style:italic; margin:8px 0 0; color:var(--ink); }
+.kanban-wa-btn{ display:block; width:100%; margin-top:10px; cursor:pointer; }
+.kanban-modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.5); display:flex; align-items:flex-start; justify-content:center; padding:5vh 20px; z-index:100; overflow-y:auto; }
+.kanban-modal{ background:var(--bg); border:1px solid var(--option-border); border-radius:16px; padding:24px; max-width:480px; width:100%; box-shadow:var(--shadow); }
+.kanban-modal-head{ display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.kanban-detail-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px 16px; }
+.kanban-detail-grid label{ font-size:0.72rem; font-weight:600; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.04em; }
+.kanban-detail-grid p{ margin:2px 0 0; font-size:0.9rem; }
+.kanban-col-edit-row{ display:flex; gap:6px; align-items:center; margin-bottom:8px; }
+.kanban-col-edit-order{ display:flex; flex-direction:column; gap:2px; }
+.kanban-col-edit-order .btn{ padding:2px 6px; }
+.kanban-col-edit-label{ flex:1; border-radius:8px; border:1px solid var(--option-border); background:var(--bg-card-hover); color:var(--ink); padding:7px 9px; font-size:0.85rem; }
+.kanban-col-edit-capi{ flex:1; border-radius:8px; border:1px solid var(--option-border); background:var(--bg-card-hover); color:var(--ink); padding:7px 9px; font-size:0.8rem; }
+.kanban-col-edit-remove{ border:none; background:none; cursor:pointer; font-size:0.9rem; padding:4px; }
+
+/* banco de leads (lista simples por mês, sem drag-and-drop) */
+.kanban-banco-list{ display:flex; flex-direction:column; gap:0; margin-top:16px; max-width:640px; }
+.kanban-banco-month{
+  font-family:"Inter Tight", sans-serif; font-size:0.85rem; padding:8px 12px;
+  border-radius:10px; border:1px solid var(--option-border); background:var(--bg-card); color:var(--ink);
+}
+.kanban-banco-empty{ color:var(--ink-soft); font-size:0.9rem; margin-top:20px; }

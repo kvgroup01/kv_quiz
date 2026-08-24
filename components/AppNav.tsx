@@ -4,10 +4,11 @@ import ThemeToggle from "./ThemeToggle";
 const ITEMS = [
   { href: "/", label: "🏠 Painel", key: "painel" },
   { href: "/builder", label: "🛠 Construtor", key: "builder" },
-  { href: "/kanban", label: "📥 Dúvidas", key: "kanban" }
+  { href: "/kanban", label: "📥 Dúvidas", key: "kanban" },
+  { href: "/kanban/banco", label: "📦 Banco de Leads", key: "banco" }
 ] as const;
 
-export default function AppNav({ current }: { current: "painel" | "builder" | "kanban" }) {
+export default function AppNav({ current }: { current: "painel" | "builder" | "kanban" | "banco" }) {
   return (
     <nav
       style={{
