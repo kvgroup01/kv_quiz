@@ -49,7 +49,12 @@ export function synthesizeLegacyGraph(data: FunnelData): FunnelGraph {
       id: id("area"),
       type: "choice",
       position: { x: 0, y: 120 },
-      data: { alias: "area", question: "Qual é a sua área?", options: areaOptions }
+      data: {
+        alias: "area",
+        question: areaOptions.length === 1 ? "Vamos começar?" : "Qual é a sua área?",
+        note: areaOptions.length === 1 ? "toca pra continuar ✨" : "toca pra escolher ✨",
+        options: areaOptions
+      }
     },
     {
       id: id("situacao"),

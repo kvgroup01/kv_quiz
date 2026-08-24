@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { notFound } from "next/navigation";
 import FunnelEngine from "@/lib/funnel-engine";
+import FunnelGraphEngine from "@/lib/funnel-graph-engine";
 import type { FunnelData } from "@/lib/funnel-schema";
 import { getDraft, getPublished } from "@/lib/funnels-store";
 
@@ -30,10 +31,18 @@ async function loadPreview(slug: string): Promise<FunnelData | null> {
   }
 }
 
-export default async function PreviewPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function PreviewPage({
+  params, searchParams
+}: { params: Promise<{ slug: string }>; searchParams: Promise<{ engine?: string }> }) {
   const { slug } = await params;
+  const { engine } = await searchParams;
   const data = await loadPreview(slug);
   if (!data) notFound();
+
+  // "?engine=graph" só existe pra comparar o motor novo (grafo) com o antigo
+  // (sequência fixa) lado a lado durante o desenvolvimento — a rota de
+  // produção (sem esse parâmetro) continua sempre no motor de sempre.
+  const useGraphEngine = engine === "graph";
 
   return (
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
@@ -53,7 +62,7 @@ export default async function PreviewPage({ params }: { params: Promise<{ slug: 
         🔧 PRÉ-VISUALIZAÇÃO: isto é o rascunho, não o funil publicado. Nada enviado aqui vira lead de verdade.
       </div>
       <div className={"quiz-page " + (data.config.theme === "dark" ? "theme-dark" : "theme-light")} style={{ flex: 1 }}>
-        <FunnelEngine data={data} previewMode />
+        {useGraphEngine ? <FunnelGraphEngine data={data} previewMode /> : <FunnelEngine data={data} previewMode />}
       </div>
     </div>
   );

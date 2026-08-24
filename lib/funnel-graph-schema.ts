@@ -165,12 +165,22 @@ function labelFromOptions(options: GraphOption[], id: string | undefined | null)
 }
 
 /** Resolve {{alias}}/{{nome}} num template de mensagem usando as respostas
- * guardadas + os rótulos das opções do grafo (não o id bruto). */
+ * guardadas + os rótulos das opções do grafo (não o id bruto).
+ *
+ * `resolveOptions` é opcional e existe pra nós de escolha cujas opções não
+ * vêm fixas em `data.options` (hoje, só os nós sintetizados de funil legado,
+ * que buscam as opções em `data.areas[area escolhida]` em runtime — ver
+ * `optionsFromArea` em funnel-graph-adapter.ts). Sem esse resolvedor, esses
+ * nós têm `data.options` vazio e a interpolação cairia pro id bruto em vez
+ * do rótulo. Quem chama de dentro do motor (que tem acesso ao FunnelData)
+ * passa o resolvedor; grafos novos, feitos do zero no editor, não precisam
+ * disso porque suas opções já vêm preenchidas em `data.options`. */
 export function interpolateTemplate(
   template: string,
   answers: Answers,
   graph: FunnelGraph,
-  nome?: string
+  nome?: string,
+  resolveOptions?: (node: GraphNode) => GraphOption[]
 ): string {
   return template.replace(/\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/g, (_, key: string) => {
     if (key === "nome") return nome || "";
@@ -178,11 +188,13 @@ export function interpolateTemplate(
     const raw = answers[key];
     if (!node || raw === undefined) return "";
     if (node.type === "choice") {
-      return labelFromOptions(node.data.options, raw as string);
+      const options = resolveOptions ? resolveOptions(node) : node.data.options;
+      return labelFromOptions(options, raw as string);
     }
     if (node.type === "multiChoice") {
+      const options = resolveOptions ? resolveOptions(node) : node.data.options;
       const arr: string[] = Array.isArray(raw) ? raw : [String(raw)];
-      return arr.map((v) => labelFromOptions(node.data.options, v)).join(", ");
+      return arr.map((v) => labelFromOptions(options, v)).join(", ");
     }
     return String(raw);
   });
