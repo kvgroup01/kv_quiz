@@ -1,0 +1,71 @@
+{
+  "slug": "salario-maternidade-avancada",
+  "nome": "Salário-Maternidade (Triagem Avançada)",
+  "config": {
+    "firmName": "[Nome do Escritório]",
+    "lawyerName": "[Nome do Advogado(a) responsável]",
+    "oab": "OAB/UF 000.000",
+    "whatsappNumber": "55SEUNUMERO",
+    "metaPixelId": "",
+    "theme": "light"
+  },
+  "eventos": {
+    "leadQualificado": "Lead",
+    "duvidaCapturada": "Contact"
+  },
+  "hero": {
+    "greeting": "Oi, mamãe! 🤱 Vamos ver isso com calma?",
+    "headline": "Descubra em **2 minutos** *se você tem direito* ao salário-maternidade, mesmo se o INSS já negou ou disse que faltam contribuições.",
+    "subheadline": "Responda algumas perguntas rápidas sobre a sua categoria e a sua situação com o INSS. No final, você já sabe exatamente o que falta pra receber o que é seu por direito.",
+    "trustNote": "**Sem custo** pra fazer essa avaliação."
+  },
+  "areaOrder": ["maternidade"],
+  "areas": {
+    "maternidade": {
+      "label": "Salário-Maternidade",
+      "chip": "🤱",
+      "selectorText": "Sim, quero saber se tenho direito ao salário-maternidade",
+      "situacaoQ": "Qual dessas situações é mais parecida com a sua?",
+      "situacaoOpts": [
+        { "v": "clt", "t": "Trabalho ou trabalhava com carteira assinada (CLT)", "icon": "💼" },
+        { "v": "domestica", "t": "Sou empregada doméstica", "icon": "🏠" },
+        { "v": "autonoma", "t": "Sou autônoma, MEI ou contribuo por conta própria (contribuinte individual)", "icon": "🧾" },
+        { "v": "rural", "t": "Sou trabalhadora rural ou agricultora familiar (segurada especial)", "icon": "🌾" },
+        { "v": "desempregada", "t": "Estou desempregada, mas contribuí com o INSS recentemente", "icon": "⏸️" },
+        { "v": "informal", "t": "Trabalho informalmente, sem carteira assinada, e nunca contribuí por conta própria", "icon": "🤝" }
+      ],
+      "doresQ": "O que está acontecendo com o seu salário-maternidade?",
+      "doresOpts": [
+        { "v": "negado", "t": "O INSS negou meu pedido", "icon": "❌" },
+        { "v": "demorando", "t": "Já pedi e está demorando mais de 45 dias", "icon": "⏳" },
+        { "v": "carencia", "t": "Disseram que eu não tenho carência ou \"qualidade de segurada\" suficiente", "icon": "⚖️" },
+        { "v": "valor_errado", "t": "Recebi um valor bem menor do que eu esperava", "icon": "💸" },
+        { "v": "nao_sei", "t": "Não sei se tenho direito, ainda não pedi", "icon": "❓" }
+      ]
+    }
+  },
+  "urgencia": [
+    { "v": "recente", "t": "Menos de 30 dias desde o parto, adoção, guarda ou perda gestacional", "icon": "👶" },
+    { "v": "medio", "t": "Entre 1 e 6 meses", "icon": "📅" },
+    { "v": "antigo", "t": "Mais de 6 meses", "icon": "⏰" },
+    { "v": "incerto", "t": "Ainda não aconteceu, estou grávida ou em processo de adoção", "icon": "🤰" }
+  ],
+  "aspiracao": [
+    { "v": "a1", "t": "Poder viver esse momento tranquila, sem me preocupar com dinheiro", "icon": "🍼" },
+    { "v": "a2", "t": "Pagar as contas que se acumularam nesse período", "icon": "💳" },
+    { "v": "a3", "t": "Ter a certeza de que fiz tudo certo", "icon": "✅" },
+    { "v": "a4", "t": "Só quero entender se tenho direito", "icon": "💬" }
+  ],
+  "honorarios": [
+    { "v": "h1", "t": "Não sei, quero entender", "icon": "🤔" },
+    { "v": "h2", "t": "Já ouvi falar que só se paga se ganhar", "icon": "🏆" },
+    { "v": "h3", "t": "Tenho receio de gastar sem necessidade", "icon": "😟" },
+    { "v": "h4", "t": "Não me importo, só quero resolver", "icon": "🚀" }
+  ],
+  "compromisso": [
+    { "v": "alto", "t": "Sim, quero resolver o quanto antes", "icon": "🔥" },
+    { "v": "medio", "t": "Sim, mas quero entender melhor antes", "icon": "🧐" },
+    { "v": "baixo", "t": "Ainda não tenho certeza", "icon": "🤷" },
+    { "v": "duvida", "t": "Só quero tirar uma dúvida por enquanto", "icon": "💭" }
+  ]
+}
