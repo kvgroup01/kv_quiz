@@ -2,6 +2,8 @@
 // o motor do quiz (funnel-engine.tsx) só sabe renderizar a partir dele.
 // Trocar copy/perguntas nunca deve exigir mexer no motor.
 
+import type { FunnelGraph } from "./funnel-graph-schema";
+
 export interface Option {
   v: string;
   t: string;
@@ -63,6 +65,10 @@ export interface FunnelData {
   honorarios: Option[];
   compromissoQ?: string;
   compromisso: Option[];
+  /** Lógica visual do funil (editor tipo n8n/Typebot). Opcional: sem isso, o
+   * funil é "legado" e roda pela sequência fixa de sempre — ver
+   * funnel-graph-adapter.ts, que sintetiza um grafo equivalente na hora. */
+  graph?: FunnelGraph;
 }
 
 // Texto usado quando o funil ainda não tem urgenciaQ/aspiracaoQ/etc. salvo
