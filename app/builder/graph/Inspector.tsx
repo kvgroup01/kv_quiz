@@ -5,10 +5,8 @@
 // de regras de condição/pontuação, textos de tela intermediária, e o
 // template de mensagem de WhatsApp com variáveis.
 
-import type {
-  GraphNode, CompareOperator, ConditionRule, ScoreRuleAdd, InterstitialFact
-} from "@/lib/funnel-graph-schema";
-import { NODE_TYPE_LABELS } from "./factory";
+import { effectiveEdges, type GraphNode, type FunnelGraph, type CompareOperator, type ConditionRule, type ScoreRuleAdd, type InterstitialFact } from "@/lib/funnel-graph-schema";
+import { NODE_TYPE_LABELS, newOption } from "./factory";
 
 const OPERATORS: { v: CompareOperator; label: string }[] = [
   { v: "equals", label: "é igual a" },
@@ -39,22 +37,64 @@ function nodeLabel(n: GraphNode): string {
   return NODE_TYPE_LABELS[n.type];
 }
 
+// Onde cada bloco leva, só pra leitura — não editável aqui de propósito:
+// criar/trocar conexão continua sendo coisa de arrastar no canvas (só
+// funciona no computador). Isso existe pra quem está editando pelo celular
+// não ficar sem noção de pra onde o fluxo vai a partir do bloco aberto.
+function OutgoingInfo({ graph, node }: { graph: FunnelGraph; node: GraphNode }) {
+  if (node.type === "terminalLead" || node.type === "terminalDoubt" || node.type === "condition") return null;
+  const edges = effectiveEdges(graph).filter((e) => e.source === node.id);
+  if (!edges.length) return null;
+  const targetLabel = (id: string) => {
+    const n = graph.nodes.find((x) => x.id === id);
+    return n ? nodeLabel(n) : "?";
+  };
+
+  if (node.type === "choice") {
+    const fallback = edges.find((e) => e.sourceHandle === undefined || e.sourceHandle === "default");
+    return (
+      <div className="b-field">
+        <label>Vai para (arrastar conexão só no computador)</label>
+        {node.data.options.map((o) => {
+          const e = edges.find((e) => e.sourceHandle === o.id) || fallback;
+          return <p key={o.id} className="b-graph-mobile-goto">{o.icon || "•"} {o.t || "(sem texto)"} → {e ? targetLabel(e.target) : "— nada ainda —"}</p>;
+        })}
+        {fallback && <p className="b-graph-mobile-goto">senão → {targetLabel(fallback.target)}</p>}
+      </div>
+    );
+  }
+
+  const e = edges[0];
+  return (
+    <div className="b-field">
+      <label>Vai para (arrastar conexão só no computador)</label>
+      <p className="b-graph-mobile-goto">→ {e ? targetLabel(e.target) : "— nada ainda —"}</p>
+    </div>
+  );
+}
+
 export default function Inspector({
-  graph, node, onUpdate, onClose
-}: { graph: import("@/lib/funnel-graph-schema").FunnelGraph; node: GraphNode; onUpdate: (patch: Record<string, unknown>) => void; onClose: () => void }) {
+  graph, node, onUpdate, onClose, mobile
+}: { graph: FunnelGraph; node: GraphNode; onUpdate: (patch: Record<string, unknown>) => void; onClose: () => void; mobile?: boolean }) {
   const aliasNodes = graph.nodes.filter((n) => n.type === "choice" || n.type === "multiChoice" || n.type === "score") as Extract<GraphNode, { type: "choice" | "multiChoice" | "score" }>[];
   const scoreNodes = graph.nodes.filter((n) => n.type === "score") as Extract<GraphNode, { type: "score" }>[];
   const targetables = graph.nodes.filter((n) => n.id !== node.id);
 
   return (
-    <div className="b-graph-inspector">
-      <div className="b-graph-inspector-head">
+    <div className={mobile ? "b-graph-mobile-panel" : "b-graph-inspector"}>
+      <div className={mobile ? "b-graph-mobile-panel-head" : "b-graph-inspector-head"}>
         <strong>{NODE_TYPE_LABELS[node.type]}</strong>
-        <button type="button" className="btn small" onClick={onClose}>Fechar</button>
+        <button type="button" className="btn small" onClick={onClose}>{mobile ? "← Voltar" : "Fechar"}</button>
       </div>
+
+      {node.type === "start" && <p className="b-help">Bloco de início do fluxo — sem nada pra configurar aqui.</p>}
 
       {(node.type === "choice" || node.type === "multiChoice") && (
         <>
+          <div className="b-field">
+            <label>Pergunta</label>
+            <textarea value={node.data.question} onChange={(e) => onUpdate({ question: e.target.value })} />
+          </div>
           <div className="b-field">
             <label>Apelido (usado em condições/mensagens)</label>
             <input value={node.data.alias} onChange={(e) => onUpdate({ alias: e.target.value })} />
@@ -63,6 +103,23 @@ export default function Inspector({
             <label>Nota abaixo da pergunta</label>
             <input value={node.data.note || ""} onChange={(e) => onUpdate({ note: e.target.value })} />
           </div>
+          {!node.data.optionsFromArea && (
+            <div className="b-field">
+              <label>Opções</label>
+              {node.data.options.map((o, i) => (
+                <div key={o.id} style={{ display: "flex", gap: 6, marginBottom: 6 }}>
+                  <input style={{ width: 48 }} value={o.icon || ""} placeholder="🔹" onChange={(e) => {
+                    const options = [...node.data.options]; options[i] = { ...o, icon: e.target.value }; onUpdate({ options });
+                  }} />
+                  <input style={{ flex: 1 }} value={o.t} placeholder="Escreva a opção" onChange={(e) => {
+                    const options = [...node.data.options]; options[i] = { ...o, t: e.target.value }; onUpdate({ options });
+                  }} />
+                  <button type="button" className="b-opt-remove" onClick={() => onUpdate({ options: node.data.options.filter((_, idx) => idx !== i) })}>✕</button>
+                </div>
+              ))}
+              <button type="button" className="b-add-opt" onClick={() => onUpdate({ options: [...node.data.options, newOption()] })}>+ opção</button>
+            </div>
+          )}
           {node.type === "choice" && (
             <div className="b-field">
               <label>Texto abaixo das opções (opcional)</label>
@@ -240,6 +297,8 @@ export default function Inspector({
           </div>
         </>
       )}
+
+      <OutgoingInfo graph={graph} node={node} />
     </div>
   );
 }

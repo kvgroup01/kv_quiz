@@ -104,6 +104,7 @@ function BuilderInner() {
   const [loaded, setLoaded] = useState(false);
   const [tab, setTab] = useState<"perguntas" | "fluxo" | "config">("perguntas");
   const [step, setStep] = useState<RailId>("inicio");
+  const [railOpen, setRailOpen] = useState(false);
   const [editingAreaKey, setEditingAreaKey] = useState<string | null>(null);
   const [switcherOpen, setSwitcherOpen] = useState(false);
   const [saveMsg, setSaveMsg] = useState<string | null>(null);
@@ -329,7 +330,7 @@ function BuilderInner() {
           <button className="btn primary" onClick={novoFunil}>+ Criar meu primeiro funil</button>
         </div>
       ) : tab === "config" ? (
-        <div style={{ padding: 24, maxWidth: 520, overflowY: "auto" }}>
+        <div className="b-config-panel" style={{ padding: 24, maxWidth: 520, overflowY: "auto" }}>
           <div className="b-section">
             <h3>Identificação</h3>
             <div className="b-field"><label>Nome interno</label><input value={active.nome} onChange={(e) => updateActive({ nome: e.target.value })} /></div>
@@ -378,9 +379,12 @@ function BuilderInner() {
         />
       ) : (
         <div className="b-body">
-          <div className="b-rail">
+          <button type="button" className="b-rail-toggle" onClick={() => setRailOpen((v) => !v)}>
+            {railOpen ? "✕ Fechar" : `☰ ${RAIL.find((r) => r.id === step)?.icon} ${RAIL.find((r) => r.id === step)?.label}`}
+          </button>
+          <div className={"b-rail" + (railOpen ? " open" : "")}>
             {RAIL.map((r) => (
-              <div key={r.id} className={"b-rail-item" + (step === r.id ? " active" : "")} onClick={() => setStep(r.id)}>
+              <div key={r.id} className={"b-rail-item" + (step === r.id ? " active" : "")} onClick={() => { setStep(r.id); setRailOpen(false); }}>
                 <span className="n">{r.icon}</span>{r.label}
               </div>
             ))}

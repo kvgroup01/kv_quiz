@@ -6,7 +6,7 @@
 // a versão editada via onChange, do mesmo jeito que qualquer outro campo do
 // builder passa por updateActive().
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ReactFlow, ReactFlowProvider, Background, Controls, MiniMap,
   applyNodeChanges, applyEdgeChanges,
@@ -19,6 +19,68 @@ import { nodeTypes } from "./nodes";
 import Inspector from "./Inspector";
 import { validateGraph } from "./validate";
 import { ADDABLE_NODE_TYPES, NODE_TYPE_LABELS, blankNode } from "./factory";
+
+const MOBILE_QUERY = "(max-width: 768px)";
+
+function useIsMobile(): boolean {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(MOBILE_QUERY);
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+  return isMobile;
+}
+
+const MOBILE_ICONS: Record<GraphNode["type"], string> = {
+  start: "▶", choice: "🔘", multiChoice: "☑️", interstitial: "⏳",
+  condition: "🔀", score: "🎯", terminalLead: "✅", terminalDoubt: "💬"
+};
+
+function mobilePreview(n: GraphNode): string {
+  switch (n.type) {
+    case "start": return "Início do fluxo";
+    case "choice":
+    case "multiChoice": return n.data.question || `#${n.data.alias}`;
+    case "interstitial": return n.data.kind === "loading" ? "Tela de carregamento" : n.data.kind === "ring" ? "Mostra a pontuação" : "Tela de confiança";
+    case "condition": return `${n.data.rules.length} regra(s) de condição`;
+    case "score": return `#${n.data.alias}`;
+    case "terminalLead": return "Fim: fala com advogado no WhatsApp";
+    case "terminalDoubt": return "Fim: captura de dúvida";
+  }
+}
+
+// Ordem lógica pra lista mobile: percorre o grafo a partir do "start" (BFS
+// pelas mesmas arestas que o motor usa de verdade), não a ordem crua do
+// array — assim a lista lê de cima pra baixo na ordem que o lead realmente
+// passa. Blocos inalcançáveis a partir do start entram no fim, marcados.
+function mobileOrder(graph: FunnelGraph): { nodes: GraphNode[]; reached: Set<string> } {
+  const edges = effectiveEdges(graph);
+  const adj = new Map<string, string[]>();
+  edges.forEach((e) => {
+    if (!adj.has(e.source)) adj.set(e.source, []);
+    adj.get(e.source)!.push(e.target);
+  });
+  const byId = new Map(graph.nodes.map((n) => [n.id, n]));
+  const start = graph.nodes.find((n) => n.type === "start");
+  const reached = new Set<string>();
+  const ordered: GraphNode[] = [];
+  if (start) {
+    const queue = [start.id];
+    while (queue.length) {
+      const id = queue.shift()!;
+      if (reached.has(id)) continue;
+      reached.add(id);
+      const n = byId.get(id);
+      if (n) ordered.push(n);
+      for (const next of adj.get(id) || []) if (!reached.has(next)) queue.push(next);
+    }
+  }
+  const rest = graph.nodes.filter((n) => !reached.has(n.id));
+  return { nodes: [...ordered, ...rest], reached };
+}
 
 // Largura/altura iniciais "chutadas" por tipo de nó. Sem isso, o xyflow só
 // descobre o tamanho real depois de medir o DOM já renderizado (via
@@ -79,6 +141,7 @@ function GraphEditorInner({
 }: { funnelData: FunnelData; graph: FunnelGraph; onChange: (g: FunnelGraph) => void }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [addType, setAddType] = useState<string>(ADDABLE_NODE_TYPES[0]);
+  const isMobile = useIsMobile();
 
   const updateNode = useCallback((id: string, patch: Record<string, unknown>) => {
     onChange({
@@ -200,6 +263,7 @@ function GraphEditorInner({
   }
 
   const selectedNode = graph.nodes.find((n) => n.id === selectedId) || null;
+  const { nodes: orderedMobileNodes, reached: reachedFromStart } = useMemo(() => mobileOrder(graph), [graph]);
 
   return (
     <div className="b-graph-shell">
@@ -219,23 +283,48 @@ function GraphEditorInner({
             ))}
           </div>
         )}
-        <div className="b-graph-canvas">
-          <ReactFlow
-            nodes={flowNodes}
-            edges={flowEdges}
-            nodeTypes={nodeTypes}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            onNodeClick={(_, n) => setSelectedId(n.id)}
-            onPaneClick={() => setSelectedId(null)}
-            fitView
-          >
-            <Background />
-            <Controls />
-            <MiniMap pannable zoomable />
-          </ReactFlow>
-        </div>
+        {isMobile ? (
+          <div className="b-graph-mobile-list">
+            {orderedMobileNodes.map((n) => {
+              const unreached = n.type !== "start" && !reachedFromStart.has(n.id);
+              return (
+                <button
+                  key={n.id}
+                  type="button"
+                  className={"b-graph-mobile-row" + (unreached ? " unreached" : "")}
+                  onClick={() => setSelectedId(n.id)}
+                >
+                  <span className="b-graph-mobile-row-icon">{MOBILE_ICONS[n.type]}</span>
+                  <span className="b-graph-mobile-row-body">
+                    <span className="b-graph-mobile-row-type">
+                      {NODE_TYPE_LABELS[n.type]}{unreached ? " · ⚠ não conectado" : ""}
+                    </span>
+                    <span className="b-graph-mobile-row-preview">{mobilePreview(n)}</span>
+                  </span>
+                  <span className="b-graph-mobile-row-arrow">›</span>
+                </button>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="b-graph-canvas">
+            <ReactFlow
+              nodes={flowNodes}
+              edges={flowEdges}
+              nodeTypes={nodeTypes}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
+              onConnect={onConnect}
+              onNodeClick={(_, n) => setSelectedId(n.id)}
+              onPaneClick={() => setSelectedId(null)}
+              fitView
+            >
+              <Background />
+              <Controls />
+              <MiniMap pannable zoomable />
+            </ReactFlow>
+          </div>
+        )}
       </div>
       {selectedNode && (
         <Inspector
@@ -243,6 +332,7 @@ function GraphEditorInner({
           node={selectedNode}
           onUpdate={(patch) => updateNode(selectedNode.id, patch)}
           onClose={() => setSelectedId(null)}
+          mobile={isMobile}
         />
       )}
     </div>
