@@ -546,3 +546,80 @@ textarea.b-inline-edit{ resize:vertical; }
 .q-card .b-add-opt{ border-color:rgba(255,255,255,0.3); color:rgba(255,255,255,0.8); }
 .q-card .b-add-opt:hover{ background:rgba(255,255,255,0.08); }
 .b-canvas-hint{ text-align:center; font-size:0.78rem; color:var(--ink-soft); margin-bottom:14px; }
+
+/* ---------- editor visual de fluxo (grafo) ---------- */
+
+.b-graph-shell{ flex:1; display:flex; overflow:hidden; background:var(--bg-card); }
+.b-graph-main{ flex:1; display:flex; flex-direction:column; min-width:0; }
+.b-graph-toolbar{
+  display:flex; align-items:center; gap:8px; padding:10px 14px;
+  border-bottom:1px solid var(--option-border); background:var(--bg-card);
+}
+.b-graph-toolbar select{
+  font-family:"Inter Tight", sans-serif; font-size:0.85rem; padding:7px 10px;
+  border-radius:10px; border:1px solid var(--option-border); background:var(--bg-card); color:var(--ink);
+}
+.b-graph-warnings{ padding:8px 14px; display:flex; flex-direction:column; gap:4px; background:var(--danger-bg); }
+.b-graph-warning{ font-size:0.78rem; color:var(--danger-text); }
+.b-graph-warning.blocking{ font-weight:700; }
+.b-graph-canvas{ flex:1; min-height:420px; }
+
+.b-graph-node{
+  background:var(--bg-card); border:1.5px solid var(--option-border); border-radius:14px;
+  width:100%; height:100%; box-sizing:border-box; overflow-y:auto;
+  box-shadow:var(--shadow); font-family:"Inter Tight", sans-serif;
+}
+.b-graph-node--start{
+  padding:10px 18px; border-radius:999px; display:flex; align-items:center; justify-content:center;
+  background:var(--purple-deep); color:#fff; box-shadow:none; text-align:center; font-weight:700;
+}
+.b-graph-node-header{
+  display:flex; align-items:center; justify-content:space-between; gap:6px;
+  padding:8px 10px; border-bottom:1px solid var(--option-border);
+  font-size:0.78rem; font-weight:700; color:var(--ink-soft);
+}
+.b-graph-node-actions{ display:flex; gap:4px; }
+.b-graph-node-actions button{
+  border:none; background:none; cursor:pointer; font-size:0.85rem; padding:2px 4px; border-radius:6px;
+}
+.b-graph-node-actions button:hover{ background:var(--option-border); }
+.b-graph-node-body{ padding:10px; }
+.b-graph-alias{
+  font-family:"JetBrains Mono", monospace; font-size:0.68rem; color:var(--mono-text);
+  background:var(--mono-bg); display:inline-block; padding:2px 6px; border-radius:6px; margin-bottom:6px;
+}
+.b-graph-question{ font-size:0.85rem; font-weight:600; margin:0 0 8px; cursor:text; }
+.b-graph-hint{ font-size:0.76rem; color:var(--ink-soft); margin:4px 0; }
+.b-graph-opts{ display:flex; flex-direction:column; gap:4px; }
+.b-graph-opt{
+  display:flex; align-items:center; gap:6px; padding:5px 8px; border-radius:9px;
+  border:1px solid var(--option-border); position:relative; font-size:0.8rem;
+}
+.b-graph-opt .chip{ cursor:text; }
+.b-graph-opt .label{ flex:1; cursor:text; }
+.b-graph-fallback{
+  display:flex; align-items:center; justify-content:space-between; margin-top:8px;
+  font-size:0.72rem; color:var(--ink-soft); border-top:1px dashed var(--option-border); padding-top:6px;
+}
+.b-graph-rule-row{
+  display:flex; align-items:center; justify-content:space-between; gap:6px;
+  font-size:0.76rem; padding:5px 8px; border-radius:8px; border:1px solid var(--option-border); margin-bottom:4px;
+}
+.b-graph-node-body select{
+  width:100%; font-family:"Inter Tight", sans-serif; font-size:0.8rem; padding:6px 8px;
+  border-radius:8px; border:1px solid var(--option-border); background:var(--bg-card); color:var(--ink);
+}
+
+.b-graph-inspector{
+  width:320px; flex-shrink:0; border-left:1px solid var(--option-border); background:var(--bg-card);
+  overflow-y:auto; padding:16px;
+}
+.b-graph-inspector-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.b-graph-rule-editor{
+  display:grid; grid-template-columns: 1fr 1fr 1fr auto; gap:4px; align-items:center; margin-bottom:6px;
+}
+.b-graph-rule-editor select, .b-graph-rule-editor input{
+  font-family:"Inter Tight", sans-serif; font-size:0.76rem; padding:5px 6px;
+  border-radius:7px; border:1px solid var(--option-border); background:var(--bg-card); color:var(--ink); width:100%;
+}
+.b-graph-chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; align-items:center; font-size:0.76rem; color:var(--ink-soft); }

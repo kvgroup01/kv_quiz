@@ -4,19 +4,16 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import AppNav from "@/components/AppNav";
+import { EditableText, EditableHeadline } from "@/components/EditableInline";
+import GraphEditor from "@/app/builder/graph/GraphEditor";
 import { blankArea, DEFAULT_QUESTIONS, type AreaContent, type FunnelData, type Option } from "@/lib/funnel-schema";
+import { toGraph } from "@/lib/funnel-graph-adapter";
 
 const LS_KEY = "radar_juridico_funnels_v1";
 
 function slugify(s: string) {
   return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
     .replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "").slice(0, 60) || "funil";
-}
-
-function parseRich(str: string): string {
-  return String(str || "")
-    .replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")
-    .replace(/\*(.+?)\*/g, '<em class="accent">$1</em>');
 }
 
 function blankFunnel(): FunnelData {
@@ -47,54 +44,6 @@ function downloadJson(data: unknown, filename: string) {
   a.href = url; a.download = filename;
   document.body.appendChild(a); a.click(); a.remove();
   URL.revokeObjectURL(url);
-}
-
-// ---------- edição inline (clique no texto real, exatamente como o lead vê) ----------
-
-function EditableText({
-  value, onChange, as = "span", className = "", placeholder, multiline
-}: { value: string; onChange: (v: string) => void; as?: string; className?: string; placeholder?: string; multiline?: boolean }) {
-  const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState(value);
-  useEffect(() => { if (!editing) setDraft(value); }, [value, editing]);
-
-  function commit() {
-    setEditing(false);
-    if (draft !== value) onChange(draft);
-  }
-
-  if (editing) {
-    return multiline ? (
-      <textarea autoFocus className={"b-inline-edit " + className} value={draft} rows={2}
-        onChange={(e) => setDraft(e.target.value)} onBlur={commit} />
-    ) : (
-      <input autoFocus className={"b-inline-edit " + className} value={draft}
-        onChange={(e) => setDraft(e.target.value)} onBlur={commit}
-        onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }} />
-    );
-  }
-
-  const Tag = as as any;
-  return (
-    <Tag className={"b-editable " + className} onClick={() => setEditing(true)}>
-      {value ? value : <span className="b-placeholder">{placeholder || "clique pra editar"}</span>}
-    </Tag>
-  );
-}
-
-function EditableHeadline({ value, onChange, tag = "h1", className = "" }: { value: string; onChange: (v: string) => void; tag?: string; className?: string }) {
-  const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState(value);
-  useEffect(() => { if (!editing) setDraft(value); }, [value, editing]);
-  if (editing) {
-    return (
-      <textarea autoFocus className={"b-inline-edit " + className} value={draft} rows={3}
-        onChange={(e) => setDraft(e.target.value)}
-        onBlur={() => { setEditing(false); if (draft !== value) onChange(draft); }} />
-    );
-  }
-  const Tag = tag as any;
-  return <Tag className={"b-editable " + className} onClick={() => setEditing(true)} dangerouslySetInnerHTML={{ __html: parseRich(value) || '<span class="b-placeholder">clique pra editar</span>' }} />;
 }
 
 function OptionCanvasList({
@@ -153,7 +102,7 @@ function BuilderInner() {
   const [funnels, setFunnels] = useState<FunnelData[]>([]);
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
-  const [tab, setTab] = useState<"perguntas" | "config">("perguntas");
+  const [tab, setTab] = useState<"perguntas" | "fluxo" | "config">("perguntas");
   const [step, setStep] = useState<RailId>("inicio");
   const [editingAreaKey, setEditingAreaKey] = useState<string | null>(null);
   const [switcherOpen, setSwitcherOpen] = useState(false);
@@ -341,6 +290,7 @@ function BuilderInner() {
           )}
           <div className="b-tabs">
             <button className={"b-tab" + (tab === "perguntas" ? " active" : "")} onClick={() => setTab("perguntas")}>Perguntas</button>
+            <button className={"b-tab" + (tab === "fluxo" ? " active" : "")} onClick={() => setTab("fluxo")}>🔀 Fluxo</button>
             <button className={"b-tab" + (tab === "config" ? " active" : "")} onClick={() => setTab("config")}>Configurações</button>
           </div>
         </div>
@@ -419,6 +369,13 @@ function BuilderInner() {
             <p className="b-help">Esse tema é fixo pra quem responde: não muda com o sistema/navegador do lead. O rascunho e o publicado sempre usam o tema escolhido aqui.</p>
           </div>
         </div>
+      ) : tab === "fluxo" ? (
+        <GraphEditor
+          key={active.slug}
+          funnelData={active}
+          graph={toGraph(active)}
+          onChange={(g) => updateActive({ graph: g })}
+        />
       ) : (
         <div className="b-body">
           <div className="b-rail">

@@ -148,6 +148,28 @@ export interface FunnelGraph {
 
 export type Answers = Record<string, string | string[] | number>;
 
+/** Arestas "de verdade" pra fins de visualização/validação. `condition` é o
+ * único tipo de nó cujo próximo passo o motor NÃO decide olhando
+ * `graph.edges` — ele lê direto `data.rules[i].targetNodeId`/
+ * `data.defaultNodeId` (ver resolveConditionNext em funnel-graph-engine.tsx).
+ * Guardar essas conexões duas vezes (em `edges` E em `data.rules`) seria
+ * fonte garantida de desincronização, então o editor visual e o validador
+ * usam esta função pra sempre derivar a conexão de condição a partir do
+ * dado real, nunca de uma aresta solta. */
+export function effectiveEdges(graph: FunnelGraph): GraphEdge[] {
+  const nodesById = new Map(graph.nodes.map((n) => [n.id, n]));
+  const base = graph.edges.filter((e) => nodesById.get(e.source)?.type !== "condition");
+  const derived: GraphEdge[] = [];
+  for (const n of graph.nodes) {
+    if (n.type !== "condition") continue;
+    n.data.rules.forEach((rule, i) => {
+      derived.push({ id: `${n.id}->rule${i}`, source: n.id, sourceHandle: `rule_${i}`, target: rule.targetNodeId });
+    });
+    derived.push({ id: `${n.id}->default`, source: n.id, sourceHandle: "default", target: n.data.defaultNodeId });
+  }
+  return [...base, ...derived];
+}
+
 function findNodeByAlias(
   graph: FunnelGraph,
   alias: string

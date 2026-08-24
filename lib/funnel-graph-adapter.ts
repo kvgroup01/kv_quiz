@@ -48,7 +48,7 @@ export function synthesizeLegacyGraph(data: FunnelData): FunnelGraph {
     {
       id: id("area"),
       type: "choice",
-      position: { x: 0, y: 120 },
+      position: { x: 0, y: 300 },
       data: {
         alias: "area",
         question: areaOptions.length === 1 ? "Vamos começar?" : "Qual é a sua área?",
@@ -59,7 +59,7 @@ export function synthesizeLegacyGraph(data: FunnelData): FunnelGraph {
     {
       id: id("situacao"),
       type: "choice",
-      position: { x: 0, y: 240 },
+      position: { x: 0, y: 600 },
       data: {
         alias: "situacao",
         question: "Qual dessas situações é mais parecida com a sua?",
@@ -71,7 +71,7 @@ export function synthesizeLegacyGraph(data: FunnelData): FunnelGraph {
     {
       id: id("urgencia"),
       type: "choice",
-      position: { x: 0, y: 360 },
+      position: { x: 0, y: 900 },
       data: {
         alias: "urgencia",
         question: data.urgenciaQ || DEFAULT_QUESTIONS.urgenciaQ,
@@ -82,7 +82,7 @@ export function synthesizeLegacyGraph(data: FunnelData): FunnelGraph {
     {
       id: id("aspiracao"),
       type: "choice",
-      position: { x: 0, y: 480 },
+      position: { x: 0, y: 1200 },
       data: {
         alias: "aspiracao",
         question: data.aspiracaoQ || DEFAULT_QUESTIONS.aspiracaoQ,
@@ -92,13 +92,13 @@ export function synthesizeLegacyGraph(data: FunnelData): FunnelGraph {
     {
       id: id("loading1"),
       type: "interstitial",
-      position: { x: 0, y: 600 },
+      position: { x: 0, y: 1500 },
       data: { kind: "loading", durationMs: 2400, facts: LEGACY_LOADING_FACTS }
     },
     {
       id: id("honorarios"),
       type: "choice",
-      position: { x: 0, y: 720 },
+      position: { x: 0, y: 1800 },
       data: {
         alias: "honorarios",
         question: data.honorariosQ || DEFAULT_QUESTIONS.honorariosQ,
@@ -109,7 +109,7 @@ export function synthesizeLegacyGraph(data: FunnelData): FunnelGraph {
     {
       id: id("dores"),
       type: "multiChoice",
-      position: { x: 0, y: 840 },
+      position: { x: 0, y: 2100 },
       data: {
         alias: "dores",
         question: "O que está acontecendo com o seu caso?",
@@ -123,7 +123,7 @@ export function synthesizeLegacyGraph(data: FunnelData): FunnelGraph {
     {
       id: id("score"),
       type: "score",
-      position: { x: 0, y: 960 },
+      position: { x: 0, y: 2400 },
       data: {
         alias: "prioridade",
         base: 55,
@@ -138,19 +138,19 @@ export function synthesizeLegacyGraph(data: FunnelData): FunnelGraph {
     {
       id: id("ring"),
       type: "interstitial",
-      position: { x: 0, y: 1080 },
+      position: { x: 0, y: 2700 },
       data: { kind: "ring", scoreRef: "prioridade" }
     },
     {
       id: id("trust"),
       type: "interstitial",
-      position: { x: 0, y: 1200 },
+      position: { x: 0, y: 3000 },
       data: { kind: "trust" }
     },
     {
       id: id("compromisso"),
       type: "choice",
-      position: { x: 0, y: 1320 },
+      position: { x: 0, y: 3300 },
       data: {
         alias: "compromisso",
         question: data.compromissoQ || DEFAULT_QUESTIONS.compromissoQ,
@@ -160,7 +160,7 @@ export function synthesizeLegacyGraph(data: FunnelData): FunnelGraph {
     {
       id: id("condition"),
       type: "condition",
-      position: { x: 0, y: 1440 },
+      position: { x: 0, y: 3600 },
       data: {
         rules: [
           {
@@ -176,7 +176,7 @@ export function synthesizeLegacyGraph(data: FunnelData): FunnelGraph {
     {
       id: id("terminalLead"),
       type: "terminalLead",
-      position: { x: -140, y: 1560 },
+      position: { x: -160, y: 3900 },
       data: {
         metaEvent: data.eventos.leadQualificado,
         whatsappMessageTemplate: LEGACY_WHATSAPP_TEMPLATE,
@@ -186,7 +186,7 @@ export function synthesizeLegacyGraph(data: FunnelData): FunnelGraph {
     {
       id: id("terminalDoubt"),
       type: "terminalDoubt",
-      position: { x: 140, y: 1560 },
+      position: { x: 160, y: 3900 },
       data: { metaEvent: data.eventos.duvidaCapturada }
     }
   ];
@@ -207,9 +207,12 @@ export function synthesizeLegacyGraph(data: FunnelData): FunnelGraph {
     edge(id("score"), id("ring")),
     edge(id("ring"), id("trust")),
     edge(id("trust"), id("compromisso")),
-    edge(id("compromisso"), id("condition")),
-    edge(id("condition"), id("terminalLead"), "0"),
-    edge(id("condition"), id("terminalDoubt"), "default")
+    edge(id("compromisso"), id("condition"))
+    // As conexões que saem do nó "condition" não entram aqui de propósito:
+    // o motor lê o destino direto de data.rules[].targetNodeId/
+    // defaultNodeId (ver resolveConditionNext), e effectiveEdges() em
+    // funnel-graph-schema.ts deriva a aresta visual a partir desse mesmo
+    // dado — guardar as duas coisas separadamente arriscaria desincronizar.
   ];
 
   return { version: 1, nodes, edges };
