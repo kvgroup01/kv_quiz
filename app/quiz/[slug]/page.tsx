@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { notFound } from "next/navigation";
-import FunnelEngine from "@/lib/funnel-engine";
+import FunnelGraphEngine from "@/lib/funnel-graph-engine";
 import type { FunnelData } from "@/lib/funnel-schema";
 import { getPublished } from "@/lib/funnels-store";
 
@@ -31,7 +31,7 @@ export default async function QuizPage({ params }: { params: Promise<{ slug: str
 
   return (
     <div className={"quiz-page " + (data.config.theme === "dark" ? "theme-dark" : "theme-light")}>
-      <FunnelEngine data={data} />
+      <FunnelGraphEngine data={data} />
     </div>
   );
 }
