@@ -65,6 +65,11 @@ export interface FunnelData {
   honorarios: Option[];
   compromissoQ?: string;
   compromisso: Option[];
+  /** Pergunta e dica da tela de escolha de área. Opcionais — sem valor, o
+   * motor/builder usam o texto padrão (que já varia sozinho conforme o
+   * funil tem 1 ou várias áreas, ver DEFAULT_AREA_TEXT). */
+  areaQ?: string;
+  areaHint?: string;
   /** Lógica visual do funil (editor tipo n8n/Typebot). Opcional: sem isso, o
    * funil é "legado" e roda pela sequência fixa de sempre — ver
    * funnel-graph-adapter.ts, que sintetiza um grafo equivalente na hora. */
@@ -79,6 +84,16 @@ export const DEFAULT_QUESTIONS = {
   aspiracaoQ: "Se isso for resolvido, o que mudaria mais pra você?",
   honorariosQ: "Você sabe como funciona o pagamento de honorários num caso assim?",
   compromissoQ: "Se identificarmos que você pode ter direito a algo, você teria disponibilidade para falar com um advogado nos próximos dias?"
+};
+
+// A tela de área muda de texto sozinha conforme o funil tem 1 área só
+// (pula direto pro "vamos começar") ou várias (pede pra escolher) — motor,
+// adaptador do grafo e builder usam os mesmos 4 textos padrão.
+export const DEFAULT_AREA_TEXT = {
+  questionMulti: "Qual é a sua área?",
+  questionSingle: "Vamos começar?",
+  hintMulti: "toca pra escolher ✨",
+  hintSingle: "toca pra continuar ✨"
 };
 
 export function emptyOption(prefix: string, i: number): Option {

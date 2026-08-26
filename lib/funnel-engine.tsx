@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { DEFAULT_QUESTIONS, type FunnelData, type Option, type AreaContent } from "./funnel-schema";
+import { DEFAULT_QUESTIONS, DEFAULT_AREA_TEXT, type FunnelData, type Option, type AreaContent } from "./funnel-schema";
 import {
   SCREEN_TRANSITION_MS, APPLE_EASE, screenVariants, STANDARD_META_EVENTS,
   parseRich, labelFrom, readUtm, readCookie, initMetaPixel, postJson,
@@ -142,8 +142,8 @@ export default function FunnelEngine({ data, previewMode }: { data: FunnelData; 
           💬 <span dangerouslySetInnerHTML={{ __html: parseRich(data.hero.trustNote) }} />
         </div>
         <div className="q-card">
-          <h2>{keys.length === 1 ? "Vamos começar?" : "Qual é a sua área?"}</h2>
-          <p className="hint">{keys.length === 1 ? "toca pra continuar ✨" : "toca pra escolher ✨"}</p>
+          <h2>{data.areaQ || (keys.length === 1 ? DEFAULT_AREA_TEXT.questionSingle : DEFAULT_AREA_TEXT.questionMulti)}</h2>
+          <p className="hint">{data.areaHint || (keys.length === 1 ? DEFAULT_AREA_TEXT.hintSingle : DEFAULT_AREA_TEXT.hintMulti)}</p>
           <div className="opt-list">
             {keys.map((k) => {
               const a = data.areas[k];

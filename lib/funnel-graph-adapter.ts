@@ -5,7 +5,7 @@
 // à força: ele só ganha um `graph` de verdade quando alguém abre o editor
 // visual novo e salva.
 
-import { DEFAULT_QUESTIONS, type FunnelData } from "./funnel-schema";
+import { DEFAULT_QUESTIONS, DEFAULT_AREA_TEXT, type FunnelData } from "./funnel-schema";
 import type { FunnelGraph, GraphNode, GraphEdge, GraphOption } from "./funnel-graph-schema";
 
 function opt(v: string, t: string, icon?: string): GraphOption {
@@ -51,8 +51,8 @@ export function synthesizeLegacyGraph(data: FunnelData): FunnelGraph {
       position: { x: 0, y: 300 },
       data: {
         alias: "area",
-        question: areaOptions.length === 1 ? "Vamos começar?" : "Qual é a sua área?",
-        note: areaOptions.length === 1 ? "toca pra continuar ✨" : "toca pra escolher ✨",
+        question: data.areaQ || (areaOptions.length === 1 ? DEFAULT_AREA_TEXT.questionSingle : DEFAULT_AREA_TEXT.questionMulti),
+        note: data.areaHint || (areaOptions.length === 1 ? DEFAULT_AREA_TEXT.hintSingle : DEFAULT_AREA_TEXT.hintMulti),
         options: areaOptions
       }
     },

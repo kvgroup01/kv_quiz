@@ -6,7 +6,7 @@ import Link from "next/link";
 import AppNav from "@/components/AppNav";
 import { EditableText, EditableHeadline } from "@/components/EditableInline";
 import GraphEditor from "@/app/builder/graph/GraphEditor";
-import { blankArea, DEFAULT_QUESTIONS, type AreaContent, type FunnelData, type Option } from "@/lib/funnel-schema";
+import { blankArea, DEFAULT_QUESTIONS, DEFAULT_AREA_TEXT, type AreaContent, type FunnelData, type Option } from "@/lib/funnel-schema";
 import { toGraph } from "@/lib/funnel-graph-adapter";
 
 const LS_KEY = "radar_juridico_funnels_v1";
@@ -423,8 +423,17 @@ function BuilderInner() {
 
                     {step === "areas" && (
                       <div className="q-card">
-                        <h2>Qual é a sua área?</h2>
-                        <p className="hint">toca pra escolher ✨</p>
+                        <EditableHeadline
+                          tag="h2"
+                          value={active.areaQ || (areaKeys.length === 1 ? DEFAULT_AREA_TEXT.questionSingle : DEFAULT_AREA_TEXT.questionMulti)}
+                          onChange={(v) => updateActive({ areaQ: v })}
+                        />
+                        <EditableText
+                          as="p"
+                          className="hint"
+                          value={active.areaHint || (areaKeys.length === 1 ? DEFAULT_AREA_TEXT.hintSingle : DEFAULT_AREA_TEXT.hintMulti)}
+                          onChange={(v) => updateActive({ areaHint: v })}
+                        />
                         <div className="opt-list">
                           {areaKeys.map((k, i) => (
                             <div key={k} className="opt b-opt-editable" draggable
