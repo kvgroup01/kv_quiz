@@ -2,6 +2,8 @@
 
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
 
 function LoginForm() {
   const router = useRouter();
@@ -37,34 +39,36 @@ function LoginForm() {
   }
 
   return (
-    <div className="in-app" style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, background: "var(--bg)" }}>
-      <form onSubmit={handleSubmit} className="b-section" style={{ width: "100%", maxWidth: 360 }}>
-        <p className="eyebrow">RADAR JURÍDICO</p>
-        <h1 style={{ fontSize: "1.3rem", fontWeight: 700, margin: "6px 0 18px" }}>Entrar no painel</h1>
-        <div className="field">
-          <label>Usuário</label>
-          <input
-            type="text"
-            value={usuario}
-            onChange={(e) => setUsuario(e.target.value)}
-            autoFocus
-            autoComplete="username"
-          />
-        </div>
-        <div className="field">
-          <label>Senha</label>
-          <input
-            type="password"
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-            autoComplete="current-password"
-          />
-        </div>
-        {erro && <p className="b-help" style={{ color: "var(--danger-text)" }}>{erro}</p>}
-        <button type="submit" className="btn primary" style={{ width: "100%", marginTop: 4 }} disabled={enviando}>
-          {enviando ? "Entrando..." : "Entrar"}
-        </button>
-      </form>
+    <div className="in-app login-page">
+      <Card className="login-card">
+        <p className="app-nav-brand" style={{ marginBottom: 4 }}>Intake</p>
+        <h1 className="ui-card-title" style={{ marginBottom: 20 }}>Entrar</h1>
+        <form onSubmit={handleSubmit}>
+          <label className="in-field">
+            <span>Usuário</span>
+            <input
+              type="text"
+              value={usuario}
+              onChange={(e) => setUsuario(e.target.value)}
+              autoFocus
+              autoComplete="username"
+            />
+          </label>
+          <label className="in-field">
+            <span>Senha</span>
+            <input
+              type="password"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+              autoComplete="current-password"
+            />
+          </label>
+          {erro && <p className="in-error">{erro}</p>}
+          <Button variant="primary" type="submit" disabled={enviando} className="login-submit">
+            {enviando ? "Entrando…" : "Entrar"}
+          </Button>
+        </form>
+      </Card>
     </div>
   );
 }

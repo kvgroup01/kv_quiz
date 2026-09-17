@@ -16,7 +16,7 @@ export default async function Home() {
 
   return (
     <div className="in-app">
-      <AppNav current="painel" />
+      <AppNav current="inicio" />
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 24px 64px" }}>
         <p className="eyebrow">SEUS FUNIS</p>
         <h1 style={{ fontSize: "1.7rem", fontWeight: 600, letterSpacing: "-0.01em", margin: "8px 0 6px" }}>Painel</h1>

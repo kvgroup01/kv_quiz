@@ -1,6 +1,11 @@
 # Handoff
 
 ## 2026-09-17 · Codex
+- Parei em: Task 4 do plano `docs/superpowers/plans/2026-09-17-intake-redesign-app-interno.md`; Steps 1–5 concluídos. AppNav agora usa a marca Intake e pílulas, as chaves de navegação foram atualizadas, ThemeToggle foi removido e o login usa Card/Button e os campos internos.
+- Próximo: concluir o Step 6 da Task 4 com a conferência visual em 1440px e 390px; também permanecem pendentes os Steps 7 da Task 2 e 8 da Task 3 pelo mesmo motivo, depois iniciar Task 5.
+- Cuidado com: `npx tsc --noEmit`, `npm test` e `npm run build` passaram. O CUA continua sem navegador exposto (`apps: []`, `browsers: []`); não fazer push antes da Task 14.
+
+## 2026-09-17 · Codex
 - Parei em: Task 3 do plano `docs/superpowers/plans/2026-09-17-intake-redesign-app-interno.md`; Steps 1–7 concluídos. Criados `Card`, `Button`, `Badge`, `PillTabs`, `Stat`, `DataTable` e `PageHeader`, com estilos `ui-*` em `app/globals.css`.
 - Próximo: concluir o Step 8 da Task 3 com a conferência visual em 1440px e 390px; depois iniciar Task 4.
 - Cuidado com: `npx tsc --noEmit`, `npm test` e `npm run build` passaram. O CUA continua sem navegador exposto (`apps: []`, `browsers: []`), portanto a conferência visual permanece pendente. O dev server está em `http://localhost:3000`; não fazer push antes da Task 14.

@@ -321,15 +321,12 @@ textarea.b-inline-edit{ resize:vertical; }
 
 /* ---------- navegaÃ§Ã£o (topo de todas as telas internas) ---------- */
 
-.app-nav{ border-bottom:1px solid var(--option-border); background:var(--bg); }
-.app-nav-bar{ display:flex; align-items:center; gap:6px; padding:10px 20px; }
-.app-nav-brand{ font-weight:700; font-size:0.85rem; margin-right:10px; white-space:nowrap; }
-.app-nav-links{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
-.app-nav-burger{
-  display:none; margin-left:auto; border:1px solid var(--option-border); background:var(--bg-card);
-  color:var(--ink); border-radius:8px; font-size:1.1rem; padding:4px 10px; cursor:pointer;
-}
-.app-nav-drawer{ display:none; flex-direction:column; gap:6px; padding:0 20px 14px; }
+.app-nav{ background:transparent; }
+.app-nav-bar{ display:flex; align-items:center; gap:24px; padding-top:16px; padding-bottom:8px; }
+.app-nav-brand{ font-weight:600; font-size:20px; letter-spacing:-0.3px; color:var(--c-ink); text-decoration:none; }
+.app-nav-links{ flex:1; }
+.app-nav-burger{ display:none; margin-left:auto; border:1px solid var(--c-hairline); background:var(--c-canvas); color:var(--c-ink); border-radius:var(--r-btn); font-size:18px; width:40px; height:40px; cursor:pointer; }
+.app-nav-drawer{ display:none; flex-direction:column; gap:6px; padding-bottom:12px; }
 @media (max-width: 720px){
   .app-nav-links{ display:none; }
   .app-nav-burger{ display:block; }
@@ -418,6 +415,20 @@ textarea.b-inline-edit{ resize:vertical; }
   .b-graph-toolbar{ flex-wrap:wrap; }
   .b-graph-toolbar select{ flex:1; min-width:0; }
 }
+
+/* ---------- formulários internos + login ---------- */
+.in-field{ display:flex; flex-direction:column; gap:6px; margin-bottom:14px; }
+.in-field > span{ font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--c-stone); }
+.in-field input, .in-field textarea, .in-field select{
+  font-family:var(--font-ui); font-size:16px; color:var(--c-ink); background:var(--c-canvas);
+  border:1px solid var(--c-hairline-strong); border-radius:var(--r-input); padding:10px 14px; min-height:44px;
+}
+.in-field textarea{ min-height:88px; resize:vertical; }
+.in-field input:focus-visible, .in-field textarea:focus-visible, .in-field select:focus-visible{ outline:none; border:2px solid var(--c-primary); padding:9px 13px; }
+.in-error{ color:var(--c-error); font-size:14px; margin:0 0 12px; }
+.login-page{ display:flex; align-items:center; justify-content:center; padding:24px; }
+.login-card{ width:100%; max-width:400px; }
+.login-submit{ width:100%; margin-top:6px; }
 
 /* ---------- ui: primitivos ---------- */
 .ui-card{ background:var(--c-canvas); border:1px solid var(--c-hairline); border-radius:var(--r-card); padding:24px; }

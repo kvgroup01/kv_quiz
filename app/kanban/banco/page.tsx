@@ -90,7 +90,7 @@ export default function BancoDeLeadsPage() {
 
   return (
     <div className="in-app">
-      <AppNav current="banco" />
+      <AppNav current="historico" />
       <div style={{ padding: "24px 24px 48px" }}>
         <p className="eyebrow">BANCO DE LEADS</p>
         <h1 style={{ fontSize: "1.5rem", fontWeight: 600, letterSpacing: "-0.01em", margin: "6px 0 4px" }}>Histórico por mês</h1>

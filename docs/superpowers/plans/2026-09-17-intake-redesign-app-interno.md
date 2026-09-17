@@ -621,7 +621,7 @@ git commit -m "Primitivos de UI do Intake (Card, Button, Badge, PillTabs, Stat, 
 - Consumes: `PillTabs`, `Button`, `Card`.
 - Produces: `AppNav({ current: "inicio" | "builder" | "leads" | "historico" })` — **as chaves mudaram** (`painel→inicio`, `kanban→leads`, `banco→historico`).
 
-- [ ] **Step 1: Reescrever `components/AppNav.tsx`**
+- [x] **Step 1: Reescrever `components/AppNav.tsx`**
 
 ```tsx
 "use client";
@@ -660,15 +660,15 @@ export default function AppNav({ current }: { current: NavKey }) {
 }
 ```
 
-- [ ] **Step 2: Atualizar as chamadas existentes**
+- [x] **Step 2: Atualizar as chamadas existentes**
 
 `app/page.tsx`: `current="inicio"` · `app/kanban/page.tsx`: `current="leads"` · `app/kanban/banco/page.tsx`: `current="historico"` · `app/builder/page.tsx`: `current="builder"` (já é).
 
-- [ ] **Step 3: Apagar `components/ThemeToggle.tsx`**
+- [x] **Step 3: Apagar `components/ThemeToggle.tsx`**
 
 Run: `git rm components/ThemeToggle.tsx`. Depois `grep -rn ThemeToggle --include=*.tsx .` deve não retornar nada (o `AppNav` novo não o importa mais).
 
-- [ ] **Step 4: CSS da nav (substitui a seção `/* ---------- navegação ---------- */` inteira e o bloco responsivo `.app-nav-*`)**
+- [x] **Step 4: CSS da nav (substitui a seção `/* ---------- navegação ---------- */` inteira e o bloco responsivo `.app-nav-*`)**
 
 ```css
 /* ---------- navegação ---------- */
@@ -685,7 +685,7 @@ Run: `git rm components/ThemeToggle.tsx`. Depois `grep -rn ThemeToggle --include
 }
 ```
 
-- [ ] **Step 5: Login — `app/login/page.tsx`**
+- [x] **Step 5: Login — `app/login/page.tsx`**
 
 Mantenha toda a lógica que já existe (estados, `fetch("/api/login")`, `router.push`, `Suspense`). Troque só o JSX retornado pelo componente interno por (adapte os nomes de estado aos que já existem no arquivo):
 
