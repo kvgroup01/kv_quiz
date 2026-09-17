@@ -1,31 +1,32 @@
-# Radar Jurídico
+# Intake
 
-Quiz de pré-triagem de leads jurídicos + construtor de funis + Kanban de dúvidas, pronto pra rodar no plano free da Vercel.
+Quiz de pré-triagem de leads de anúncio + construtor visual de fluxo + Kanban de leads.
+Quem está pronto vai pro WhatsApp do profissional com um resumo; quem só tem dúvida cai
+no Kanban pra ser respondido depois. Roda no plano free da Vercel.
 
-## O que tem aqui
+## Telas
 
-- **`/`** — o Painel: lista todos os seus funis, cada um com status (rascunho / publicado) e os três links (editar, pré-visualizar, ver publicado).
-- **`/builder`** — editor visual do conteúdo do funil (perguntas, opções, textos, Pixel do Meta Ads), com preview ao vivo — clique no texto e edite direto, arraste pra reordenar.
-- **`/quiz/[slug]`** — o funil PUBLICADO, que o lead responde de verdade (vindo do anúncio). Termina levando quem está pronto pro WhatsApp com um resumo pronto, e capturando texto/áudio de quem só quer tirar dúvida.
-- **`/quiz/[slug]/preview`** — o RASCUNHO, sempre a versão mais recente que você está editando. Link público (dá pra mandar pro cliente revisar), mas não conta como lead de verdade.
-- **`/kanban`** — quadro (arrastar e soltar) com as dúvidas capturadas, pra decidir quem o time chama no WhatsApp.
-- **`/api/lead`**, **`/api/conversion`** — funções serverless que guardam segredos (token da Conversions API) fora do navegador do lead.
+- **`/` Início** — dúvidas aguardando resposta, números do período por funil, últimos leads.
+- **`/builder` Construtor** — mapa do fluxo (esquerda→direita, zoom), editor do bloco
+  selecionado e prévia do celular ao vivo. O rascunho salva sozinho; **Publicar** é o único
+  botão que muda o que está no ar. O status no topo diz se há alteração não publicada.
+- **`/kanban` Leads** — colunas arrastáveis, mês corrente. **`/kanban/banco` Histórico** — meses anteriores.
+- **`/quiz/[slug]`** — o funil publicado que o lead responde. **`/quiz/[slug]/preview`** — o rascunho.
+- **`/login`** — protege Leads/Histórico (`KANBAN_USER`/`KANBAN_PASSWORD`).
 
-## Rascunho x Publicado
+## Como funciona o funil
 
-Pensa como Linktree: você edita à vontade no `/builder` sem afetar nada — cada tecla salva só no seu navegador. Dois botões decidem o que sai pra fora:
+A lógica é um grafo (`FunnelData.graph`): blocos de pergunta, tela intermediária, condição,
+pontuação e dois finais (WhatsApp / dúvida). Funis antigos sem `graph` são convertidos em
+memória por `lib/funnel-graph-adapter.ts`. O motor é `lib/funnel-graph-engine.tsx`.
 
-- **💾 Salvar rascunho** — grava o estado atual no banco (Vercel KV) e te dá o link de `/quiz/<slug>/preview`, pra você (ou o cliente) conferir como ficou antes de ir ao ar.
-- **🚀 Publicar** — copia esse conteúdo pro estado publicado. Só a partir daqui `/quiz/<slug>` (o link real, o que vai no anúncio) muda. Editar e nem salvar rascunho, nem publicar, não muda absolutamente nada que já está no ar.
+## Rodando
 
-## Rodando localmente
+`npm install` · `npm run dev` · `npm test` · `npm run build`
 
-```bash
-npm install
-npm run dev
-```
+## Pra quem vai continuar o trabalho
 
-Abra `http://localhost:3000`.
+Leia `AGENTS.md` e `docs/HANDOFF.md`.
 
 ## Variáveis de ambiente
 

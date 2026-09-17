@@ -1,6 +1,6 @@
 "use client";
 
-// Peças de UI/animação/integração usadas pelo motor antigo (funnel-engine.tsx,
+// Peças de UI/animação/integração compartilhadas pelos motores do quiz,
 // sequência fixa) E pelo motor novo (funnel-graph-engine.tsx, grafo
 // editável). Extraído sem alterar nenhuma lógica — puro recorte de código,
 // pra não duplicar ~250 linhas já corretas (e testadas em produção) entre os

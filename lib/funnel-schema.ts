@@ -1,5 +1,5 @@
 // Contrato de dados de um funil. O builder edita objetos deste formato,
-// o motor do quiz (funnel-engine.tsx) só sabe renderizar a partir dele.
+// o motor do quiz só sabe renderizar a partir dele.
 // Trocar copy/perguntas nunca deve exigir mexer no motor.
 
 import type { FunnelGraph } from "./funnel-graph-schema";

@@ -1917,15 +1917,15 @@ git commit -m "Construtor unificado: status de publicação, autosave, um botão
 - Delete: `lib/funnel-engine.tsx`
 - Modify: `app/globals.css` (varredura), `README.md`
 
-- [ ] **Step 1: Apagar o motor antigo e checar referências**
+- [x] **Step 1: Apagar o motor antigo e checar referências**
 
 Run: `git rm lib/funnel-engine.tsx`. Depois `grep -rn "funnel-engine\"" --include=*.ts --include=*.tsx .` → nada; `grep -rn "funnel-engine" --include=*.ts --include=*.tsx .` → só `funnel-engine-shared` e `funnel-graph-engine`. Se `lib/funnel-graph-adapter.ts` mencionar `lib/funnel-engine.tsx` em comentário, atualize o comentário.
 
-- [ ] **Step 2: Varredura de CSS morto**
+- [x] **Step 2: Varredura de CSS morto**
 
 Para cada prefixo abaixo, rode `grep -rn "<prefixo>" --include=*.tsx .`; se não houver uso, remova as regras do `globals.css`: `b-rail`, `b-canvas`, `b-tabs`, `b-tab`, `b-topbar`, `b-body`, `b-funnel-switch`, `b-funnel-dropdown`, `b-funnel-list`, `b-funnel-item`, `b-section`, `b-config-panel`, `b-canvas-hint`, `b-opt-editable`, `b-drag-handle`, `area-switch`, `area-pill`, `.btn` (a classe antiga `.btn`/`.btn.primary`/`.btn.small`), `kanban-banco`. Confira também os marcadores `/* === RESPONSIVE: ... === */` — apague os que sobraram vazios.
 
-- [ ] **Step 3: `README.md`**
+- [x] **Step 3: `README.md`**
 
 Reescreva o topo (mantenha, abaixo, as seções de variáveis de ambiente e deploy/KV do README atual):
 

@@ -1,8 +1,8 @@
 // Contrato de dados do editor visual de fluxo (estilo n8n/Typebot): nós numa
 // tela ligados por arestas, em vez da sequência fixa de etapas do motor
-// antigo (funnel-engine.tsx). É um formato ADITIVO — vive dentro de
+// antigo. É um formato ADITIVO — vive dentro de
 // `FunnelData.graph` (funnel-schema.ts), opcional. Um funil sem `graph` é um
-// funil "legado" e continua rodando no motor antigo; funnel-graph-adapter.ts
+// funil "legado" e continua rodando no motor de grafo; funnel-graph-adapter.ts
 // sabe sintetizar um grafo equivalente a partir dele.
 
 export type NodeType =

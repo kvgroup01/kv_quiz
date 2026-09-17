@@ -1,6 +1,11 @@
 # Handoff
 
 ## 2026-09-17 · Codex
+- Parei em: Task 13 implementada até o código e verificação técnica. Removido `lib/funnel-engine.tsx`, atualizados comentários do legado, eliminadas classes CSS antigas sem uso e reescrito o topo do README para refletir o Intake atual.
+- Próximo: concluir o Step 4 visual da Task 13 e então executar a Task 14 (regressão obrigatória do quiz, passada em 1440/390px, fechamento do plano e push somente após aprovação).
+- Cuidado com: `npx tsc --noEmit`, `npm test` (10 testes), `npm run build` e HTTP 200 em `/`, `/builder`, `/kanban`, `/kanban/banco`, `/login` e nos três previews passaram. O CUA não expõe navegador (`apps: []`, `browsers: []`), então a validação visual/console permanece pendente. Não fazer push antes da Task 14.
+
+## 2026-09-17 · Codex
 - Parei em: Task 12 implementada até o Step 4. `/api/funnels` agora devolve `publishedAt`; o Builder foi unificado com status/autosave, seletor de funil, configurações, mapa e prévia de celular.
 - Próximo: concluir o Step 5 visual da Task 12 em 1440px, 1024px e 390px; depois seguir para Task 13, removendo o motor antigo e o CSS morto.
 - Cuidado com: `npx tsc --noEmit`, `npm test` (10 testes), `npm run build`, as rotas principais e `/api/funnels` com `publishedAt` passaram. O CUA não expõe navegador (`apps: []`, `browsers: []`), então a inspeção de interação, autosave e responsividade permanece pendente. Não fazer push antes da Task 14.

@@ -21,31 +21,6 @@ body{ min-height:100vh; }
 @media (max-width:720px){ .in-container{ padding:0 16px; } }
 
 /* ---------- builder ---------- */
-.builder-shell{
-  display:grid; grid-template-columns: minmax(320px, 460px) 1fr;
-  min-height:100vh; background:var(--bg);
-}
-@media (max-width: 960px){
-  .builder-shell{ grid-template-columns: 1fr; }
-}
-.builder-panel{
-  padding:24px; overflow-y:auto; max-height:100vh;
-  border-right:1px solid var(--option-border);
-}
-.builder-preview{
-  display:flex; align-items:flex-start; justify-content:center;
-  padding:32px 16px; overflow-y:auto; max-height:100vh; background:var(--bg-card);
-}
-.builder-preview-frame{
-  width:100%; max-width:420px; border-radius:24px; overflow:hidden;
-  box-shadow:var(--shadow); background:var(--bg);
-}
-.builder-topbar{
-  display:flex; align-items:center; justify-content:space-between; gap:12px;
-  margin-bottom:20px; flex-wrap:wrap;
-}
-.builder-title{ font-size:1.1rem; font-weight:700; margin:0; }
-.builder-title .eyebrow{ display:block; margin-bottom:4px; }
 /* Dois gÃƒÂªneros de botÃƒÂ£o, como a Apple faz: pÃƒÂ­lula pra aÃƒÂ§ÃƒÂ£o primÃƒÂ¡ria,
    retÃƒÂ¢ngulo compacto pra utilitÃƒÂ¡rio. Cor da marca continua a mesma. */
 .btn{
@@ -68,103 +43,8 @@ body{ min-height:100vh; }
 .btn.primary.small{ padding:7px 14px; }
 .btn[disabled]{ opacity:0.45; cursor:not-allowed; }
 
-.b-section{
-  background:var(--bg-card); border:1px solid var(--option-border);
-  border-radius:16px; padding:20px; margin-bottom:16px; box-shadow:none;
-}
-.b-section h3{ font-size:0.95rem; margin:0 0 14px; font-weight:600; letter-spacing:-0.01em; }
-.b-field{ margin-bottom:12px; }
-.b-field label{
-  display:block; font-size:0.72rem; font-weight:600; color:var(--ink-soft);
-  text-transform:uppercase; letter-spacing:0.04em; margin-bottom:5px;
-}
-.b-field input, .b-field textarea{
-  width:100%; border-radius:9px; border:1px solid var(--option-border);
-  background:var(--bg-card-hover); color:var(--ink); padding:9px 11px;
-  font-family:"Inter Tight", sans-serif; font-size:0.87rem;
-}
-.b-field textarea{ min-height:56px; resize:vertical; }
-.b-opt-row{ display:flex; gap:6px; margin-bottom:6px; align-items:center; }
-.b-opt-row input{ flex:1; }
-.b-area-tabs{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
-.b-area-tab{
-  border-radius:999px; padding:6px 12px; font-size:0.78rem; font-weight:600;
-  border:1px solid var(--option-border); background:var(--bg-card); cursor:pointer;
-}
-.b-area-tab.active{ background:var(--purple-deep); color:#fff; border-color:transparent; }
-.b-funnel-list{ display:flex; flex-direction:column; gap:8px; margin-bottom:18px; }
-.b-funnel-item{
-  display:flex; align-items:center; justify-content:space-between; gap:8px;
-  background:var(--bg-card); border-radius:12px; padding:12px 14px;
-  border:1px solid var(--option-border);
-}
-.b-funnel-item.active{ border-color:var(--purple-mid); }
-.b-funnel-item .name{ font-size:0.88rem; font-weight:600; }
-.b-funnel-item .actions{ display:flex; gap:6px; }
-.b-help{ font-size:0.76rem; color:var(--ink-soft); line-height:1.55; margin:0 0 14px; }
 
 /* ---------- builder v2: estilo Typeform (trilha + canvas editÃƒÂ¡vel) ---------- */
-.b-shell{ display:flex; flex-direction:column; height:100vh; background:var(--bg); }
-.b-topbar{
-  display:flex; align-items:center; justify-content:space-between; gap:12px;
-  padding:12px 20px; border-bottom:1px solid var(--option-border); flex-wrap:wrap;
-}
-.b-topbar-left{ display:flex; align-items:center; gap:10px; position:relative; }
-.b-funnel-switch{
-  display:flex; align-items:center; gap:8px; background:var(--bg-card); border:1.5px solid var(--option-border);
-  border-radius:10px; padding:7px 12px; cursor:pointer; font-size:0.85rem; font-weight:600;
-}
-.b-funnel-switch .slug{ color:var(--ink-soft); font-weight:400; font-family:"JetBrains Mono", monospace; font-size:0.72rem; }
-.b-funnel-dropdown{
-  position:absolute; top:calc(100% + 6px); left:0; z-index:20; width:320px;
-  background:var(--bg-card); border:1px solid var(--option-border); border-radius:12px;
-  box-shadow:var(--shadow); padding:10px;
-}
-.b-tabs{ display:flex; gap:4px; background:var(--bg-card); border-radius:10px; padding:4px; }
-.b-tab{
-  border:none; background:none; padding:7px 14px; border-radius:8px; font-size:0.83rem; font-weight:600;
-  cursor:pointer; color:var(--ink-soft); font-family:"Inter Tight", sans-serif;
-}
-.b-tab.active{ background:var(--purple-deep); color:#fff; }
-.b-topbar-right{ display:flex; gap:8px; }
-
-.b-body{ flex:1; display:grid; grid-template-columns: 240px 1fr; overflow:hidden; }
-@media (max-width: 860px){
-  .b-body{ grid-template-columns: 1fr; }
-  .b-rail{ display:none; }
-  .b-rail.open{
-    display:flex; flex-direction:row; flex-wrap:wrap; gap:6px;
-    border-right:none; border-bottom:1px solid var(--option-border);
-    padding:10px 14px; overflow-y:visible; max-height:none;
-  }
-  .b-rail.open .b-rail-item{ margin-bottom:0; white-space:nowrap; }
-}
-
-.b-rail{ border-right:1px solid var(--option-border); padding:16px 10px; overflow-y:auto; }
-.b-rail-item{
-  display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px;
-  cursor:pointer; font-size:0.86rem; font-weight:600; color:var(--ink-soft); margin-bottom:2px;
-}
-.b-rail-item:hover{ background:var(--bg-card); }
-.b-rail-item.active{ background:var(--bg-card); color:var(--ink); }
-.b-rail-item .n{
-  width:22px; height:22px; border-radius:7px; background:var(--mono-bg); color:var(--mono-text);
-  display:flex; align-items:center; justify-content:center; font-size:0.9rem; flex-shrink:0;
-}
-
-.b-canvas{ overflow-y:auto; display:flex; justify-content:center; padding:40px 20px; background:var(--bg-card); }
-.b-canvas-frame{
-  width:100%; max-width:460px; background:var(--bg); border-radius:20px; box-shadow:var(--shadow);
-  padding:28px 24px; height:fit-content;
-}
-
-.area-switch{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:18px; }
-.area-pill{
-  border-radius:999px; padding:6px 12px; font-size:0.78rem; font-weight:600;
-  border:1.5px solid var(--option-border); background:var(--bg-card); cursor:pointer; color:var(--ink);
-}
-.area-pill.active{ background:var(--purple-deep); color:#fff; border-color:transparent; }
-
 .b-editable{ cursor:text; border-radius:6px; padding:2px 4px; margin:-2px -4px; transition:background .12s; }
 .b-editable:hover{ background:rgba(181,80,44,0.1); outline:1px dashed var(--purple-text); }
 .b-placeholder{ color:var(--ink-soft); font-style:italic; }
@@ -174,9 +54,6 @@ body{ min-height:100vh; }
 }
 textarea.b-inline-edit{ resize:vertical; }
 
-.opt.b-opt-editable{ position:relative; cursor:default; gap:8px; }
-.b-drag-handle{ cursor:grab; color:var(--ink-soft); flex-shrink:0; font-size:0.9rem; letter-spacing:-2px; }
-.q-card .b-drag-handle{ color:rgba(255,255,255,0.5); }
 .b-opt-remove{
   border:none; background:none; color:var(--ink-soft); cursor:pointer; font-size:0.85rem;
   flex-shrink:0; opacity:0; transition:opacity .12s; padding:4px;
@@ -191,7 +68,6 @@ textarea.b-inline-edit{ resize:vertical; }
 .b-add-opt:hover{ background:var(--bg-card); }
 .q-card .b-add-opt{ border-color:rgba(255,255,255,0.3); color:rgba(255,255,255,0.8); }
 .q-card .b-add-opt:hover{ background:rgba(255,255,255,0.08); }
-.b-canvas-hint{ text-align:center; font-size:0.78rem; color:var(--ink-soft); margin-bottom:14px; }
 
 /* ---------- editor visual de fluxo (grafo) ---------- */
 
@@ -331,21 +207,6 @@ textarea.b-inline-edit{ resize:vertical; }
 }
 
 /* === RESPONSIVE: builder clÃƒÂ¡ssico (app/builder/page.tsx, trilha "Perguntas") === */
-
-.b-rail-toggle{ display:none; }
-@media (max-width: 860px){
-  .b-rail-toggle{
-    display:flex; align-items:center; gap:8px; margin:12px 20px 0; width:fit-content;
-    background:var(--bg-card); border:1px solid var(--option-border); border-radius:10px;
-    padding:9px 14px; font-size:0.85rem; font-weight:600; cursor:pointer; color:var(--ink);
-    font-family:"Inter Tight", sans-serif;
-  }
-}
-@media (max-width: 520px){
-  .b-canvas{ padding:24px 12px; }
-  .b-canvas-frame{ max-width:100%; padding:20px 16px; }
-  .b-config-panel{ max-width:100% !important; padding:20px 16px !important; }
-}
 
 /* === RESPONSIVE: editor de fluxo (app/builder/graph/*) === */
 

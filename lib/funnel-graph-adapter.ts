@@ -1,6 +1,6 @@
 // Ponte entre o formato antigo (FunnelData plano, sequência fixa) e o novo
 // grafo editável. Sintetiza, em memória, um grafo equivalente à sequência
-// hardcoded que lib/funnel-engine.tsx sempre rodou — assim nenhum funil já
+// hardcoded que o motor legado sempre rodou — assim nenhum funil já
 // publicado (nem em content/funnels/*.json nem no KV) precisa ser convertido
 // à força: ele só ganha um `graph` de verdade quando alguém abre o editor
 // visual novo e salva.
