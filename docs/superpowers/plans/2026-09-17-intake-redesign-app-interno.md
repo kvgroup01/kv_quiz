@@ -1657,7 +1657,7 @@ git commit -m "Motor aceita previewNodeId; prévia de celular por bloco pro Cons
 - Consumes: `GraphEditor` (com `onSelectedChange`), `PhonePreview`, `Button`, `Badge`, `toGraph`.
 - Produces: `/api/funnels` responde `{ ok, funnels, publishedAt: Record<slug, string | null> }`.
 
-- [ ] **Step 1: `/api/funnels` devolve `publishedAt` (aditivo)**
+- [x] **Step 1: `/api/funnels` devolve `publishedAt` (aditivo)**
 
 Abra `lib/list-funnels.ts` e confirme o nome do campo que indica quando um funil foi publicado (existe algo como `publishedAt` no item retornado por `listAllFunnels()`). Então, em `app/api/funnels/route.ts`:
 
@@ -1672,7 +1672,7 @@ export async function GET() {
 
 Se o item não expuser essa data, adicione em `lib/list-funnels.ts` a leitura da chave `published:<slug>` no KV (existe → data atual; não existe → `null`) — só o suficiente pra distinguir "nunca publicado".
 
-- [ ] **Step 2: `components/builder/SettingsDrawer.tsx`**
+- [x] **Step 2: `components/builder/SettingsDrawer.tsx`**
 
 ```tsx
 "use client";
@@ -1712,7 +1712,7 @@ export function SettingsDrawer({
 
 Os nomes dos campos de `config` (`firmName`, `lawyerName`, `oab`, `whatsappNumber`, `metaPixelId`, `theme`) devem ser conferidos em `lib/funnel-schema.ts` e na aba Configurações atual de `app/builder/page.tsx`; use exatamente os que existem.
 
-- [ ] **Step 3: Reescrever `app/builder/page.tsx`**
+- [x] **Step 3: Reescrever `app/builder/page.tsx`**
 
 Mantenha do arquivo atual: `LS_KEY`, `slugify`, `blankFunnel`, `downloadJson`, o `useEffect` de carga (merge servidor + localStorage, `?new=1`, `?slug=`), o `useEffect` que persiste no localStorage, `updateActive`, `novoFunil`, `duplicar`, `excluir`, `salvarNoDisco`, `publicar` (ajustado abaixo), o wrapper `Suspense`. **Remova:** `RAIL`, `RailId`, `step`, `railOpen`, `editingAreaKey`, `tab`, `OptionCanvasList`, `updateArea`, `addArea`, `removeArea`, `reorderAreas`, `salvarRascunho`, `draftMsg`, `saveMsg`, os imports de `EditableText/EditableHeadline`, `DEFAULT_QUESTIONS/DEFAULT_AREA_TEXT`, `Option`/`AreaContent`, e todo o JSX antigo (topbar, abas, rail, canvas, painel de config).
 
@@ -1842,7 +1842,7 @@ JSX de retorno:
 
 Imports novos: `useRef`, `Button` (`@/components/ui/Button`), `Badge` (`@/components/ui/Badge`), `PhonePreview` (`@/components/builder/PhonePreview`), `SettingsDrawer` (`@/components/builder/SettingsDrawer`). `GraphEditor` e `toGraph` já são importados hoje.
 
-- [ ] **Step 4: CSS do Construtor**
+- [x] **Step 4: CSS do Construtor**
 
 Substitua as seções `/* ---------- builder ---------- */` e `/* ---------- builder v2 ... ---------- */` e o bloco `RESPONSIVE: builder clássico` por:
 

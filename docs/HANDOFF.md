@@ -1,6 +1,11 @@
 # Handoff
 
 ## 2026-09-17 · Codex
+- Parei em: Task 12 implementada até o Step 4. `/api/funnels` agora devolve `publishedAt`; o Builder foi unificado com status/autosave, seletor de funil, configurações, mapa e prévia de celular.
+- Próximo: concluir o Step 5 visual da Task 12 em 1440px, 1024px e 390px; depois seguir para Task 13, removendo o motor antigo e o CSS morto.
+- Cuidado com: `npx tsc --noEmit`, `npm test` (10 testes), `npm run build`, as rotas principais e `/api/funnels` com `publishedAt` passaram. O CUA não expõe navegador (`apps: []`, `browsers: []`), então a inspeção de interação, autosave e responsividade permanece pendente. Não fazer push antes da Task 14.
+
+## 2026-09-17 · Codex
 - Parei em: Task 11 concluída. O motor aceita `previewNodeId` com estado inicial compatível, e `PhonePreview` renderiza o funil no frame de 390px com o tema do funil e reset por bloco.
 - Próximo: Task 12 — unificar o Construtor com cabeçalho, autosave/status, três colunas, prévia e configurações.
 - Cuidado com: `npx tsc --noEmit`, `npm test` (10 testes), `npm run build` e HTTP 200 em `/builder?slug=default`, `/`, `/quiz/default/preview`, `/quiz/salario-maternidade/preview` e `/quiz/salario-maternidade-avancada/preview` passaram. O CUA continua sem navegador (`apps: []`, `browsers: []`), então a inspeção visual 1440/390px permanece pendente. Não fazer push antes da Task 14.
