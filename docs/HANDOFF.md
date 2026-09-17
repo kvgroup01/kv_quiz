@@ -1,5 +1,16 @@
 # Handoff
 
+## 2026-09-17 · Claude (noite)
+- Parei em: spec do sub-projeto 2 aprovado e commitado em
+  `docs/superpowers/specs/2026-09-17-intake-redesign-quiz-lead-design.md` (redesign do quiz do lead).
+  Ainda NÃO existe plano pra ele.
+- Próximo: escrever o plano `docs/superpowers/plans/2026-09-17-intake-redesign-quiz-lead.md` no mesmo
+  formato do plano anterior (cabeçalho, Global Constraints, tarefas com checkbox, código real em cada
+  passo, testes com node:test, commit por tarefa) e então executá-lo tarefa por tarefa.
+- Cuidado com: o quiz roda em produção — a regressão dos 3 funis (82%, link do WhatsApp, "Pergunta
+  recebida ✓") é obrigatória antes de qualquer push. Sem navegador, NÃO marcar passos visuais nem fazer
+  push; registrar no HANDOFF o que ficou pendente. Remote já está com `kvgroup01@` na URL.
+
 ## 2026-09-17 · Claude
 - Parei em: plano `2026-09-17-intake-redesign-app-interno.md` **concluído** (Tasks 1–14) e enviado pra `main` (push).
   Regressão com navegador feita: quiz idêntico nos 3 funis (score 82%, link do WhatsApp com template
