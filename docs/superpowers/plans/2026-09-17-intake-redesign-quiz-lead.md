@@ -419,7 +419,7 @@ git commit -m "Atualiza a marcação das telas do quiz sem alterar o fluxo"
 **Interfaces:**
 - Nenhuma classe antiga de `globals.css` pode ser reintroduzida. O arquivo usa apenas tokens existentes de `app/tokens.css` e variáveis `--q-*`.
 
-- [ ] **Step 1: Fundação de tema e variáveis**
+- [x] **Step 1: Fundação de tema e variáveis**
 
 Substitua o topo do arquivo por este bloco e mantenha o seletor `.quiz-page` como casca:
 
@@ -443,7 +443,7 @@ Substitua o topo do arquivo por este bloco e mantenha o seletor `.quiz-page` com
 .quiz-page button:focus-visible,.quiz-page input:focus-visible,.quiz-page textarea:focus-visible{ outline:2px solid var(--q-accent); outline-offset:2px; }
 ```
 
-- [ ] **Step 2: Casca, progresso e tipografia**
+- [x] **Step 2: Casca, progresso e tipografia**
 
 ```css
 .quiz-page #app-shell{ width:100%; max-width:480px; min-height:100vh; margin:0 auto; background:var(--q-bg); display:flex; flex-direction:column; }
@@ -463,7 +463,7 @@ Substitua o topo do arquivo por este bloco e mantenha o seletor `.quiz-page` com
 .q-note{ margin:0 0 14px; color:var(--q-ink-soft); font-size:14px; line-height:1.45; }
 ```
 
-- [ ] **Step 3: Componentes visuais e estados**
+- [x] **Step 3: Componentes visuais e estados**
 
 ```css
 .q-card,.q-form-card,.q-result,.q-profile{ border-radius:20px; background:var(--q-surface); padding:18px; }
