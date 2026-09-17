@@ -430,6 +430,26 @@ textarea.b-inline-edit{ resize:vertical; }
 .login-card{ width:100%; max-width:400px; }
 .login-submit{ width:100%; margin-top:6px; }
 
+/* ---------- início ---------- */
+.in-notice{ font-size:13px; color:var(--c-slate); background:var(--c-surface); border-radius:8px; padding:8px 12px; margin:0 0 16px; }
+.dash-row-1{ display:grid; grid-template-columns:2fr 1fr; gap:16px; margin-bottom:16px; }
+.dash-row-2{ margin-bottom:48px; }
+@media (max-width:1024px){ .dash-row-1{ grid-template-columns:1fr; } }
+.dash-empty{ color:var(--c-slate); font-size:14px; margin:12px 0 0; }
+.dash-pending{ list-style:none; padding:0; margin:16px 0 0; display:flex; flex-direction:column; gap:8px; }
+.dash-pending li{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 14px; border:1px solid var(--c-hairline); border-radius:12px; cursor:pointer; }
+.dash-pending li:hover{ background:var(--c-surface-soft); }
+.dash-pending-main{ display:flex; flex-direction:column; gap:4px; min-width:0; }
+.dash-pending-meta{ font-size:13px; color:var(--c-slate); display:flex; align-items:center; gap:6px; }
+@media (max-width:560px){ .dash-pending li{ flex-direction:column; align-items:stretch; } }
+.dash-stats{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
+.dash-bars{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px; }
+.dash-bars li{ display:grid; grid-template-columns:minmax(0,1fr) 2fr auto; align-items:center; gap:10px; font-size:13px; }
+.dash-bar-label{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--c-slate); }
+.dash-bar-track{ height:6px; background:var(--c-tint-gray); border-radius:3px; overflow:hidden; }
+.dash-bar-fill{ display:block; height:100%; background:var(--c-primary); border-radius:3px; }
+.dash-bar-value{ font-variant-numeric:tabular-nums; font-weight:600; }
+
 /* ---------- ui: primitivos ---------- */
 .ui-card{ background:var(--c-canvas); border:1px solid var(--c-hairline); border-radius:var(--r-card); padding:24px; }
 .ui-card-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:16px; }

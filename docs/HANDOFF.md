@@ -1,6 +1,11 @@
 # Handoff
 
 ## 2026-09-17 · Codex
+- Parei em: Task 6 do plano `docs/superpowers/plans/2026-09-17-intake-redesign-app-interno.md`; Steps 1–3 concluídos. A home agora renderiza o Dashboard com dúvidas pendentes, números por período/funil, últimos leads e modal compartilhado.
+- Próximo: concluir o Step 4 da Task 6 com conferência visual em 1440px e 390px; depois iniciar Task 7.
+- Cuidado com: `npx tsc --noEmit`, `npm test` e `npm run build` passaram. Tasks 2 Step 7, 3 Step 8 e 4 Step 6 também aguardam navegador; CUA segue sem navegador exposto. Não fazer push antes da Task 14.
+
+## 2026-09-17 · Codex
 - Parei em: Task 5 do plano `docs/superpowers/plans/2026-09-17-intake-redesign-app-interno.md` concluída. Criados `lib/dashboard-metrics.ts` e `tests/dashboard-metrics.test.ts`, cobrindo saudação, períodos, pendências, contagens e tempo relativo.
 - Próximo: Task 6 — construir a tela Início/dashboard com os dados das APIs existentes.
 - Cuidado com: Tasks 2 Step 7, 3 Step 8 e 4 Step 6 ainda aguardam conferência visual porque o CUA não expõe navegador nesta sessão; não fazer push antes da Task 14.

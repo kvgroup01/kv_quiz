@@ -897,7 +897,7 @@ git commit -m "Métricas da home como funções puras testadas"
 - Consumes: `Card`, `Stat`, `Badge`, `Button`, `PillTabs`, `DataTable`, `PageHeader`, `AppNav`, `LeadDetailModal`, `waLink`, `fmtDate` (de `components/leads-ui.tsx`), tudo de `lib/dashboard-metrics.ts`, `Lead`/`KanbanColumn` de `lib/lead-schema.ts`.
 - Produces: `app/page.tsx` renderiza `<Dashboard />`.
 
-- [ ] **Step 1: `components/dashboard/Dashboard.tsx`**
+- [x] **Step 1: `components/dashboard/Dashboard.tsx`**
 
 ```tsx
 "use client";
@@ -1028,7 +1028,7 @@ export default function Dashboard() {
 }
 ```
 
-- [ ] **Step 2: `app/page.tsx`**
+- [x] **Step 2: `app/page.tsx`**
 
 ```tsx
 import Dashboard from "@/components/dashboard/Dashboard";
@@ -1038,7 +1038,7 @@ export default function Home() {
 }
 ```
 
-- [ ] **Step 3: CSS da home (fim do `globals.css`)**
+- [x] **Step 3: CSS da home (fim do `globals.css`)**
 
 ```css
 /* ---------- início ---------- */
