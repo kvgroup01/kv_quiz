@@ -1,5 +1,10 @@
 # Handoff
 
+## 2026-09-17 · Codex
+- Parei em: Tasks 1–6 do plano `docs/superpowers/plans/2026-09-17-intake-redesign-quiz-lead.md` implementadas e commitadas (`9b26b89`, `3b49d05`, `7f6cc20`, `23578af`, `47d871d`, `21bbf3f`). A Task 7 teve o loop técnico final concluído; o plano está com os passos de implementação e loops técnicos marcados.
+- Próximo: executar no navegador a regressão final dos três previews (`default`, `salario-maternidade`, `salario-maternidade-avancada`) em claro/escuro, 390px e 1440px; confirmar score 82%, template completo do WhatsApp, caminho de dúvida até “Pergunta recebida ✓”, progresso em 100%, accent e Builder.
+- Cuidado com: as caixas visuais da Task 1 Step 4, Task 2 Step 4, Task 3 Step 4, Task 4 Step 3, Task 5 Step 4, Task 6 Step 2 e Task 7 Steps 2–4 ficaram desmarcadas porque o CUA continua sem navegador (`apps: []`, `browsers: []`). Não fazer git push nem marcar essas caixas até a inspeção real. `app/globals.css`, `components/ui/`, APIs, KV, Pixel/CAPI, dependências e texto do WhatsApp não foram alterados.
+
 ## 2026-09-17 · Claude (resolução das divergências)
 - Parei em: as duas divergências que o Codex registrou no plano do quiz estão resolvidas no spec (§3, §5) e no plano
   (Task 3 Step 1; Task 6 seletor de cor): (1) o motor NÃO cria `.quiz-page` — aplica `--q-accent` no `#app-shell`,

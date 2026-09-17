@@ -576,7 +576,7 @@ git commit -m "Adiciona escolha de cor de destaque por funil"
 **Interfaces:**
 - Nenhuma mudança de runtime nesta tarefa.
 
-- [ ] **Step 1: Loop técnico final**
+- [x] **Step 1: Loop técnico final**
 
 Run exatamente nesta ordem: `npx tsc --noEmit` → `npm test` → `npm run build`. O runner deve incluir os testes de `quiz-theme` e `quiz-progress`.
 
