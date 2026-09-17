@@ -1,5 +1,10 @@
 # Handoff
 
+## 2026-09-17 · Codex
+- Parei em: plano `docs/superpowers/plans/2026-09-17-intake-redesign-quiz-lead.md` criado e commitado em `cd35887`. Antes da Task 1, ao confrontar o spec com o código lido, encontrei uma divergência: o spec atribui a casca `.quiz-page` ao `FunnelGraphEngine`, mas `/quiz/[slug]/preview/page.tsx` e `PhonePreview` já criam essa casca externa. O plano registra o ponto de parada sem improvisar um wrapper duplicado.
+- Próximo: definir uma única resolução compatível para o wrapper/accent antes de executar a Task 3; só então retomar o plano pela primeira tarefa não marcada. A regressão obrigatória cobre `default`, `salario-maternidade` e `salario-maternidade-avancada`, incluindo score 82%, template completo do WhatsApp e o caminho de dúvida até “Pergunta recebida ✓”.
+- Cuidado com: não alterar `app/globals.css`, `components/ui/`, APIs, KV, Pixel/CAPI, dependências ou texto do WhatsApp. O CUA desta sessão não expõe navegador (`apps: []`, `browsers: []`); portanto não marcar verificações visuais, não marcar a regressão final e não fazer push. Nenhuma Task do novo plano foi marcada ou implementada.
+
 ## 2026-09-17 · Claude (noite)
 - Parei em: spec do sub-projeto 2 aprovado e commitado em
   `docs/superpowers/specs/2026-09-17-intake-redesign-quiz-lead-design.md` (redesign do quiz do lead).
