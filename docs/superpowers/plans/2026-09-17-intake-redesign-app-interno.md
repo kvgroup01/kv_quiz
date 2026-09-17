@@ -63,7 +63,7 @@
 **Interfaces:**
 - Produces: script `npm test` que roda `tsx --test tests/**/*.test.ts`; convenção de handoff usada por todas as tarefas seguintes.
 
-- [ ] **Step 1: Instalar `tsx` e criar o script de teste**
+- [x] **Step 1: Instalar `tsx` e criar o script de teste**
 
 Run: `npm install --save-dev tsx`
 
@@ -73,7 +73,7 @@ Em `package.json`, dentro de `"scripts"`, adicione:
 "test": "tsx --test tests/**/*.test.ts"
 ```
 
-- [ ] **Step 2: Criar um teste de fumaça pra provar o runner**
+- [x] **Step 2: Criar um teste de fumaça pra provar o runner**
 
 `tests/smoke.test.ts`:
 
@@ -89,7 +89,7 @@ test("runner funciona", () => {
 Run: `npm test`
 Expected: `✔ runner funciona` e `pass 1`.
 
-- [ ] **Step 3: Escrever `AGENTS.md`**
+- [x] **Step 3: Escrever `AGENTS.md`**
 
 ```markdown
 # Intake — guia pra quem chega agora (humano ou agente)
@@ -139,7 +139,7 @@ Não refaça o que está marcado. Se o plano não bater com o código, registre 
 HANDOFF em vez de improvisar.
 ```
 
-- [ ] **Step 4: Criar `CLAUDE.md` e `docs/HANDOFF.md`**
+- [x] **Step 4: Criar `CLAUDE.md` e `docs/HANDOFF.md`**
 
 `CLAUDE.md`:
 
@@ -160,7 +160,7 @@ Entrada mais recente no topo. Formato: data · quem · parei em · próximo · c
 - Cuidado com: nada ainda.
 ```
 
-- [ ] **Step 5: Verificar e commitar**
+- [x] **Step 5: Verificar e commitar**
 
 Run: `npm test && npx tsc --noEmit`
 Expected: teste passa, tsc limpo.
