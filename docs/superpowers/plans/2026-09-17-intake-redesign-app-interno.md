@@ -757,7 +757,7 @@ git commit -m "Casca do Intake: nav em pílulas, marca nova, login restilizado, 
   - `countByFunnel(leads: Lead[]): { funil: string; count: number }[]` (desc)
   - `timeAgo(iso: string, now: Date): string` (`"agora"`, `"há 5 min"`, `"há 2 h"`, `"há 3 d"`)
 
-- [ ] **Step 1: Escrever os testes**
+- [x] **Step 1: Escrever os testes**
 
 `tests/dashboard-metrics.test.ts`:
 
@@ -818,12 +818,12 @@ test("timeAgo", () => {
 
 Se o tipo `Lead` tiver campos a mais/menos do que o helper `lead()` preenche, ajuste o helper — nunca o tipo.
 
-- [ ] **Step 2: Rodar e ver falhar**
+- [x] **Step 2: Rodar e ver falhar**
 
 Run: `npm test`
 Expected: falha com "Cannot find module '../lib/dashboard-metrics'".
 
-- [ ] **Step 3: Implementar `lib/dashboard-metrics.ts`**
+- [x] **Step 3: Implementar `lib/dashboard-metrics.ts`**
 
 ```ts
 import type { Lead } from "./lead-schema";
@@ -875,7 +875,7 @@ export function timeAgo(iso: string, now: Date): string {
 }
 ```
 
-- [ ] **Step 4: Rodar e ver passar; commitar**
+- [x] **Step 4: Rodar e ver passar; commitar**
 
 Run: `npm test`
 Expected: 6 testes passam (5 + fumaça).
