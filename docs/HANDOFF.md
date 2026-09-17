@@ -1,6 +1,11 @@
 # Handoff
 
 ## 2026-09-17 · Codex
+- Parei em: Task 10 implementada até o código e verificação técnica. O mapa do fluxo agora usa `layoutLeftToRight`, é horizontal, não arrastável, tem zoom/fitView, duplo clique para aproximar, seleção exposta, placeholder do Inspector e nós compactos abaixo de zoom 0,6.
+- Próximo: concluir o Step 4 visual da Task 10 em 1440px e 390px; depois seguir para Task 11 (`previewNodeId` e prévia de celular por bloco).
+- Cuidado com: `npx tsc --noEmit`, `npm test` (10 testes), `npm run build` e HTTP 200 em `/builder?slug=default`, `/` e nos três previews passaram. O CUA não expõe navegador (`apps: []`, `browsers: []`), portanto zoom, duplo clique, arraste e inspeção visual permanecem sem validação. Não fazer push antes da Task 14.
+
+## 2026-09-17 · Codex
 - Parei em: Task 9 concluída. Adicionados `lib/graph-layout.ts` e `tests/graph-layout.test.ts`; o layout em camadas usa `effectiveEdges`, posiciona ramificações verticalmente e separa nós inalcançáveis em coluna final.
 - Próximo: Task 10 — integrar o layout ao mapa do fluxo, com orientação horizontal, zoom, duplo clique, modo compacto e seleção exposta.
 - Cuidado com: `npx tsc --noEmit`, `npm test` (10 testes) e `npm run build` passaram. A verificação visual das Tasks 2 Step 7, 3 Step 8, 4 Step 6, 6 Step 4, 7 Step 4 e 8 Step 3 permanece pendente porque o CUA não expõe navegador (`apps: []`, `browsers: []`). Não fazer push antes da Task 14.

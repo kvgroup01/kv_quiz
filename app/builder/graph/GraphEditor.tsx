@@ -8,13 +8,13 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
-  ReactFlow, ReactFlowProvider, Background, Controls, MiniMap,
-  applyNodeChanges, applyEdgeChanges,
+  ReactFlow, ReactFlowProvider, Background, useReactFlow, useViewport,
   type Node, type Edge, type Connection, type NodeChange, type EdgeChange
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import type { FunnelData } from "@/lib/funnel-schema";
 import { effectiveEdges, type FunnelGraph, type GraphNode } from "@/lib/funnel-graph-schema";
+import { layoutLeftToRight } from "@/lib/graph-layout";
 import { nodeTypes } from "./nodes";
 import Inspector from "./Inspector";
 import { validateGraph } from "./validate";
@@ -101,6 +101,9 @@ function estimateSize(n: GraphNode): { width: number; height: number } {
 }
 
 function toFlowNodes(graph: FunnelGraph, opts: {
+  positions: Record<string, { x: number; y: number }>;
+  unreached: Set<string>;
+  compact: boolean;
   onUpdateNode: (id: string, patch: Record<string, unknown>) => void;
   onOpenInspector: (id: string) => void;
   onDeleteNode: (id: string) => void;
@@ -110,12 +113,15 @@ function toFlowNodes(graph: FunnelGraph, opts: {
     return {
       id: n.id,
       type: n.type,
-      position: n.position,
+      position: opts.positions[n.id] ?? n.position,
       width,
       height,
       style: { width, height },
+      className: opts.unreached.has(n.id) ? "unreached" : undefined,
+      draggable: false,
       data: {
         ...n.data,
+        compact: opts.compact,
         onUpdate: (patch: Record<string, unknown>) => opts.onUpdateNode(n.id, patch),
         onOpenInspector: () => opts.onOpenInspector(n.id),
         onDelete: () => opts.onDeleteNode(n.id)
@@ -137,11 +143,22 @@ function toFlowEdges(graph: FunnelGraph): Edge[] {
 }
 
 function GraphEditorInner({
-  funnelData, graph, onChange
-}: { funnelData: FunnelData; graph: FunnelGraph; onChange: (g: FunnelGraph) => void }) {
+  funnelData, graph, onChange, onSelectedChange
+}: { funnelData: FunnelData; graph: FunnelGraph; onChange: (g: FunnelGraph) => void; onSelectedChange?: (id: string | null) => void }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [addType, setAddType] = useState<string>(ADDABLE_NODE_TYPES[0]);
   const isMobile = useIsMobile();
+  const { fitView, zoomIn, zoomOut } = useReactFlow();
+  const { zoom } = useViewport();
+  const compact = zoom < 0.6;
+  const layout = useMemo(() => layoutLeftToRight(graph, estimateSize), [graph]);
+
+  function select(id: string | null) {
+    setSelectedId(id);
+    onSelectedChange?.(id);
+  }
+
+  useEffect(() => { fitView({ padding: 0.2 }); }, [layout.columns.length, fitView]);
 
   const updateNode = useCallback((id: string, patch: Record<string, unknown>) => {
     onChange({
@@ -158,12 +175,12 @@ function GraphEditorInner({
       nodes: graph.nodes.filter((n) => n.id !== id),
       edges: graph.edges.filter((e) => e.source !== id && e.target !== id)
     });
-    if (selectedId === id) setSelectedId(null);
+    if (selectedId === id) select(null);
   }, [graph, onChange, selectedId]);
 
   const flowNodes = useMemo(
-    () => toFlowNodes(graph, { onUpdateNode: updateNode, onOpenInspector: setSelectedId, onDeleteNode: deleteNode }),
-    [graph, updateNode, deleteNode]
+    () => toFlowNodes(graph, { positions: layout.positions, unreached: layout.unreached, compact, onUpdateNode: updateNode, onOpenInspector: select, onDeleteNode: deleteNode }),
+    [graph, layout.positions, layout.unreached, compact, updateNode, deleteNode]
   );
   const flowEdges = useMemo(() => toFlowEdges(graph), [graph]);
   const warnings = useMemo(() => validateGraph(graph), [graph]);
@@ -175,28 +192,15 @@ function GraphEditorInner({
     // xyflow) reescrevia o grafo inteiro a partir do `graph` "congelado" no
     // fechamento desta função, apagando qualquer exclusão/edição que tivesse
     // acabado de acontecer no mesmo clique.
-    const relevant = changes.filter((c) => c.type === "position" || c.type === "remove");
-    if (!relevant.length) return;
-
-    const filtered = relevant.filter((c) => {
-      if (c.type === "remove") {
-        const n = graph.nodes.find((x) => x.id === c.id);
-        return n?.type !== "start";
-      }
-      return true;
-    });
-    if (!filtered.length) return;
-    const positioned = applyNodeChanges(filtered, flowNodes);
-    const removedIds = new Set(filtered.filter((c) => c.type === "remove").map((c) => c.id));
+    const removed = new Set(
+      changes.filter((c) => c.type === "remove").map((c) => c.id)
+        .filter((id) => graph.nodes.find((n) => n.id === id)?.type !== "start")
+    );
+    if (!removed.size) return;
     onChange({
       ...graph,
-      nodes: graph.nodes
-        .filter((n) => !removedIds.has(n.id))
-        .map((n) => {
-          const moved = positioned.find((p) => p.id === n.id);
-          return moved ? { ...n, position: moved.position } : n;
-        }),
-      edges: removedIds.size ? graph.edges.filter((e) => !removedIds.has(e.source) && !removedIds.has(e.target)) : graph.edges
+      nodes: graph.nodes.filter((n) => !removed.has(n.id)),
+      edges: graph.edges.filter((e) => !removed.has(e.source) && !removed.has(e.target))
     });
   }
 
@@ -256,10 +260,10 @@ function GraphEditorInner({
   function addNode() {
     const type = addType as GraphNode["type"];
     const fallbackTarget = graph.nodes.find((n) => n.type === "terminalDoubt")?.id || graph.nodes[0]?.id;
-    const position = { x: 320, y: 80 + graph.nodes.length * 40 };
+    const position = { x: 0, y: 0 };
     const node = blankNode(type, position, fallbackTarget);
     onChange({ ...graph, nodes: [...graph.nodes, node] });
-    setSelectedId(node.id);
+    select(node.id);
   }
 
   const selectedNode = graph.nodes.find((n) => n.id === selectedId) || null;
@@ -292,7 +296,7 @@ function GraphEditorInner({
                   key={n.id}
                   type="button"
                   className={"b-graph-mobile-row" + (unreached ? " unreached" : "")}
-                  onClick={() => setSelectedId(n.id)}
+                  onClick={() => select(n.id)}
                 >
                   <span className="b-graph-mobile-row-icon">{MOBILE_ICONS[n.type]}</span>
                   <span className="b-graph-mobile-row-body">
@@ -315,31 +319,38 @@ function GraphEditorInner({
               onNodesChange={onNodesChange}
               onEdgesChange={onEdgesChange}
               onConnect={onConnect}
-              onNodeClick={(_, n) => setSelectedId(n.id)}
-              onPaneClick={() => setSelectedId(null)}
+              onNodeClick={(_, n) => select(n.id)}
+              onPaneClick={() => select(null)}
+              onNodeDoubleClick={(_, n) => { select(n.id); fitView({ nodes: [{ id: n.id }], padding: 0.5, duration: 300 }); }}
+              nodesDraggable={false}
+              minZoom={0.2}
+              maxZoom={1.6}
               fitView
             >
               <Background />
-              <Controls />
-              <MiniMap pannable zoomable />
             </ReactFlow>
+            <div className="b-graph-zoom">
+              <button type="button" onClick={() => zoomIn({ duration: 200 })} title="Aproximar">＋</button>
+              <button type="button" onClick={() => zoomOut({ duration: 200 })} title="Afastar">－</button>
+              <button type="button" onClick={() => fitView({ padding: 0.2, duration: 300 })} title="Ajustar tudo">⌖</button>
+            </div>
           </div>
         )}
       </div>
-      {selectedNode && (
+      {selectedNode ? (
         <Inspector
           graph={graph}
           node={selectedNode}
           onUpdate={(patch) => updateNode(selectedNode.id, patch)}
-          onClose={() => setSelectedId(null)}
+          onClose={() => select(null)}
           mobile={isMobile}
         />
-      )}
+      ) : !isMobile ? <aside className="b-graph-inspector b-graph-inspector-empty">Selecione um bloco no mapa</aside> : null}
     </div>
   );
 }
 
-export default function GraphEditor(props: { funnelData: FunnelData; graph: FunnelGraph; onChange: (g: FunnelGraph) => void }) {
+export default function GraphEditor(props: { funnelData: FunnelData; graph: FunnelGraph; onChange: (g: FunnelGraph) => void; onSelectedChange?: (id: string | null) => void }) {
   return (
     <ReactFlowProvider>
       <GraphEditorInner {...props} />

@@ -16,11 +16,19 @@ import type {
 } from "@/lib/funnel-graph-schema";
 import { newOption } from "./factory";
 
-type WithActions<T> = T & { onUpdate: (patch: Partial<T>) => void; onOpenInspector: () => void; onDelete: () => void };
+type WithActions<T> = T & { compact: boolean; onUpdate: (patch: Partial<T>) => void; onOpenInspector: () => void; onDelete: () => void };
 
 function NodeShell({
-  icon, label, children, onOpenInspector, onDelete, deletable = true
-}: { icon: string; label: string; children: React.ReactNode; onOpenInspector: () => void; onDelete: () => void; deletable?: boolean }) {
+  icon, label, children, onOpenInspector, onDelete, deletable = true, compact = false
+}: { icon: string; label: string; children: React.ReactNode; onOpenInspector: () => void; onDelete: () => void; deletable?: boolean; compact?: boolean }) {
+  if (compact) {
+    return (
+      <div className="b-graph-node b-graph-node--compact">
+        <span>{icon}</span><span className="b-graph-node-compact-label">{label}</span>
+        {children}
+      </div>
+    );
+  }
   return (
     <div className="b-graph-node">
       <div className="b-graph-node-header">
@@ -68,6 +76,14 @@ export function StartNodeView() {
 
 export function ChoiceNodeView({ data }: NodeProps) {
   const d = data as unknown as WithActions<ChoiceNodeData>;
+  if (d.compact) {
+    return (
+      <NodeShell icon="🔘" label="Escolha única" compact onOpenInspector={d.onOpenInspector} onDelete={d.onDelete}>
+        <Handle type="target" position={Position.Left} style={{ opacity: 0 }} />
+        <Handle type="source" position={Position.Right} id="default" style={{ opacity: 0 }} />
+      </NodeShell>
+    );
+  }
   return (
     <NodeShell icon="🔘" label="Escolha única" onOpenInspector={d.onOpenInspector} onDelete={d.onDelete}>
       <Handle type="target" position={Position.Left} />
@@ -86,6 +102,14 @@ export function ChoiceNodeView({ data }: NodeProps) {
 
 export function MultiChoiceNodeView({ data }: NodeProps) {
   const d = data as unknown as WithActions<MultiChoiceNodeData>;
+  if (d.compact) {
+    return (
+      <NodeShell icon="☑️" label="Múltipla escolha" compact onOpenInspector={d.onOpenInspector} onDelete={d.onDelete}>
+        <Handle type="target" position={Position.Left} style={{ opacity: 0 }} />
+        <Handle type="source" position={Position.Right} id="default" style={{ opacity: 0 }} />
+      </NodeShell>
+    );
+  }
   return (
     <NodeShell icon="☑️" label="Múltipla escolha" onOpenInspector={d.onOpenInspector} onDelete={d.onDelete}>
       <Handle type="target" position={Position.Left} />
@@ -105,6 +129,14 @@ export function MultiChoiceNodeView({ data }: NodeProps) {
 export function InterstitialNodeView({ data }: NodeProps) {
   const d = data as unknown as WithActions<InterstitialNodeData>;
   const KIND_LABEL: Record<InterstitialNodeData["kind"], string> = { loading: "Carregando", ring: "Pontuação (anel)", trust: "Confiança" };
+  if (d.compact) {
+    return (
+      <NodeShell icon="⏳" label="Tela intermediária" compact onOpenInspector={d.onOpenInspector} onDelete={d.onDelete}>
+        <Handle type="target" position={Position.Left} style={{ opacity: 0 }} />
+        <Handle type="source" position={Position.Right} id="default" style={{ opacity: 0 }} />
+      </NodeShell>
+    );
+  }
   return (
     <NodeShell icon="⏳" label="Tela intermediária" onOpenInspector={d.onOpenInspector} onDelete={d.onDelete}>
       <Handle type="target" position={Position.Left} />
@@ -121,6 +153,15 @@ export function InterstitialNodeView({ data }: NodeProps) {
 
 export function ConditionNodeView({ data }: NodeProps) {
   const d = data as unknown as WithActions<ConditionNodeData>;
+  if (d.compact) {
+    return (
+      <NodeShell icon="🔀" label="Condição" compact onOpenInspector={d.onOpenInspector} onDelete={d.onDelete}>
+        <Handle type="target" position={Position.Left} style={{ opacity: 0 }} />
+        {d.rules.map((_, i) => <Handle key={i} type="source" position={Position.Right} id={`rule_${i}`} style={{ opacity: 0 }} />)}
+        <Handle type="source" position={Position.Right} id="default" style={{ opacity: 0 }} />
+      </NodeShell>
+    );
+  }
   return (
     <NodeShell icon="🔀" label="Condição" onOpenInspector={d.onOpenInspector} onDelete={d.onDelete}>
       <Handle type="target" position={Position.Left} />
@@ -141,6 +182,14 @@ export function ConditionNodeView({ data }: NodeProps) {
 
 export function ScoreNodeView({ data }: NodeProps) {
   const d = data as unknown as WithActions<ScoreNodeData>;
+  if (d.compact) {
+    return (
+      <NodeShell icon="🎯" label="Pontuação" compact onOpenInspector={d.onOpenInspector} onDelete={d.onDelete}>
+        <Handle type="target" position={Position.Left} style={{ opacity: 0 }} />
+        <Handle type="source" position={Position.Right} id="default" style={{ opacity: 0 }} />
+      </NodeShell>
+    );
+  }
   return (
     <NodeShell icon="🎯" label="Pontuação" onOpenInspector={d.onOpenInspector} onDelete={d.onDelete}>
       <Handle type="target" position={Position.Left} />
@@ -153,6 +202,13 @@ export function ScoreNodeView({ data }: NodeProps) {
 
 export function TerminalLeadNodeView({ data }: NodeProps) {
   const d = data as unknown as WithActions<TerminalLeadNodeData>;
+  if (d.compact) {
+    return (
+      <NodeShell icon="✅" label="Fim: WhatsApp" compact onOpenInspector={d.onOpenInspector} onDelete={d.onDelete}>
+        <Handle type="target" position={Position.Left} style={{ opacity: 0 }} />
+      </NodeShell>
+    );
+  }
   return (
     <NodeShell icon="✅" label="Fim: WhatsApp" onOpenInspector={d.onOpenInspector} onDelete={d.onDelete}>
       <Handle type="target" position={Position.Left} />
@@ -164,6 +220,13 @@ export function TerminalLeadNodeView({ data }: NodeProps) {
 
 export function TerminalDoubtNodeView({ data }: NodeProps) {
   const d = data as unknown as WithActions<TerminalDoubtNodeData>;
+  if (d.compact) {
+    return (
+      <NodeShell icon="💬" label="Fim: dúvida" compact onOpenInspector={d.onOpenInspector} onDelete={d.onDelete}>
+        <Handle type="target" position={Position.Left} style={{ opacity: 0 }} />
+      </NodeShell>
+    );
+  }
   return (
     <NodeShell icon="💬" label="Fim: dúvida" onOpenInspector={d.onOpenInspector} onDelete={d.onDelete}>
       <Handle type="target" position={Position.Left} />

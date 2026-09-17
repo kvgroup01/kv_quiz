@@ -1419,7 +1419,7 @@ git commit -m "Layout automático esquerda→direita do grafo, como função pur
 - Consumes: `layoutLeftToRight`.
 - Produces: `GraphEditor({ funnelData, graph, onChange, onSelectedChange?: (id: string | null) => void })`. Nós recebem `data.compact: boolean`. Inspector fica sempre visível no desktop (placeholder sem seleção).
 
-- [ ] **Step 1: `GraphEditor.tsx` — posições pelo layout, sem arrastar, zoom e duplo clique**
+- [x] **Step 1: `GraphEditor.tsx` — posições pelo layout, sem arrastar, zoom e duplo clique**
 
 Imports: adicione `useReactFlow, useViewport` ao import de `@xyflow/react`; adicione `import { layoutLeftToRight } from "@/lib/graph-layout";`. Remova `applyNodeChanges`, `Controls` e `MiniMap` do import se ficarem sem uso. `import "@xyflow/react/dist/style.css"` **permanece**.
 
@@ -1475,7 +1475,7 @@ Quando não há seleção no desktop, em vez de não renderizar o `Inspector`, r
 
 Nós em `layout.unreached` recebem `className: "unreached"` no objeto de nó do xyflow (o CSS abaixo os deixa a 55% de opacidade).
 
-- [ ] **Step 2: `nodes.tsx` — variante compacta**
+- [x] **Step 2: `nodes.tsx` — variante compacta**
 
 Estenda `WithActions<T>` com `compact: boolean`. No `NodeShell`, adicione prop `compact?: boolean` e, quando true, retorne:
 
@@ -1488,7 +1488,7 @@ Estenda `WithActions<T>` com `compact: boolean`. No `NodeShell`, adicione prop `
 
 Cada view (`ChoiceNodeView`, `MultiChoiceNodeView`, `InterstitialNodeView`, `ConditionNodeView`, `ScoreNodeView`, `TerminalLeadNodeView`, `TerminalDoubtNodeView`) lê `d.compact` e, se true, renderiza o `NodeShell` compacto contendo **só** as `Handle`s (com `style={{ opacity: 0 }}`) — sem elas as arestas somem. Regra por tipo: `target` em todos menos `start`; `source id="default"` em `choice`/`multiChoice`/`interstitial`/`score`; em `condition`, `source id={"rule_" + i}` pra cada regra + `id="default"`; nos terminais, nenhuma `source`. No modo compacto as arestas por opção do `choice` se ligam visualmente ao `default` — aceitável (ao aproximar, voltam ao lugar). O nó `start` não tem variante compacta (já é um chip).
 
-- [ ] **Step 3: CSS do mapa — substitua a seção `/* ---------- editor visual de fluxo (grafo) ---------- */` e o bloco `RESPONSIVE: editor de fluxo` por**
+- [x] **Step 3: CSS do mapa — substitua a seção `/* ---------- editor visual de fluxo (grafo) ---------- */` e o bloco `RESPONSIVE: editor de fluxo` por**
 
 ```css
 /* ---------- mapa do fluxo ---------- */
