@@ -141,7 +141,7 @@ git commit -m "Adiciona presets de destaque sem quebrar funis existentes"
 - Produces `progressFor(graph: FunnelGraph, currentId: string | null): number`, sempre entre `0` e `1`.
 - Usa `effectiveEdges`, reconhece terminais e não altera o grafo.
 
-- [ ] **Step 1: Testes primeiro**
+- [x] **Step 1: Testes primeiro**
 
 `tests/quiz-progress.test.ts`:
 
@@ -181,11 +181,11 @@ test("terminal é 1 e nó desconhecido é 0", () => {
 });
 ```
 
-- [ ] **Step 2: Rodar e ver falhar**
+- [x] **Step 2: Rodar e ver falhar**
 
 Run: `npm test` → falha por módulo inexistente `../lib/quiz-progress`.
 
-- [ ] **Step 3: Implementar BFS e caminho lateral**
+- [x] **Step 3: Implementar BFS e caminho lateral**
 
 `lib/quiz-progress.ts`:
 
