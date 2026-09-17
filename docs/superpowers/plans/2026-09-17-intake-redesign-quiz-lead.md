@@ -56,7 +56,7 @@
 - Produces `AccentId`, `ACCENTS` e `accentHex(id?: string): string`.
 - `FunnelConfig` ganha apenas `accent?: AccentId`; JSONs existentes continuam válidos.
 
-- [ ] **Step 1: Testes primeiro**
+- [x] **Step 1: Testes primeiro**
 
 `tests/quiz-theme.test.ts`:
 
@@ -83,11 +83,11 @@ test("ids conhecidos retornam o hex correspondente", () => {
 });
 ```
 
-- [ ] **Step 2: Rodar e ver falhar**
+- [x] **Step 2: Rodar e ver falhar**
 
 Run: `npm test` → falha porque `../lib/quiz-theme` ainda não existe. Não criar implementação antes de observar essa falha.
 
-- [ ] **Step 3: Implementar os presets**
+- [x] **Step 3: Implementar os presets**
 
 `lib/quiz-theme.ts`:
 

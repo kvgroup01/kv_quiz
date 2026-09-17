@@ -3,6 +3,7 @@
 // Trocar copy/perguntas nunca deve exigir mexer no motor.
 
 import type { FunnelGraph } from "./funnel-graph-schema";
+import type { AccentId } from "./quiz-theme";
 
 export interface Option {
   v: string;
@@ -32,6 +33,7 @@ export interface FunnelConfig {
   /** Tema do questionário publicado. Fixo por funil (não segue o sistema do
    * visitante) — quem decide é o escritório, no construtor. Sem valor: claro. */
   theme?: "light" | "dark";
+  accent?: AccentId;
 }
 
 export interface HeroContent {
