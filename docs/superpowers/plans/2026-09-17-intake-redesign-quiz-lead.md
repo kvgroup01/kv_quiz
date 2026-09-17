@@ -337,7 +337,7 @@ git commit -m "Aplica accent e barra fina de progresso ao quiz"
 - Handlers, estados, props, payloads e textos de negócio permanecem iguais.
 - Classes antigas do quiz (`hand`, `eyebrow`, `accent`, `screen`, `plain-q`, `plain-note`, `opt`, `chip`, `label`, `box`, `cta`, `field`, `doubt-box`, `faq`, `faq-item`, `mic-btn`, `audio-redo`, `demo-note`, `disclaimer`) recebem equivalentes `q-*` sem alteração de comportamento.
 
-- [ ] **Step 1: Parser e componentes pequenos**
+- [x] **Step 1: Parser e componentes pequenos**
 
 Em `parseRich`, preserve `**negrito**` e troque apenas a emissão da ênfase simples:
 
@@ -387,7 +387,7 @@ disclaimer   -> q-disclaimer
 
 Os textos atuais de `LeadContactForm` e `DoubtCapture` ficam byte a byte iguais.
 
-- [ ] **Step 2: Hero e telas específicas do motor do grafo**
+- [x] **Step 2: Hero e telas específicas do motor do grafo**
 
 Em `lib/funnel-graph-engine.tsx`, substitua só classes de apresentação:
 

@@ -254,12 +254,10 @@ export default function FunnelGraphEngine({ data, previewMode, previewNodeId }: 
   const showHero = currentId === heroNodeId;
   const heroBlock = showHero ? (
     <>
-      <div className="avatar-row">
-        <span className="hand">{data.hero.greeting}</span>
-      </div>
-      <h1 className="headline" dangerouslySetInnerHTML={{ __html: parseRich(data.hero.headline) }} />
-      <p className="sub">{data.hero.subheadline}</p>
-      <div className="trust-pill">
+      <div className="q-hero-greeting">{data.hero.greeting}</div>
+      <h1 className="q-hero-title" dangerouslySetInnerHTML={{ __html: parseRich(data.hero.headline) }} />
+      <p className="q-hero-sub">{data.hero.subheadline}</p>
+      <div className="q-trust-chip">
         💬 <span dangerouslySetInnerHTML={{ __html: parseRich(data.hero.trustNote) }} />
       </div>
     </>
@@ -271,7 +269,7 @@ export default function FunnelGraphEngine({ data, previewMode, previewNodeId }: 
     const opts = optionsFor(data, node, answers);
     const question = questionFor(data, node, answers);
     const optionList = (
-      <div className="opt-list">
+      <div className="q-options">
         {opts.map((o) => (
           <OptionRow
             key={o.id}
@@ -291,22 +289,22 @@ export default function FunnelGraphEngine({ data, previewMode, previewNodeId }: 
     // entrada" — mesmo tratamento visual (caixa escura) que a etapa de área
     // sempre teve no motor antigo, pareado com o cabeçalho/saudação do funil.
     body = showHero ? (
-      <div className="screen">
+        <div className="q-screen">
         {heroBlock}
         <div className="q-card">
-          <h2>{question}</h2>
-          <p className="hint">{node.data.note || "toca pra escolher ✨"}</p>
+          <h2 className="q-title">{question}</h2>
+          <p className="q-note">{node.data.note || "toca pra escolher ✨"}</p>
           {optionList}
         </div>
       </div>
     ) : (
-      <div className="screen">
-        <h2 className="plain-q">{question}</h2>
-        {node.data.note ? <p className="plain-note">{node.data.note}</p> : <div style={{ height: 14 }} />}
+      <div className="q-screen">
+        <h2 className="q-title">{question}</h2>
+        {node.data.note ? <p className="q-note">{node.data.note}</p> : <div style={{ height: 14 }} />}
         {optionList}
         {node.data.footerNote && (
           <div className="fact-card show" style={{ marginTop: 14 }}>
-            <div className="chip">💡</div>
+            <div className="q-option-emoji">💡</div>
             <span>{node.data.footerNote}</span>
           </div>
         )}
@@ -317,11 +315,11 @@ export default function FunnelGraphEngine({ data, previewMode, previewNodeId }: 
     const question = questionFor(data, node, answers);
     const selected = (answers[node.data.alias] as string[] | undefined) || [];
     body = (
-      <div className="screen">
+      <div className="q-screen">
         {heroBlock}
-        <h2 className="plain-q">{question}</h2>
-        <p className="plain-note">{node.data.note || "Pode marcar mais de uma."}</p>
-        <div className="opt-list">
+        <h2 className="q-title">{question}</h2>
+        <p className="q-note">{node.data.note || "Pode marcar mais de uma."}</p>
+        <div className="q-options">
           {opts.map((o) => {
             const sel = selected.includes(o.id);
             return (
@@ -343,7 +341,7 @@ export default function FunnelGraphEngine({ data, previewMode, previewNodeId }: 
           })}
         </div>
         <button
-          className="cta"
+          className="q-btn q-btn-primary"
           disabled={selected.length < (node.data.minSelected ?? 1)}
           onClick={() => {
             const next = resolveNext(graph, node.id, undefined);
@@ -377,25 +375,25 @@ export default function FunnelGraphEngine({ data, previewMode, previewNodeId }: 
       );
     } else {
       body = (
-        <div className="screen">
-          <p className="eyebrow">COMO FUNCIONA</p>
-          <h2 className="plain-q">{node.data.title || "Fale com quem entende do assunto"}</h2>
-          <div className="trust-list">
+        <div className="q-screen">
+          <p className="q-eyebrow">COMO FUNCIONA</p>
+          <h2 className="q-title">{node.data.title || "Fale com quem entende do assunto"}</h2>
+          <div className="q-trust-list">
             {node.data.body ? (
-              <div className="trust-item"><span className="mark">✓</span><span>{node.data.body}</span></div>
+              <div className="q-trust-item"><span className="q-mark">✓</span><span>{node.data.body}</span></div>
             ) : (
               <>
-                <div className="trust-item"><span className="mark">✓</span><span>Avaliação inicial sem custo, direto com um advogado</span></div>
-                <div className="trust-item"><span className="mark">✓</span><span>Atendimento 100% online, sem sair de casa</span></div>
-                <div className="trust-item"><span className="mark">✓</span><span>Sem compromisso, você decide depois de entender seu caso</span></div>
+                <div className="q-trust-item"><span className="q-mark">✓</span><span>Avaliação inicial sem custo, direto com um advogado</span></div>
+                <div className="q-trust-item"><span className="q-mark">✓</span><span>Atendimento 100% online, sem sair de casa</span></div>
+                <div className="q-trust-item"><span className="q-mark">✓</span><span>Sem compromisso, você decide depois de entender seu caso</span></div>
               </>
             )}
-            <div className="trust-item">
-              <span className="mark">✓</span>
-              <span>{data.config.lawyerName} <span className="oab-tag">{data.config.oab}</span></span>
+            <div className="q-trust-item">
+              <span className="q-mark">✓</span>
+              <span>{data.config.lawyerName} <span className="q-oab">{data.config.oab}</span></span>
             </div>
           </div>
-          <button className="cta" onClick={() => { const next = resolveNext(graph, node.id, undefined); if (next) goTo(next); }}>Continuar →</button>
+          <button className="q-btn q-btn-primary" onClick={() => { const next = resolveNext(graph, node.id, undefined); if (next) goTo(next); }}>Continuar →</button>
         </div>
       );
     }
@@ -411,23 +409,23 @@ export default function FunnelGraphEngine({ data, previewMode, previewNodeId }: 
       ? doresAns.map((v) => area?.doresOpts.find((o) => o.v === v)?.t || String(v))
       : [];
     body = (
-      <div className="screen">
-        <div className="result-banner">
-          <p className="eyebrow">PRÉ-TRIAGEM CONCLUÍDA</p>
+      <div className="q-screen">
+        <div className="q-result">
+          <p className="q-eyebrow">PRÉ-TRIAGEM CONCLUÍDA</p>
           <h2>Seu caso está pronto pra ser avaliado por um advogado.</h2>
           <p>Reunimos o essencial da sua situação pra você não precisar explicar tudo de novo no WhatsApp.</p>
         </div>
-        {node.data.scoreAlias && <div className="badge-pill">🎯 {score}% de prioridade de atendimento</div>}
-        <div className="profile-card">
-          <span className="eyebrow">RESUMO DO SEU CASO</span>
+        {node.data.scoreAlias && <div className="q-priority">🎯 {score}% de prioridade de atendimento</div>}
+        <div className="q-profile">
+          <span className="q-eyebrow">RESUMO DO SEU CASO</span>
           <h3>{area?.label} · {area?.situacaoOpts.find((o) => o.v === answers.situacao)?.t}</h3>
           <p>
             Tempo do ocorrido: {data.urgencia.find((o) => o.v === answers.urgencia)?.t}.{" "}
             {doresLabels.length ? "Principais pontos: " + doresLabels.join(", ") + "." : ""}
           </p>
         </div>
-        <div className="insight-row">⚖️ Uma avaliação de caso real depende sempre da análise de documentos e provas.</div>
-        <div className="insight-row">💬 Só falta seu nome e WhatsApp pra gente já te conectar com o atendente, com esse resumo pronto.</div>
+        <div className="q-insight">⚖️ Uma avaliação de caso real depende sempre da análise de documentos e provas.</div>
+        <div className="q-insight">💬 Só falta seu nome e WhatsApp pra gente já te conectar com o atendente, com esse resumo pronto.</div>
         <LeadContactForm
           previewMode={!!previewMode}
           buildWaLink={(nome) => "https://wa.me/" + data.config.whatsappNumber + "?text=" + encodeURIComponent(
@@ -451,7 +449,7 @@ export default function FunnelGraphEngine({ data, previewMode, previewNodeId }: 
             return result;
           }}
         />
-        <p className="disclaimer">
+        <p className="q-disclaimer">
           Esta pré-triagem é uma ferramenta de organização de informações e não constitui consulta, parecer ou aconselhamento jurídico.
           A existência de direito e as chances de êxito só podem ser avaliadas por um advogado, caso a caso, com base na análise de documentos.
           <br />{data.config.firmName} · {data.config.lawyerName} · {data.config.oab}
@@ -460,13 +458,13 @@ export default function FunnelGraphEngine({ data, previewMode, previewNodeId }: 
     );
   } else if (node.type === "terminalDoubt") {
     body = (
-      <div className="screen">
-        <p className="eyebrow">ANTES DE VOCÊ DECIDIR</p>
-        <h2 className="plain-q">Sem problema, deixa eu tirar suas dúvidas mais comuns primeiro.</h2>
-        <div className="faq">
-          <div className="faq-item"><b>Quanto custa a avaliação?</b><span>A avaliação inicial do seu caso não tem custo.</span></div>
-          <div className="faq-item"><b>Preciso pagar algo adiantado?</b><span>Depende do caso: em muitas situações os honorários só são combinados se houver um resultado a receber. Isso é explicado na conversa.</span></div>
-          <div className="faq-item"><b>Quanto tempo demora um processo assim?</b><span>Varia muito de caso a caso, o advogado consegue te dar uma expectativa real depois de ver a documentação.</span></div>
+      <div className="q-screen">
+        <p className="q-eyebrow">ANTES DE VOCÊ DECIDIR</p>
+        <h2 className="q-title">Sem problema, deixa eu tirar suas dúvidas mais comuns primeiro.</h2>
+        <div className="q-faq">
+          <div className="q-faq-item"><b>Quanto custa a avaliação?</b><span>A avaliação inicial do seu caso não tem custo.</span></div>
+          <div className="q-faq-item"><b>Preciso pagar algo adiantado?</b><span>Depende do caso: em muitas situações os honorários só são combinados se houver um resultado a receber. Isso é explicado na conversa.</span></div>
+          <div className="q-faq-item"><b>Quanto tempo demora um processo assim?</b><span>Varia muito de caso a caso, o advogado consegue te dar uma expectativa real depois de ver a documentação.</span></div>
         </div>
         <DoubtCapture
           previewMode={!!previewMode}
@@ -477,7 +475,7 @@ export default function FunnelGraphEngine({ data, previewMode, previewNodeId }: 
             return result;
           }}
         />
-        <p className="disclaimer">
+        <p className="q-disclaimer">
           Esta pré-triagem é uma ferramenta de organização de informações e não constitui consulta, parecer ou aconselhamento jurídico.
           <br />{data.config.firmName} · {data.config.lawyerName} · {data.config.oab}
         </p>

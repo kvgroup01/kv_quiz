@@ -24,7 +24,8 @@ export const STANDARD_META_EVENTS = ["Lead", "Contact", "CompleteRegistration", 
 export function parseRich(str: string): string {
   return String(str || "")
     .replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")
-    .replace(/\*(.+?)\*/g, '<em class="accent">$1</em>');
+    .replace(/\*(.+?)\*/g, '<em class="q-em">$1</em>')
+    .replace(/_(.+?)_/g, '<strong class="q-em">$1</strong>');
 }
 
 export function labelFrom(list: Option[], v: string | null): string {
@@ -107,10 +108,10 @@ export function OptionRow({
   chip, label, selected, checkbox, onClick
 }: { chip: string; label: string; selected: boolean; checkbox?: boolean; onClick: () => void }) {
   return (
-    <button type="button" className={"opt" + (selected ? " selected" : "")} onClick={onClick}>
-      <span className="chip">{chip}</span>
-      <span className="label">{label}</span>
-      {checkbox && <span className="box">{selected ? "✓" : ""}</span>}
+    <button type="button" className={"q-option" + (selected ? " selected" : "")} onClick={onClick}>
+      <span className="q-option-emoji">{chip}</span>
+      <span className="q-option-label">{label}</span>
+      {checkbox && <span className="q-option-box">{selected ? "✓" : ""}</span>}
     </button>
   );
 }
@@ -119,10 +120,10 @@ export function SingleSelect({
   question, note, opts, value, onPick
 }: { question: string; note?: string; opts: Option[]; value: string | null; onPick: (v: string) => void }) {
   return (
-    <div className="screen">
-      <h2 className="plain-q">{question}</h2>
-      {note ? <p className="plain-note">{note}</p> : <div style={{ height: 14 }} />}
-      <div className="opt-list">
+    <div className="q-screen">
+      <h2 className="q-title">{question}</h2>
+      {note ? <p className="q-note">{note}</p> : <div style={{ height: 14 }} />}
+      <div className="q-options">
         {opts.map((o) => (
           <OptionRow key={o.v} chip={o.icon || "•"} label={o.t} selected={value === o.v} onClick={() => onPick(o.v)} />
         ))}
@@ -170,22 +171,22 @@ export function LoadingScreen({
   ];
 
   return (
-    <div className="screen">
-      <div className="load-icon">🔎</div>
-      <h2 className="plain-q" style={{ textAlign: "center" }}>
-        Organizando sua <em className="accent">pré-triagem</em>...
+    <div className="q-screen">
+      <div className="q-loading-icon">🔎</div>
+      <h2 className="q-title" style={{ textAlign: "center" }}>
+        Organizando sua <em className="q-em">pré-triagem</em>...
       </h2>
-      <div className="load-track">
-        <div className="load-fill" style={{ width: pct + "%", transition: `width ${DURATION}ms cubic-bezier(0.22,0.61,0.36,1)` }} />
+      <div className="q-loading-track">
+        <div className="q-loading-fill" style={{ width: pct + "%", transition: `width ${DURATION}ms cubic-bezier(0.22,0.61,0.36,1)` }} />
       </div>
-      <p className="load-status">{barDone ? "Concluído ✓" : "Analisando suas respostas..."}</p>
+      <p className="q-loading-status">{barDone ? "Concluído ✓" : "Analisando suas respostas..."}</p>
       {activeFacts.map((f, i) => (
-        <div key={i} className={"fact-card" + (shown[i] ? " show" : "")}>
-          <div className="chip">{f.chip}</div>
+        <div key={i} className={"q-fact" + (shown[i] ? " show" : "")}>
+          <div className="q-option-emoji">{f.chip}</div>
           <span>{f.t}</span>
         </div>
       ))}
-      {barDone && <button className="cta" onClick={onContinue}>Continuar →</button>}
+      {barDone && <button className="q-btn q-btn-primary" onClick={onContinue}>Continuar →</button>}
     </div>
   );
 }
@@ -214,12 +215,12 @@ export function RingScreen({ score, done, onDone, onContinue }: { score: number;
   const offset = circumference - (shown / 100) * circumference;
 
   return (
-    <div className="screen">
-      <p className="eyebrow" style={{ textAlign: "center" }}>DIAGNÓSTICO PARCIAL</p>
-      <h2 className="plain-q" style={{ textAlign: "center" }}>Prioridade de <em className="accent">atendimento</em></h2>
-      <div className="ring-wrap">
+    <div className="q-screen">
+      <p className="q-eyebrow" style={{ textAlign: "center" }}>DIAGNÓSTICO PARCIAL</p>
+      <h2 className="q-title" style={{ textAlign: "center" }}>Prioridade de <em className="q-em">atendimento</em></h2>
+      <div className="q-ring">
         <svg width="180" height="180" viewBox="0 0 180 180">
-          <circle cx="90" cy="90" r={r} fill="none" stroke="var(--progress-track)" strokeWidth="14" />
+          <circle cx="90" cy="90" r={r} fill="none" stroke="var(--q-hairline)" strokeWidth="14" />
           <circle
             cx="90" cy="90" r={r} fill="none" stroke="url(#gradRing)" strokeWidth="14" strokeLinecap="round"
             strokeDasharray={circumference.toFixed(1)} strokeDashoffset={offset.toFixed(1)}
@@ -227,17 +228,17 @@ export function RingScreen({ score, done, onDone, onContinue }: { score: number;
           />
           <defs>
             <linearGradient id="gradRing" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="var(--progress-fill-a)" />
-              <stop offset="100%" stopColor="var(--progress-fill-b)" />
+              <stop offset="0%" stopColor="var(--q-accent)" />
+              <stop offset="100%" stopColor="var(--q-accent)" />
             </linearGradient>
           </defs>
-          <text x="90" y="96" textAnchor="middle" fontFamily="Inter Tight, sans-serif" fontWeight={700} fontSize={30} fill="var(--purple-text)">
+          <text x="90" y="96" textAnchor="middle" fontFamily="Inter, sans-serif" fontWeight={600} fontSize={36} fill="var(--q-accent)">
             {shown}%
           </text>
         </svg>
       </div>
-      <p className="ring-label">Quanto antes você falar com um advogado, maiores as chances de não perder prazos importantes.</p>
-      {(done || shown >= score) && <button className="cta" style={{ marginTop: 18 }} onClick={onContinue}>Continuar →</button>}
+      <p className="q-ring-label">Quanto antes você falar com um advogado, maiores as chances de não perder prazos importantes.</p>
+      {(done || shown >= score) && <button className="q-btn q-btn-primary" style={{ marginTop: 18 }} onClick={onContinue}>Continuar →</button>}
     </div>
   );
 }
@@ -268,19 +269,19 @@ export function LeadContactForm({
   }
 
   return (
-    <div className="doubt-box" style={{ marginTop: 6, marginBottom: 16 }}>
-      <div className="field">
+    <div className="q-form-card" style={{ marginTop: 6, marginBottom: 16 }}>
+      <div className="q-field">
         <label>Seu nome</label>
         <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Como podemos te chamar?" />
       </div>
-      <div className="field">
+      <div className="q-field">
         <label>Seu WhatsApp</label>
         <input type="tel" value={whatsapp} onChange={(e) => setWhatsapp(e.target.value)} placeholder="(11) 91234-5678" />
       </div>
-      <button className="cta whatsapp doubt-submit" disabled={!canSubmit || sending} onClick={handleSubmit}>
+      <button className="q-btn q-btn-primary whatsapp doubt-submit" disabled={!canSubmit || sending} onClick={handleSubmit}>
         {sending ? "Enviando..." : "Falar com um advogado no WhatsApp →"}
       </button>
-      {previewMode && <p className="demo-note">🔧 Modo preview: nada é salvo de verdade, mas o link do WhatsApp abre normalmente.</p>}
+      {previewMode && <p className="q-demo-note">🔧 Modo preview: nada é salvo de verdade, mas o link do WhatsApp abre normalmente.</p>}
     </div>
   );
 }
@@ -363,42 +364,42 @@ export function DoubtCapture({ onSubmit, previewMode }: { onSubmit: (f: DoubtFor
 
   if (sent) {
     return (
-      <div className="doubt-box">
+      <div className="q-form-card">
         <h3 style={{ margin: "0 0 8px", fontSize: "1.05rem" }}>Pergunta recebida ✓</h3>
-        <p style={{ margin: 0, fontSize: "0.9rem", color: "var(--ink-soft)", lineHeight: 1.55 }}>
+          <p style={{ margin: 0, fontSize: "0.9rem", color: "var(--q-ink-soft)", lineHeight: 1.55 }}>
           Nossa equipe vai avaliar sua dúvida e só entra em contato pelo WhatsApp se fizer sentido pra você, assim priorizamos quem realmente precisa falar com um advogado agora.
         </p>
         {(sent.demo || previewMode) && (
-          <p className="demo-note">🔧 Modo demonstração/preview: em produção isso cai direto no seu Kanban de dúvidas.</p>
+          <p className="q-demo-note">🔧 Modo demonstração/preview: em produção isso cai direto no seu Kanban de dúvidas.</p>
         )}
       </div>
     );
   }
 
   return (
-    <div className="doubt-box">
+    <div className="q-form-card">
       <p className="lead-in">Ainda com dúvida? Escreve ou manda um áudio contando o que falta entender, a gente avalia e só te chama no WhatsApp se fizer sentido pra você.</p>
-      <div className="field">
+      <div className="q-field">
         <label>Sua dúvida</label>
         <textarea value={texto} onChange={(e) => setTexto(e.target.value)} placeholder="Ex: quero saber se ainda dá tempo de entrar com o pedido..." />
         {audioSupported && (
-          <div className="audio-rec">
-            <button type="button" className={"mic-btn" + (recording ? " recording" : "")} onClick={toggleRecording}>
+          <div className="q-audio-rec">
+            <button type="button" className={"q-audio-btn" + (recording ? " recording" : "")} onClick={toggleRecording}>
               {recording ? `⏺ Gravando ${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")} (toque pra parar)` : "🎤 Gravar áudio"}
             </button>
             {audioUrl && (
               <>
                 <audio controls src={audioUrl} />
-                <button type="button" className="audio-redo" onClick={redoAudio}>regravar</button>
+                <button type="button" className="q-audio-redo" onClick={redoAudio}>regravar</button>
               </>
             )}
           </div>
         )}
-        {audioNote && <p className="audio-note">{audioNote}</p>}
+        {audioNote && <p className="q-audio-note">{audioNote}</p>}
       </div>
-      <div className="field"><label>Seu nome</label><input type="text" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Como podemos te chamar" /></div>
-      <div className="field"><label>Seu WhatsApp</label><input type="tel" value={whatsapp} onChange={(e) => setWhatsapp(e.target.value)} placeholder="(11) 99999-9999" /></div>
-      <button className="cta doubt-submit" disabled={!canSubmit || sending} onClick={handleSubmit}>
+      <div className="q-field"><label>Seu nome</label><input type="text" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Como podemos te chamar" /></div>
+      <div className="q-field"><label>Seu WhatsApp</label><input type="tel" value={whatsapp} onChange={(e) => setWhatsapp(e.target.value)} placeholder="(11) 99999-9999" /></div>
+      <button className="q-btn q-btn-primary doubt-submit" disabled={!canSubmit || sending} onClick={handleSubmit}>
         {sending ? "Enviando..." : "Enviar minha dúvida"}
       </button>
     </div>
