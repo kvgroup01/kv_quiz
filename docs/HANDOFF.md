@@ -1,5 +1,10 @@
 # Handoff
 
+## 2026-09-17 · Codex
+- Parei em: Task 3 do plano `docs/superpowers/plans/2026-09-17-intake-redesign-app-interno.md`; Steps 1–7 concluídos. Criados `Card`, `Button`, `Badge`, `PillTabs`, `Stat`, `DataTable` e `PageHeader`, com estilos `ui-*` em `app/globals.css`.
+- Próximo: concluir o Step 8 da Task 3 com a conferência visual em 1440px e 390px; depois iniciar Task 4.
+- Cuidado com: `npx tsc --noEmit`, `npm test` e `npm run build` passaram. O CUA continua sem navegador exposto (`apps: []`, `browsers: []`), portanto a conferência visual permanece pendente. O dev server está em `http://localhost:3000`; não fazer push antes da Task 14.
+
 Entrada mais recente no topo. Formato: data · quem · parei em · próximo · cuidado com.
 
 ## 2026-09-17 · Codex

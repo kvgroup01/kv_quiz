@@ -360,7 +360,7 @@ git commit -m "Isola o CSS do quiz em quiz.css e cria a camada de tokens do app 
   - `DataTable<T extends {id:string}>({ columns: {key,label,render?,width?}[], rows, onRowClick?, emptyText })` — vira cards empilhados abaixo de 768px
   - `PageHeader({ title, subtitle?, actions? })`
 
-- [ ] **Step 1: `components/ui/Card.tsx`**
+- [x] **Step 1: `components/ui/Card.tsx`**
 
 ```tsx
 import type { ReactNode } from "react";
@@ -385,7 +385,7 @@ export function Card({
 }
 ```
 
-- [ ] **Step 2: `components/ui/Button.tsx`**
+- [x] **Step 2: `components/ui/Button.tsx`**
 
 ```tsx
 import Link from "next/link";
@@ -416,7 +416,7 @@ export function Button({ variant = "secondary", size = "md", iconOnly, href, tar
 }
 ```
 
-- [ ] **Step 3: `components/ui/Badge.tsx`**
+- [x] **Step 3: `components/ui/Badge.tsx`**
 
 ```tsx
 import type { ReactNode } from "react";
@@ -428,7 +428,7 @@ export function Badge({ tone = "gray", children }: { tone?: BadgeTone; children:
 }
 ```
 
-- [ ] **Step 4: `components/ui/PillTabs.tsx`**
+- [x] **Step 4: `components/ui/PillTabs.tsx`**
 
 ```tsx
 import Link from "next/link";
@@ -451,7 +451,7 @@ export function PillTabs({
 }
 ```
 
-- [ ] **Step 5: `components/ui/Stat.tsx` e `components/ui/PageHeader.tsx`**
+- [x] **Step 5: `components/ui/Stat.tsx` e `components/ui/PageHeader.tsx`**
 
 `components/ui/Stat.tsx`:
 
@@ -485,7 +485,7 @@ export function PageHeader({ title, subtitle, actions }: { title: string; subtit
 }
 ```
 
-- [ ] **Step 6: `components/ui/DataTable.tsx`**
+- [x] **Step 6: `components/ui/DataTable.tsx`**
 
 ```tsx
 import type { ReactNode } from "react";
@@ -524,7 +524,7 @@ export function DataTable<T extends { id: string }>({
 }
 ```
 
-- [ ] **Step 7: CSS dos primitivos (`app/globals.css`, seção nova no fim)**
+- [x] **Step 7: CSS dos primitivos (`app/globals.css`, seção nova no fim)**
 
 ```css
 /* ---------- ui: primitivos ---------- */
