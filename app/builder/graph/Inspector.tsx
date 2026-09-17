@@ -84,7 +84,7 @@ export default function Inspector({
     <div className={mobile ? "b-graph-mobile-panel" : "b-graph-inspector"}>
       <div className={mobile ? "b-graph-mobile-panel-head" : "b-graph-inspector-head"}>
         <strong>{NODE_TYPE_LABELS[node.type]}</strong>
-        <button type="button" className="btn small" onClick={onClose}>{mobile ? "← Voltar" : "Fechar"}</button>
+        <button type="button" className="ui-btn ui-btn-secondary ui-btn-sm" onClick={onClose}>{mobile ? "← Voltar" : "Fechar"}</button>
       </div>
 
       {node.type === "start" && <p className="b-help">Bloco de início do fluxo — sem nada pra configurar aqui.</p>}
@@ -287,9 +287,9 @@ export default function Inspector({
               onChange={(e) => onUpdate({ whatsappMessageTemplate: e.target.value })} />
             <div className="b-graph-chips">
               <span>inserir:</span>
-              <button type="button" className="btn small" onClick={() => onUpdate({ whatsappMessageTemplate: node.data.whatsappMessageTemplate + "{{nome}}" })}>{"{{nome}}"}</button>
+              <button type="button" className="ui-btn ui-btn-secondary ui-btn-sm" onClick={() => onUpdate({ whatsappMessageTemplate: node.data.whatsappMessageTemplate + "{{nome}}" })}>{"{{nome}}"}</button>
               {aliasNodes.map((n) => (
-                <button key={n.id} type="button" className="btn small" onClick={() => onUpdate({ whatsappMessageTemplate: node.data.whatsappMessageTemplate + `{{${n.data.alias}}}` })}>
+                <button key={n.id} type="button" className="ui-btn ui-btn-secondary ui-btn-sm" onClick={() => onUpdate({ whatsappMessageTemplate: node.data.whatsappMessageTemplate + `{{${n.data.alias}}}` })}>
                   {`{{${n.data.alias}}}`}
                 </button>
               ))}

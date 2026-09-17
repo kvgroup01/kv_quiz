@@ -158,8 +158,6 @@ function GraphEditorInner({
     onSelectedChange?.(id);
   }
 
-  useEffect(() => { fitView({ padding: 0.2 }); }, [layout.columns.length, fitView]);
-
   const updateNode = useCallback((id: string, patch: Record<string, unknown>) => {
     onChange({
       ...graph,
@@ -276,7 +274,7 @@ function GraphEditorInner({
           <select value={addType} onChange={(e) => setAddType(e.target.value)}>
             {ADDABLE_NODE_TYPES.map((t) => <option key={t} value={t}>{NODE_TYPE_LABELS[t]}</option>)}
           </select>
-          <button type="button" className="btn small" onClick={addNode}>+ Adicionar bloco</button>
+          <button type="button" className="ui-btn ui-btn-dark ui-btn-sm" onClick={addNode}>+ Adicionar bloco</button>
         </div>
         {warnings.length > 0 && (
           <div className="b-graph-warnings">
@@ -325,7 +323,9 @@ function GraphEditorInner({
               nodesDraggable={false}
               minZoom={0.2}
               maxZoom={1.6}
-              fitView
+              // Abre no começo do fluxo em zoom legível; fitView do fluxo inteiro numa
+              // coluna estreita cai abaixo de 0.6 e vira só chips. ⌖ ajusta tudo.
+              onInit={(inst) => { inst.setViewport({ x: 24, y: 40, zoom: 0.7 }); }}
             >
               <Background />
             </ReactFlow>
