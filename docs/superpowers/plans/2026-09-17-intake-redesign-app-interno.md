@@ -1279,7 +1279,7 @@ git commit -m "Histórico: pílulas de mês e tabela de leads"
 - Consumes: `FunnelGraph`, `GraphNode`, `effectiveEdges` de `lib/funnel-graph-schema.ts`.
 - Produces: `layoutLeftToRight(graph, size, opts?) => { positions: Record<string, {x:number;y:number}>; unreached: Set<string>; columns: string[][] }`, com `size(node) => {width,height}` e `opts = { gapX?: number; gapY?: number }` (padrão 80 / 40).
 
-- [ ] **Step 1: Testes**
+- [x] **Step 1: Testes**
 
 `tests/graph-layout.test.ts`:
 
@@ -1338,11 +1338,11 @@ test("condição usa os alvos das regras/default como arestas", () => {
 
 Se o cast `as GraphNode[]` reclamar de campos obrigatórios em algum tipo de nó, use `as unknown as GraphNode[]` — o teste só precisa de `id`, `type` e do `data` da condição.
 
-- [ ] **Step 2: Rodar e ver falhar**
+- [x] **Step 2: Rodar e ver falhar**
 
 Run: `npm test` → falha por módulo inexistente.
 
-- [ ] **Step 3: Implementar `lib/graph-layout.ts`**
+- [x] **Step 3: Implementar `lib/graph-layout.ts`**
 
 ```ts
 import { effectiveEdges, type FunnelGraph, type GraphNode } from "./funnel-graph-schema";
@@ -1399,7 +1399,7 @@ export function layoutLeftToRight(
 }
 ```
 
-- [ ] **Step 4: Rodar e ver passar; commitar**
+- [x] **Step 4: Rodar e ver passar; commitar**
 
 Run: `npm test` → todos passam.
 
