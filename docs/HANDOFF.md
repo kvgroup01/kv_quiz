@@ -1,5 +1,17 @@
 # Handoff
 
+## 2026-09-17 · Claude
+- Parei em: plano `2026-09-17-intake-redesign-app-interno.md` **concluído** (Tasks 1–14) e enviado pra `main` (push).
+  Regressão com navegador feita: quiz idêntico nos 3 funis (score 82%, link do WhatsApp com template
+  completo, caminho de dúvida até "Pergunta recebida ✓", sem erros de console); Início, Construtor,
+  Leads, Histórico e Login conferidos em 1440px e 390px. Correções em `cda9e5f`.
+- Próximo: (1) conferir o deploy da Vercel em produção (quiz nos 3 funis + login do Kanban);
+  (2) sub-projeto 2 — redesign do quiz do lead, que precisa de brainstorm + spec próprios.
+- Cuidado com: `app/quiz.css` continua intocável até o spec 2. Blocos com `questionFromArea`
+  (ex.: "situação" nos funis legados) não mudam a prévia ao editar a pergunta no Inspector — a
+  pergunta vem da área; é comportamento do motor, não bug da prévia. Sem KV local o autosave mostra
+  "Não salvo (sem KV)" e o rascunho fica só no localStorage do navegador.
+
 ## 2026-09-17 · Codex
 - Parei em: encerramento da sessão; Tasks 1–13 estão implementadas e commitadas. O plano está na Task 14, sem marcar validações visuais que não puderam ser executadas.
 - Próximo: retomar pela Task 14, executar a regressão dos três quizzes e a passada em 1440px/390px quando houver navegador disponível; depois fechar o plano e avaliar o push.

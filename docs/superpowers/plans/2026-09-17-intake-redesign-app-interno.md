@@ -328,7 +328,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 Em `app/page.tsx`, `app/kanban/page.tsx`, `app/kanban/banco/page.tsx`, `app/login/page.tsx`: o `<div>` mais externo do retorno ganha `className="in-app"`. Em `app/builder/page.tsx` o `<div className="b-shell">` vira `className="in-app b-shell"`. O quiz (`app/quiz/**`) **não** ganha.
 
-- [ ] **Step 7: Verificar — regressão do quiz e app ainda funcional**
+- [x] **Step 7: Verificar — regressão do quiz e app ainda funcional**
 
 Run: `npx tsc --noEmit && npm run build`
 Expected: limpo.
@@ -599,7 +599,7 @@ export function DataTable<T extends { id: string }>({
 }
 ```
 
-- [ ] **Step 8: Verificar e commitar**
+- [x] **Step 8: Verificar e commitar**
 
 Run: `npx tsc --noEmit`
 Expected: limpo (os componentes ainda não são usados; isso é ok).
@@ -730,7 +730,7 @@ CSS (fim do `globals.css`):
 .login-submit{ width:100%; margin-top:6px; }
 ```
 
-- [ ] **Step 6: Verificar e commitar**
+- [x] **Step 6: Verificar e commitar**
 
 Run: `npx tsc --noEmit && npm run build`. Navegador: `/` mostra a nav "Intake · Início Construtor Leads Histórico" com a ativa preta; 390px mostra hambúrguer; `/login` mostra o card e entra com `radarjuridico`/`radarjuridico` (se houver env local).
 
@@ -1188,7 +1188,7 @@ Adapte os nomes (`funnelNames`, `openLead`, `editingColumns`, `error`, `loading`
 
 Apague as classes antigas que sobraram sem uso: `.kanban-card*`, `.kanban-whats`, `.kanban-meta-row`, `.kanban-area-clip`, `.kanban-date`, `.kanban-wa-btn`, `.kanban-count`, `.kanban-col-header`, `.kanban-banco-*` (o Histórico ganha classes novas na Task 8). Confirme com `grep -rn "kanban-card\|kanban-whats\|kanban-banco" --include=*.tsx .` que nenhum componente ainda as usa. Se o `ColumnsEditor` usa outras classes `kanban-col-edit-*` que não estão listadas acima, mantenha-as.
 
-- [ ] **Step 4: Verificar e commitar**
+- [x] **Step 4: Verificar e commitar**
 
 Run: `npx tsc --noEmit && npm run build`. Navegador `/kanban` em 1440 e 390 (colunas empilham). Se houver dados (produção), arraste um card entre colunas e confirme que persiste; abra o modal; ✕ pede confirmação.
 
@@ -1259,7 +1259,7 @@ Remova o import de `LeadCard` se não for mais usado aqui. Adapte nomes de estad
 .hist-table{ margin-bottom:48px; }
 ```
 
-- [ ] **Step 3: Verificar e commitar**
+- [x] **Step 3: Verificar e commitar**
 
 Run: `npx tsc --noEmit && npm run build`. Navegador `/kanban/banco` em 1440 (tabela) e 390 (linhas viram cards empilhados).
 
@@ -1552,7 +1552,7 @@ Cada view (`ChoiceNodeView`, `MultiChoiceNodeView`, `InterstitialNodeView`, `Con
 
 Se o `GraphEditor`/`Inspector`/`nodes` usarem alguma classe `.b-graph-*` que não está nesta lista, copie a regra antiga dela pra cá trocando cores/fontes pelos tokens. Não apague regra que ainda tem uso.
 
-- [ ] **Step 4: Verificar e commitar**
+- [x] **Step 4: Verificar e commitar**
 
 Run: `npx tsc --noEmit && npm test && npm run build`. Navegador `/builder?slug=default` → aba Fluxo (a aba ainda existe até a Task 12): mapa horizontal legível; roda do mouse dá zoom; afastar abaixo de 0,6 mostra chips; duplo clique num bloco aproxima e seleciona; arrastar nó **não** move; arrastar de uma alça de opção pra outro bloco ainda cria conexão; ＋/－/⤢ funcionam; Inspector mostra o placeholder sem seleção; em 390px a lista continua funcionando.
 
@@ -1900,7 +1900,7 @@ Substitua as seções `/* ---------- builder ---------- */` e `/* ---------- bui
 
 Antes de apagar as seções antigas, rode `grep -rn "b-drag-handle\|b-opt-editable\|b-section" --include=*.tsx .` — qualquer classe ainda usada por `Inspector.tsx`/`nodes.tsx`/`EditableInline.tsx` deve ter sua regra copiada pra cá (trocando cores/fontes pelos tokens), não apagada.
 
-- [ ] **Step 5: Verificar e commitar**
+- [x] **Step 5: Verificar e commitar**
 
 Run: `npx tsc --noEmit && npm test && npm run build`. Navegador `/builder?slug=salario-maternidade-avancada` em 1440: cabeçalho com status; editar um texto no Inspector → prévia muda ao vivo e status vira laranja + "Salvando…"/"Salvo" (ou "Não salvo (sem KV)" local); ⚙ abre a gaveta; ⋯ mostra os itens de dev; "Publicar" desabilitado quando sem alteração (se houver KV). 1024px: "Ver prévia" abre o painel deslizante. 390px: lista → editor em tela cheia → "Ver prévia" abre a prévia.
 
@@ -1973,15 +1973,15 @@ git commit -m "Remove o motor antigo e CSS morto; README reflete o Intake"
 **Files:**
 - Modify: `docs/HANDOFF.md`, este plano
 
-- [ ] **Step 1: Regressão do quiz (obrigatória)**
+- [x] **Step 1: Regressão do quiz (obrigatória)**
 
 Para `default`, `salario-maternidade`, `salario-maternidade-avancada`, em `/quiz/<slug>/preview`: percorra alta intenção até o formulário de WhatsApp (confira o texto do link `wa.me`) e baixa intenção até "Pergunta recebida ✓". Confirme score 82% no caminho padrão do `default` (urgência "recente" + 2 dores). Confirme que fonte, cores e tema estão iguais aos de antes (compare com a versão publicada em produção se preciso).
 
-- [ ] **Step 2: Passada por tela em 1440 e 390**
+- [x] **Step 2: Passada por tela em 1440 e 390**
 
 `/`, `/builder` (3 funis), `/kanban`, `/kanban/banco`, `/login`. Sem erro no console. Sem scroll horizontal indevido.
 
-- [ ] **Step 3: Marcar as caixas deste plano e escrever o handoff**
+- [x] **Step 3: Marcar as caixas deste plano e escrever o handoff**
 
 Adicione no topo de `docs/HANDOFF.md`:
 
@@ -1992,7 +1992,7 @@ Adicione no topo de `docs/HANDOFF.md`:
 - Cuidado com: `app/quiz.css` é intocável até o spec 2; `previewNodeId` só existe em previewMode.
 ```
 
-- [ ] **Step 4: Commit e push**
+- [x] **Step 4: Commit e push**
 
 ```bash
 git add docs/HANDOFF.md docs/superpowers/plans/2026-09-17-intake-redesign-app-interno.md
