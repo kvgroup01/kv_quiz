@@ -1,6 +1,7 @@
 "use client";
 
 import type { FunnelData } from "@/lib/funnel-schema";
+import { ACCENTS } from "@/lib/quiz-theme";
 import { Button } from "@/components/ui/Button";
 
 export function SettingsDrawer({
@@ -34,6 +35,31 @@ export function SettingsDrawer({
         <div className="ui-pills">
           <button type="button" className={"ui-pill" + (active.config.theme !== "dark" ? " active" : "")} onClick={() => cfg({ theme: "light" })}>☀️ Claro</button>
           <button type="button" className={"ui-pill" + (active.config.theme === "dark" ? " active" : "")} onClick={() => cfg({ theme: "dark" })}>🌙 Escuro</button>
+        </div>
+        <h3 className="drawer-section">Cor de destaque</h3>
+        <div className="q-accent-picker" role="radiogroup" aria-label="Cor de destaque" style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          {ACCENTS.map((accent) => {
+            const selected = (active.config.accent ?? "roxo") === accent.id;
+            return (
+              <button
+                key={accent.id}
+                type="button"
+                style={{
+                  width: 28,
+                  height: 28,
+                  borderRadius: 9999,
+                  cursor: "pointer",
+                  background: accent.hex,
+                  border: selected ? "2px solid var(--c-ink)" : "2px solid transparent",
+                  boxShadow: "0 0 0 1px var(--c-hairline)"
+                }}
+                title={accent.label}
+                aria-label={accent.label}
+                aria-pressed={selected}
+                onClick={() => cfg({ accent: accent.id })}
+              />
+            );
+          })}
         </div>
         <p className="b-help">Tema fixo para quem responde — não segue o sistema do lead.</p>
       </aside>

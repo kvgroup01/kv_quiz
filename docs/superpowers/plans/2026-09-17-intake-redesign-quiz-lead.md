@@ -524,7 +524,7 @@ git commit -m "Reescreve a pele do quiz com tokens e presets"
 - `SettingsDrawer` continua recebendo `active`, `onPatch`, `onSlugChange` e `onClose`.
 - Clicar numa bolinha chama `cfg({ accent: id })`; `PhonePreview` não muda porque herda o estilo do motor.
 
-- [ ] **Step 1: Importar presets e renderizar seleção**
+- [x] **Step 1: Importar presets e renderizar seleção**
 
 Adicione:
 
