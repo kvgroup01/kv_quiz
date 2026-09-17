@@ -1,6 +1,11 @@
 # Handoff
 
 ## 2026-09-17 · Codex
+- Parei em: encerramento da sessão; Tasks 1–13 estão implementadas e commitadas. O plano está na Task 14, sem marcar validações visuais que não puderam ser executadas.
+- Próximo: retomar pela Task 14, executar a regressão dos três quizzes e a passada em 1440px/390px quando houver navegador disponível; depois fechar o plano e avaliar o push.
+- Cuidado com: não fazer push enquanto a regressão visual obrigatória não passar. O CUA desta sessão retorna `apps: []` e `browsers: []`; o servidor local pode ser iniciado com `npm run dev` em `http://localhost:3000`.
+
+## 2026-09-17 · Codex
 - Parei em: Task 13 concluída e checklist corrigido; o código está commitado em `f490b89`. A execução está na Task 14, sem nenhuma caixa final marcada indevidamente.
 - Próximo: executar a regressão obrigatória dos três previews e a passada visual em 1440px/390px; depois marcar a Task 14, fazer o commit final e só então avaliar o push.
 - Cuidado com: o loop técnico e as rotas HTTP passaram, mas o CUA não expõe navegador (`apps: []`, `browsers: []`). Não marcar regressão visual nem fazer push até haver inspeção real do quiz, do Builder, do Kanban, do Histórico e do login.
