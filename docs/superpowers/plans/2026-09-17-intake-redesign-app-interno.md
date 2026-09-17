@@ -1082,7 +1082,7 @@ git commit -m "Início vira dashboard: dúvidas pendentes, números do período 
 - Consumes: `Card`, `Badge`, `Button`, `PageHeader`.
 - Produces: `LeadCard` compacto com a mesma assinatura atual (`lead, onOpen, onDelete, onDragStart?, funnelLabel?, statusLabel?`); `LeadDetailModal` inalterado na API.
 
-- [ ] **Step 1: `LeadCard` compacto em `components/leads-ui.tsx`**
+- [x] **Step 1: `LeadCard` compacto em `components/leads-ui.tsx`**
 
 Substitua o retorno de `LeadCard` por:
 
@@ -1106,7 +1106,7 @@ Substitua o retorno de `LeadCard` por:
 
 Importe `Badge` de `@/components/ui/Badge` e `Button` de `@/components/ui/Button`. No `LeadDetailModal`, troque os `<button className="btn small">` por `<Button size="sm">` (e `variant="secondary"` onde já era neutro), e o `<a className="btn primary kanban-wa-btn">` do rodapé por `<Button variant="primary" href={waLink(lead)} target="_blank">Chamar no WhatsApp →</Button>`. Classes `kanban-modal*`/`kanban-detail-grid`/`kanban-tags`/`kanban-question` continuam (restiladas no Step 3).
 
-- [ ] **Step 2: `app/kanban/page.tsx`**
+- [x] **Step 2: `app/kanban/page.tsx`**
 
 Mantenha `ColumnsEditor`, `load`, `moveLead`, `handleDelete`, `onDragStart/onDrop`, `isCurrentMonth`, `currentMonthLeads`, e os estados existentes. Troque o JSX de retorno principal por:
 

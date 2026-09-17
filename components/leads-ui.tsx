@@ -5,6 +5,8 @@
 // lógica de excluir/abrir link de WhatsApp, pra não duplicar entre as duas telas.
 
 import type { Lead } from "@/lib/lead-schema";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
 
 export function fmtDate(iso: string) {
   try {
@@ -15,19 +17,16 @@ export function fmtDate(iso: string) {
 }
 
 export function waLink(lead: Lead) {
-  let msg = `Olá ${lead.nome}! Vi sua dúvida sobre ${lead.area}`;
-  if (lead.situacao) msg += ` (${lead.situacao})`;
+  let msg = "Olá " + lead.nome + "! Vi sua dúvida sobre " + lead.area;
+  if (lead.situacao) msg += " (" + lead.situacao + ")";
   msg += ".";
-  if (lead.perguntaTexto) msg += ` Você perguntou: "${lead.perguntaTexto}".`;
+  if (lead.perguntaTexto) msg += " Você perguntou: \"" + lead.perguntaTexto + "\".";
   msg += " Posso te ajudar?";
   const digits = lead.whatsapp.replace(/\D/g, "");
   const phone = digits.length <= 11 ? "55" + digits : digits;
-  return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+  return "https://wa.me/" + phone + "?text=" + encodeURIComponent(msg);
 }
 
-// Card enxuto de propósito: com muita informação (dores, UTMs, dúvida,
-// áudio) o card virava uma bagunça sobreposta. Aqui só o essencial pra
-// escanear a coluna — o resto mora no modal (onOpen).
 export function LeadCard({
   lead, onOpen, onDelete, onDragStart, funnelLabel, statusLabel
 }: {
@@ -39,44 +38,20 @@ export function LeadCard({
   statusLabel?: string;
 }) {
   return (
-    <div
-      className="kanban-card"
-      draggable={!!onDragStart}
-      onDragStart={onDragStart ? (e) => onDragStart(e, lead.id) : undefined}
-      onClick={() => onOpen(lead)}
-    >
-      <div className="kanban-card-top">
-        <b>{lead.nome}</b>
-        <span className="kanban-card-top-right">
-          <span className="kanban-date">{fmtDate(lead.criadoEm)}</span>
-          <button
-            type="button"
-            className="kanban-card-delete"
-            title="Excluir"
-            onClick={(e) => { e.stopPropagation(); onDelete(lead); }}
-          >
-            ✕
-          </button>
+    <div className="lead-card" draggable={!!onDragStart} onDragStart={onDragStart ? (e) => onDragStart(e, lead.id) : undefined} onClick={() => onOpen(lead)}>
+      <div className="lead-card-top">
+        <strong className="lead-card-name">{lead.nome}</strong>
+        <span className="lead-card-actions">
+          <a className="ui-btn ui-btn-ghost ui-btn-sm ui-btn-icon" href={waLink(lead)} target="_blank" rel="noopener" title="Chamar no WhatsApp" onClick={(e) => e.stopPropagation()}>💬</a>
+          <button type="button" className="lead-card-delete" title="Excluir" onClick={(e) => { e.stopPropagation(); onDelete(lead); }}>✕</button>
         </span>
       </div>
-      <div className="kanban-whats">{lead.whatsapp}</div>
-      <div className="kanban-meta-row">
-        {lead.tipo === "qualificado" ? <span className="kanban-tag hot">🔥 Qualificado</span> : <span className="kanban-tag">💬 Dúvida</span>}
-        <span className="kanban-area-clip">{lead.area}</span>
+      <div className="lead-card-badges">
+        {funnelLabel && <Badge>{funnelLabel}</Badge>}
+        {lead.tipo === "qualificado" ? <Badge tone="green">Qualificado</Badge> : <Badge tone="orange">Dúvida</Badge>}
+        {statusLabel && <Badge>{statusLabel}</Badge>}
       </div>
-      <div className="kanban-meta-row">
-        {funnelLabel && <span className="kanban-tag funnel">📋 {funnelLabel}</span>}
-        {statusLabel && <span className="kanban-tag">{statusLabel}</span>}
-      </div>
-      <a
-        className="btn primary small kanban-wa-btn"
-        href={waLink(lead)}
-        target="_blank"
-        rel="noopener"
-        onClick={(e) => e.stopPropagation()}
-      >
-        Chamar no WhatsApp →
-      </a>
+      <span className="lead-card-time">{fmtDate(lead.criadoEm)}</span>
     </div>
   );
 }
@@ -91,8 +66,8 @@ export function LeadDetailModal({
         <div className="kanban-modal-head">
           <h2 style={{ margin: 0, fontSize: "1.15rem" }}>{lead.nome}</h2>
           <span style={{ display: "flex", gap: 6 }}>
-            <button type="button" className="btn small" onClick={() => onDelete(lead)}>🗑 Excluir</button>
-            <button type="button" className="btn small" onClick={onClose}>Fechar ✕</button>
+            <Button size="sm" onClick={() => onDelete(lead)}>🗑 Excluir</Button>
+            <Button size="sm" variant="secondary" onClick={onClose}>Fechar ✕</Button>
           </span>
         </div>
         <p className="b-help" style={{ margin: "4px 0 14px" }}>
@@ -120,7 +95,7 @@ export function LeadDetailModal({
         {lead.perguntaAudioBase64 && (
           <div style={{ marginTop: 10 }}>
             <label>Áudio enviado</label>
-            <audio controls style={{ width: "100%", marginTop: 6 }} src={`data:${lead.perguntaAudioMime || "audio/webm"};base64,${lead.perguntaAudioBase64}`} />
+            <audio controls style={{ width: "100%", marginTop: 6 }} src={"data:" + (lead.perguntaAudioMime || "audio/webm") + ";base64," + lead.perguntaAudioBase64} />
           </div>
         )}
         {utmEntries.length > 0 && (
@@ -129,7 +104,7 @@ export function LeadDetailModal({
             <div className="kanban-tags">{utmEntries.map(([k, v]) => <span key={k} className="kanban-tag utm">{k.replace("utm_", "")}: {v}</span>)}</div>
           </div>
         )}
-        <a className="btn primary kanban-wa-btn" style={{ marginTop: 16, display: "inline-block" }} href={waLink(lead)} target="_blank" rel="noopener">Chamar no WhatsApp →</a>
+        <Button variant="primary" href={waLink(lead)} target="_blank">Chamar no WhatsApp →</Button>
       </div>
     </div>
   );

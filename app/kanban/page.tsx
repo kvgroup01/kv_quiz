@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect, useState, useCallback, useMemo } from "react";
-import Link from "next/link";
 import type { Lead, KanbanColumn } from "@/lib/lead-schema";
 import AppNav from "@/components/AppNav";
 import { LeadCard, LeadDetailModal } from "@/components/leads-ui";
+import { Card } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { PageHeader } from "@/components/ui/PageHeader";
 
 function ColumnsEditor({ columns, onClose, onSaved }: { columns: KanbanColumn[]; onClose: () => void; onSaved: (cols: KanbanColumn[]) => void }) {
   const [rows, setRows] = useState<KanbanColumn[]>(columns.map((c) => ({ ...c })));
@@ -55,14 +58,14 @@ function ColumnsEditor({ columns, onClose, onSaved }: { columns: KanbanColumn[];
       <div className="kanban-modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 560 }}>
         <div className="kanban-modal-head">
           <h2 style={{ margin: 0, fontSize: "1.15rem" }}>Colunas do Kanban</h2>
-          <button type="button" className="btn small" onClick={onClose}>Fechar ✕</button>
+          <Button size="sm" variant="secondary" onClick={onClose}>Fechar ✕</Button>
         </div>
         <p className="b-help">Arraste com as setas pra reordenar. O disparo pro Meta acontece quando um card é movido pra essa coluna.</p>
         {rows.map((c, i) => (
           <div key={c.id} className="kanban-col-edit-row">
             <div className="kanban-col-edit-order">
-              <button type="button" className="btn small" disabled={i === 0} onClick={() => move(i, -1)}>↑</button>
-              <button type="button" className="btn small" disabled={i === rows.length - 1} onClick={() => move(i, 1)}>↓</button>
+              <Button size="sm" disabled={i === 0} onClick={() => move(i, -1)}>↑</Button>
+              <Button size="sm" disabled={i === rows.length - 1} onClick={() => move(i, 1)}>↓</Button>
             </div>
             <input className="kanban-col-edit-label" value={c.label} onChange={(e) => update(i, { label: e.target.value })} placeholder="Nome da coluna" />
             <input
@@ -74,11 +77,11 @@ function ColumnsEditor({ columns, onClose, onSaved }: { columns: KanbanColumn[];
             <button type="button" className="kanban-col-edit-remove" title="Remover coluna" onClick={() => remove(i)} disabled={rows.length <= 1}>🗑</button>
           </div>
         ))}
-        <button type="button" className="btn" style={{ marginTop: 6 }} onClick={add}>+ Nova coluna</button>
+        <Button style={{ marginTop: 6 }} onClick={add}>+ Nova coluna</Button>
         {error && <p className="b-help" style={{ color: "var(--danger-text)" }}>{error}</p>}
-        <button type="button" className="btn primary" style={{ marginTop: 16 }} disabled={saving} onClick={save}>
+        <Button variant="primary" style={{ marginTop: 16 }} disabled={saving} onClick={save}>
           {saving ? "Salvando..." : "Salvar colunas"}
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -165,44 +168,30 @@ export default function KanbanPage() {
   return (
     <div className="in-app">
       <AppNav current="leads" />
-      <div style={{ padding: "24px 24px 48px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: 12 }}>
-          <div>
-            <p className="eyebrow">KANBAN DE LEADS</p>
-            <h1 style={{ fontSize: "1.5rem", fontWeight: 600, letterSpacing: "-0.01em", margin: "6px 0 4px" }}>Quem vale a pena responder</h1>
-            <p className="sub" style={{ margin: 0 }}>
-              Arraste o card entre as colunas. Atualiza sozinho a cada 20s. Mostrando só o mês corrente —{" "}
-              <Link href="/kanban/banco">meses anteriores ficam no Banco de Leads</Link>.
-            </p>
-          </div>
-          <button type="button" className="btn" onClick={() => setEditingColumns(true)}>⚙ Colunas</button>
-        </div>
-        {error && <p className="b-help" style={{ color: "var(--danger-text)" }}>{error}</p>}
-        {loading ? (
-          <p style={{ marginTop: 16 }}>Carregando...</p>
-        ) : (
-          <div className="kanban-board" style={{ gridTemplateColumns: `repeat(${Math.max(columns.length, 1)}, minmax(260px, 1fr))` }}>
-            {columns.map((col) => (
-              <div key={col.id} className="kanban-col" onDragOver={(e) => e.preventDefault()} onDrop={(e) => onDrop(e, col.id)}>
-                <div className="kanban-col-header">
-                  <span>{col.label}{col.capiEvent && <span className="capi-badge" title={`Dispara "${col.capiEvent}" pro Meta`}>📡 {col.capiEvent}</span>}</span>
-                  <span className="kanban-count">{currentMonthLeads.filter((l) => l.status === col.id).length}</span>
-                </div>
-                {currentMonthLeads.filter((l) => l.status === col.id).map((l) => (
-                  <LeadCard
-                    key={l.id}
-                    lead={l}
-                    onDragStart={onDragStart}
-                    onOpen={setOpenLead}
-                    onDelete={handleDelete}
-                    funnelLabel={funnelNames[l.funil]}
-                  />
-                ))}
-              </div>
-            ))}
+      <main className="in-container">
+        <PageHeader
+          title="Leads"
+          subtitle={new Date().toLocaleString("pt-BR", { month: "long", year: "numeric" }) + " · " + currentMonthLeads.length + " lead(s) · arraste entre colunas"}
+          actions={<Button iconOnly title="Colunas" onClick={() => setEditingColumns(true)}>⚙</Button>}
+        />
+        {error && <p className="in-notice">{error}</p>}
+        {loading ? <p className="dash-empty">Carregando…</p> : (
+          <div className="kanban-board" style={{ gridTemplateColumns: "repeat(" + Math.max(columns.length, 1) + ", minmax(280px, 1fr))" }}>
+            {columns.map((col) => {
+              const items = currentMonthLeads.filter((l) => l.status === col.id);
+              return (
+                <Card key={col.id} className="kanban-col" title={col.label} action={<Badge>{items.length}</Badge>}>
+                  <div onDragOver={(e) => e.preventDefault()} onDrop={(e) => onDrop(e, col.id)} className="kanban-drop">
+                    {col.capiEvent && <p className="kanban-capi">📡 dispara "{col.capiEvent}" pro Meta</p>}
+                    {items.map((l) => <LeadCard key={l.id} lead={l} onDragStart={onDragStart} onOpen={setOpenLead} onDelete={handleDelete} funnelLabel={funnelNames[l.funil]} />)}
+                    {items.length === 0 && <p className="dash-empty">Vazio</p>}
+                  </div>
+                </Card>
+              );
+            })}
           </div>
         )}
-      </div>
+      </main>
       {openLead && (
         <LeadDetailModal lead={openLead} onClose={() => setOpenLead(null)} onDelete={handleDelete} funnelLabel={funnelNames[openLead.funil]} />
       )}
