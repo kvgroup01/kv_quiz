@@ -1,5 +1,16 @@
 # Handoff
 
+## 2026-09-17 · Claude
+- Parei em: plano `2026-09-17-intake-redesign-quiz-lead.md` **concluído** (Tasks 1–7) e publicado na `main`.
+  Regressão com navegador: 3 funis em 390px (default 82%, template do WhatsApp completo, dúvida até "Pergunta
+  recebida ✓", progresso 0→100%), tema escuro forçado via classe, 1440px centralizado em 480px, seletor de cor
+  nas Configurações refletindo na prévia (`--q-accent` → `#1a7f37`). Ajustes meus: faixa de pré-visualização
+  em Inter; `#topbar:empty` some na abertura (espaço morto).
+- Próximo: conferir produção (kv-quiz.vercel.app) nos 3 previews. Depois: nada planejado — próximos temas só
+  com brainstorm novo (ex.: fluxo trabalhista, nome do escritório no topbar do quiz, número "3 de 8").
+- Cuidado com: as classes do quiz mudaram (`.opt` → `.q-option`, telas em `.q-screen`); scripts de teste
+  antigos que usavam `.opt` precisam do seletor novo. Nenhum funil bundlado usa `theme: dark` nem `accent`.
+
 ## 2026-09-17 · Codex
 - Parei em: Tasks 1–6 do plano `docs/superpowers/plans/2026-09-17-intake-redesign-quiz-lead.md` implementadas e commitadas (`9b26b89`, `3b49d05`, `7f6cc20`, `23578af`, `47d871d`, `21bbf3f`). A Task 7 teve o loop técnico final concluído; o plano está com os passos de implementação e loops técnicos marcados.
 - Próximo: executar no navegador a regressão final dos três previews (`default`, `salario-maternidade`, `salario-maternidade-avancada`) em claro/escuro, 390px e 1440px; confirmar score 82%, template completo do WhatsApp, caminho de dúvida até “Pergunta recebida ✓”, progresso em 100%, accent e Builder.

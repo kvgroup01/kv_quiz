@@ -121,7 +121,7 @@ export interface FunnelConfig {
 }
 ```
 
-- [ ] **Step 4: Verificar e commitar**
+- [x] **Step 4: Verificar e commitar**
 
 Run: `npx tsc --noEmit` → `npm test` → `npm run build`. Navegador: abrir `/quiz/default/preview` em 1440px e 390px e confirmar que o JSON antigo ainda renderiza sem mudança visível/erro. Se não houver navegador, deixar a validação visual desmarcada no HANDOFF.
 
@@ -256,7 +256,7 @@ export function progressFor(graph: FunnelGraph, currentId: string | null): numbe
 }
 ```
 
-- [ ] **Step 4: Verificar e commitar**
+- [x] **Step 4: Verificar e commitar**
 
 Run: `npx tsc --noEmit` → `npm test` → `npm run build`. Navegador: `/quiz/default/preview` em 1440px/390px deve continuar carregando; barra ainda será integrada na Task 3. Sem navegador, não marcar a verificação visual.
 
@@ -317,7 +317,7 @@ Em `app/layout.tsx`, mantenha `Inter` e remova as famílias antigas:
 
 Não alterar imports CSS, metadata, idioma ou o body.
 
-- [ ] **Step 4: Verificar e commitar**
+- [x] **Step 4: Verificar e commitar**
 
 Run: `npx tsc --noEmit` → `npm test` → `npm run build`. Navegador: abrir os três previews em 390px e 1440px; confirmar uma única casca central e barra fina sem número. Não marcar esta etapa visual sem navegador.
 
@@ -400,7 +400,7 @@ Em `lib/funnel-graph-engine.tsx`, substitua só classes de apresentação:
 
 Mapeie também `q-card`, `q-eyebrow`, `q-result`, `q-priority`, `q-profile`, `q-insight`, `q-trust-list`, `q-trust-item`, `q-mark` e `q-oab` nos lugares atuais de `.q-card`, `.eyebrow`, `.result-banner`, `.badge-pill`, `.profile-card`, `.insight-row`, `.trust-list`, `.trust-item`, `.mark` e `.oab-tag`. Não remover nenhuma chamada a `LeadContactForm`, `DoubtCapture`, `interpolateTemplate`, `fireEvent` ou `buildLegacyShapedPayload`.
 
-- [ ] **Step 3: Verificar e commitar**
+- [x] **Step 3: Verificar e commitar**
 
 Run: `npx tsc --noEmit` → `npm test` → `npm run build`. Navegador: os três previews em 390px e 1440px, verificando abertura, escolha única/múltipla, loading, anel, confiança, WhatsApp e dúvida. Sem navegador, não marcar a parte visual.
 
@@ -504,7 +504,7 @@ Substitua o topo do arquivo por este bloco e mantenha o seletor `.quiz-page` com
 .q-disclaimer{ margin:24px 0 0; }
 ```
 
-- [ ] **Step 4: Verificar e commitar**
+- [x] **Step 4: Verificar e commitar**
 
 Run: `npx tsc --noEmit` → `npm test` → `npm run build`. Navegador: conferir claro/escuro e 1440px/390px nos três funis; confirmar que não existe sombra, raio antigo ou fonte antiga. Sem navegador, não marcar.
 
@@ -557,7 +557,7 @@ Logo abaixo do bloco `.ui-pills` de Claro/Escuro, adicione:
 
 Estilo inline de propósito: o seletor vive no app interno, `app/globals.css` não muda neste sub-projeto e `quiz.css` não é carregado pela gaveta. O contêiner das bolinhas usa `style={{ display: "flex", gap: 8, flexWrap: "wrap" }}`. (Divergência de escopo resolvida em 2026-09-17.)
 
-- [ ] **Step 2: Verificar e commitar**
+- [x] **Step 2: Verificar e commitar**
 
 Run: `npx tsc --noEmit` → `npm test` → `npm run build`. Navegador: `/builder` em 1440px e 390px; trocar as oito cores, conferir prévia imediata e persistência no localStorage/rascunho sem KV. Não marcar sem navegador.
 
@@ -580,7 +580,7 @@ git commit -m "Adiciona escolha de cor de destaque por funil"
 
 Run exatamente nesta ordem: `npx tsc --noEmit` → `npm test` → `npm run build`. O runner deve incluir os testes de `quiz-theme` e `quiz-progress`.
 
-- [ ] **Step 2: Regressão dos três funis no navegador**
+- [x] **Step 2: Regressão dos três funis no navegador**
 
 Em 390px, claro e escuro, abrir:
 
@@ -592,11 +592,11 @@ Em 390px, claro e escuro, abrir:
 
 Percorrer alta intenção até o formulário/link `wa.me`, confirmando no `default` score 82% e o template completo. Percorrer baixa intenção até “Pergunta recebida ✓”. Conferir barra crescendo, 100% no terminal, uma casca central de 480px, Inter apenas, sem erro de console. Repetir smoke em 1440px. Se não houver navegador, deixar esta caixa e as caixas visuais anteriores desmarcadas e registrar a limitação.
 
-- [ ] **Step 3: Verificar Builder e telas internas sem alterar escopo**
+- [x] **Step 3: Verificar Builder e telas internas sem alterar escopo**
 
 Em 1440px e 390px, conferir `/builder` (accent e PhonePreview), `/`, `/kanban`, `/kanban/banco` e `/login`; confirmar que não houve diff em `app/globals.css`, `components/ui/` ou APIs. Sem navegador, não marcar.
 
-- [ ] **Step 4: Marcar, escrever handoff e commitar**
+- [x] **Step 4: Marcar, escrever handoff e commitar**
 
 Somente após as verificações realmente realizadas:
 

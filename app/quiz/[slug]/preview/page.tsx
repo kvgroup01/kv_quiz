@@ -46,8 +46,9 @@ export default async function PreviewPage({ params }: { params: Promise<{ slug: 
           color: "#fff",
           textAlign: "center",
           padding: "8px 14px",
-          fontSize: "0.78rem",
-          fontWeight: 600
+          fontSize: "13px",
+          fontWeight: 600,
+          fontFamily: "Inter, system-ui, sans-serif"
         }}
       >
         🔧 PRÉ-VISUALIZAÇÃO: isto é o rascunho, não o funil publicado. Nada enviado aqui vira lead de verdade.
