@@ -18,7 +18,7 @@
 - Não mudar perguntas, textos do funil, ordem das telas, regras de roteamento, score, duração das animações, captura de áudio ou comportamento de FAQ.
 - O quiz não usa os primitivos de `components/ui/`. A marcação compartilhada pode receber classes/estrutura semântica novas, preservando handlers e estados.
 - Fonte do quiz: apenas Inter. `app/layout.tsx` deve remover Inter Tight, Fraunces, Kalam e JetBrains Mono do link Google Fonts; o app interno não pode ser alterado.
-- Tema continua sendo `.theme-light`/`.theme-dark` no `.quiz-page`. Accent é `style={{ "--q-accent": hex }}` no mesmo wrapper; ausência ou id desconhecido usa `roxo`.
+- Tema continua sendo `.theme-light`/`.theme-dark` no `.quiz-page` (criado pelas páginas e pelo `PhonePreview`, NÃO pelo motor). Accent é `style={{ "--q-accent": hex }}` no `#app-shell`, que é o elemento raiz do motor — variável CSS herda pra baixo, então o efeito é o mesmo; ausência ou id desconhecido usa `roxo`.
 - O progresso não exibe número: `.q-progress` é o primeiro filho de `#app-shell`, 3px, preenchido por `progressFor`.
 - Loop obrigatório antes de cada commit: `npx tsc --noEmit` → `npm test` → `npm run build` → navegador em 1440px e 390px. Se o navegador não estiver disponível, não marcar a caixa visual, não fazer push e registrar no `docs/HANDOFF.md`.
 - Critério de aceite obrigatório: nos previews de `default`, `salario-maternidade` e `salario-maternidade-avancada`, alta intenção chega ao WhatsApp com score 82% no caminho padrão do `default` e template completo; baixa intenção chega a “Pergunta recebida ✓”; sem erros de console e sem fonte além de Inter.
@@ -274,30 +274,17 @@ git commit -m "Calcula progresso do quiz por caminho do grafo"
 
 **Interfaces:**
 - `FunnelGraphEngine` mantém as props atuais e continua aceitando `previewMode`/`previewNodeId`.
-- O wrapper `.quiz-page` recebe `theme-light theme-dark` como antes e `--q-accent` em style.
+- O motor NÃO cria `.quiz-page` (as páginas e o `PhonePreview` já criam). O motor aplica `--q-accent` em style no `#app-shell`.
 
-- [ ] **Step 1: Aplicar accent com estilo tipado**
+- [ ] **Step 1: Aplicar accent no `#app-shell`**
 
 No topo de `lib/funnel-graph-engine.tsx`, adicione `import type { CSSProperties } from "react"` e `import { accentHex } from "./quiz-theme";`. Antes do `return` final, crie:
 
 ```tsx
-const quizTheme = data.config.theme === "dark" ? "theme-dark" : "theme-light";
 const quizStyle = { "--q-accent": accentHex(data.config.accent) } as CSSProperties;
 ```
 
-Troque somente o retorno externo por:
-
-```tsx
-return (
-  <div className={"quiz-page " + quizTheme} style={quizStyle}>
-    <div id="app-shell">
-      {/* conteúdo atual permanece aqui */}
-    </div>
-  </div>
-);
-```
-
-**Divergência a resolver antes da implementação:** no código lido, `/quiz/[slug]/preview/page.tsx` e `PhonePreview` já criam o `.quiz-page` externo, enquanto o spec descreve o wrapper como responsabilidade de `FunnelGraphEngine`. Não implementar esta etapa por inferência: registrar a divergência no `docs/HANDOFF.md` e escolher uma única casca compatível antes de alterar o motor. A resolução não pode criar `.quiz-page` aninhado, duplicar a estrutura do preview ou alterar `PhonePreview`/fluxo sem autorização explícita.
+Troque somente a linha `<div id="app-shell">` por `<div id="app-shell" style={quizStyle}>`. Não crie nenhum `.quiz-page` dentro do motor: `/quiz/[slug]/page.tsx`, `/quiz/[slug]/preview/page.tsx` e `components/builder/PhonePreview.tsx` já envolvem o motor nesse wrapper com a classe de tema, e continuam assim. (Divergência do spec resolvida em 2026-09-17 — spec §5 atualizado.)
 
 - [ ] **Step 2: Barra de progresso como primeiro filho do shell**
 
@@ -554,8 +541,11 @@ Logo abaixo do bloco `.ui-pills` de Claro/Escuro, adicione:
     <button
       key={accent.id}
       type="button"
-      className={"q-accent-swatch" + ((active.config.accent ?? "roxo") === accent.id ? " active" : "")}
-      style={{ background: accent.hex }}
+      style={{
+        width: 28, height: 28, borderRadius: 9999, cursor: "pointer", background: accent.hex,
+        border: (active.config.accent ?? "roxo") === accent.id ? "3px solid var(--c-ink)" : "3px solid transparent",
+        boxShadow: "0 0 0 1px var(--c-hairline)"
+      }}
       title={accent.label}
       aria-label={accent.label}
       aria-pressed={(active.config.accent ?? "roxo") === accent.id}
@@ -565,7 +555,7 @@ Logo abaixo do bloco `.ui-pills` de Claro/Escuro, adicione:
 </div>
 ```
 
-As classes acima são do quiz/app interno? Como `app/globals.css` é proibido, não criar estilo lá. O seletor é um componente interno e deve ser estilizado exclusivamente por `app/quiz.css`? Não: isto é uma divergência de escopo do spec, que pede o seletor em `SettingsDrawer` mas proíbe `globals.css` nesta fase. Registrar a divergência no HANDOFF e usar apenas classes já existentes não é aceitável. Portanto, antes de implementar esta tarefa, resolver pela decisão segura: usar `style` inline para todas as propriedades visuais do picker e manter somente `q-accent-picker`/`q-accent-swatch` sem depender de `globals.css`; registrar a escolha no HANDOFF.
+Estilo inline de propósito: o seletor vive no app interno, `app/globals.css` não muda neste sub-projeto e `quiz.css` não é carregado pela gaveta. O contêiner das bolinhas usa `style={{ display: "flex", gap: 8, flexWrap: "wrap" }}`. (Divergência de escopo resolvida em 2026-09-17.)
 
 - [ ] **Step 2: Verificar e commitar**
 

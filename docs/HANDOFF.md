@@ -1,5 +1,14 @@
 # Handoff
 
+## 2026-09-17 · Claude (resolução das divergências)
+- Parei em: as duas divergências que o Codex registrou no plano do quiz estão resolvidas no spec (§3, §5) e no plano
+  (Task 3 Step 1; Task 6 seletor de cor): (1) o motor NÃO cria `.quiz-page` — aplica `--q-accent` no `#app-shell`,
+  que já é dele; as páginas e o `PhonePreview` continuam donas do wrapper com a classe de tema. (2) As bolinhas de
+  cor na `SettingsDrawer` usam estilo inline; `globals.css` continua intocado.
+- Próximo: executar o plano `docs/superpowers/plans/2026-09-17-intake-redesign-quiz-lead.md` da Task 1 em diante.
+- Cuidado com: o mesmo de antes — sem navegador, não marcar passos visuais nem fazer push; a regressão dos 3 funis é
+  obrigatória antes do push.
+
 ## 2026-09-17 · Codex
 - Parei em: plano `docs/superpowers/plans/2026-09-17-intake-redesign-quiz-lead.md` criado e commitado em `cd35887`. Antes da Task 1, ao confrontar o spec com o código lido, encontrei uma divergência: o spec atribui a casca `.quiz-page` ao `FunnelGraphEngine`, mas `/quiz/[slug]/preview/page.tsx` e `PhonePreview` já criam essa casca externa. O plano registra o ponto de parada sem improvisar um wrapper duplicado.
 - Próximo: definir uma única resolução compatível para o wrapper/accent antes de executar a Task 3; só então retomar o plano pela primeira tarefa não marcada. A regressão obrigatória cobre `default`, `salario-maternidade` e `salario-maternidade-avancada`, incluindo score 82%, template completo do WhatsApp e o caminho de dúvida até “Pergunta recebida ✓”.

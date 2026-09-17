@@ -47,8 +47,9 @@ Kalam e JetBrains Mono (nenhum outro lugar usa).
 | `--q-on-accent` | `#ffffff` | `#ffffff` |
 | `--q-error` | `#e03131` | `#ff6b6b` |
 
-O tema é a classe `.theme-light`/`.theme-dark` no `.quiz-page` (já existe); o accent
-entra como `style={{ "--q-accent": hex }}` no mesmo elemento. As variáveis antigas
+O tema é a classe `.theme-light`/`.theme-dark` no `.quiz-page` (já existe, criado pelas
+páginas do quiz e pelo `PhonePreview`); o accent entra como `style={{ "--q-accent": hex }}`
+no `#app-shell`, raiz do motor — a variável herda pra todos os filhos. As variáveis antigas
 (`--bg`, `--ink`, `--bg-card`, `--option-border`, `--purple-text`, `--danger-text`…)
 deixam de existir — quem as usava é só o `quiz.css` atual, que será substituído.
 
@@ -127,8 +128,10 @@ final "Pergunta recebida ✓": ✓ em círculo 56px accent-tint, título 22/600,
 - `lib/quiz-theme.ts`: `export type AccentId`, `export const ACCENTS: {id, label, hex}[]`,
   `export function accentHex(id?: string): string` (desconhecido → roxo).
 - `lib/funnel-graph-engine.tsx`: aplica `style={{ "--q-accent": accentHex(data.config.accent) }}`
-  no wrapper `.quiz-page` que já recebe `theme-light|dark`. Como `PhonePreview` usa o
-  mesmo wrapper, a prévia do Construtor reflete a cor imediatamente.
+  no `#app-shell` (raiz do motor). O `.quiz-page` com a classe de tema continua sendo criado
+  por `/quiz/[slug]/page.tsx`, `/quiz/[slug]/preview/page.tsx` e `PhonePreview` — o motor não
+  o cria. Como `PhonePreview` renderiza o mesmo motor, a prévia do Construtor reflete a cor
+  imediatamente.
 - `components/builder/SettingsDrawer.tsx`: abaixo de Claro/Escuro, linha "Cor de
   destaque" com 8 bolinhas 28px (borda 2px `--c-ink` na ativa, `title` com o nome),
   clicar → `cfg({ accent: id })`.
