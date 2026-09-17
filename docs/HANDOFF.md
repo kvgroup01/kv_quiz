@@ -1,6 +1,16 @@
 # Handoff
 
 ## 2026-09-17 · Codex
+- Parei em: Task 13 concluída e checklist corrigido; o código está commitado em `f490b89`. A execução está na Task 14, sem nenhuma caixa final marcada indevidamente.
+- Próximo: executar a regressão obrigatória dos três previews e a passada visual em 1440px/390px; depois marcar a Task 14, fazer o commit final e só então avaliar o push.
+- Cuidado com: o loop técnico e as rotas HTTP passaram, mas o CUA não expõe navegador (`apps: []`, `browsers: []`). Não marcar regressão visual nem fazer push até haver inspeção real do quiz, do Builder, do Kanban, do Histórico e do login.
+
+## 2026-09-17 · Codex
+- Parei em: Task 13 concluída e commitada em `f490b89`; o motor antigo foi removido, o CSS sem uso foi limpo e o README agora descreve o Intake unificado.
+- Próximo: Task 14 — regressão do quiz nos três funis e passada por tela em 1440px/390px antes do fechamento e do push.
+- Cuidado com: o loop técnico da Task 13 passou (`npx tsc --noEmit`, `npm test` com 10 testes e `npm run build`), e as rotas responderam 200. O CUA não expõe navegador (`apps: []`, `browsers: []`), então a regressão visual obrigatória da Task 14 ainda não pode ser marcada. Não fazer push até essa regressão passar.
+
+## 2026-09-17 · Codex
 - Parei em: Task 13 implementada até o código e verificação técnica. Removido `lib/funnel-engine.tsx`, atualizados comentários do legado, eliminadas classes CSS antigas sem uso e reescrito o topo do README para refletir o Intake atual.
 - Próximo: concluir o Step 4 visual da Task 13 e então executar a Task 14 (regressão obrigatória do quiz, passada em 1440/390px, fechamento do plano e push somente após aprovação).
 - Cuidado com: `npx tsc --noEmit`, `npm test` (10 testes), `npm run build` e HTTP 200 em `/`, `/builder`, `/kanban`, `/kanban/banco`, `/login` e nos três previews passaram. O CUA não expõe navegador (`apps: []`, `browsers: []`), então a validação visual/console permanece pendente. Não fazer push antes da Task 14.

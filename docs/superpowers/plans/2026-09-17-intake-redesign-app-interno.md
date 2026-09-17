@@ -1062,7 +1062,7 @@ export default function Home() {
 .dash-bar-value{ font-variant-numeric:tabular-nums; font-weight:600; }
 ```
 
-- [ ] **Step 4: Verificar e commitar**
+- [x] **Step 4: Verificar e commitar**
 
 Run: `npx tsc --noEmit && npm run build`. Navegador `/`: saudação certa pra hora, três cards, estado vazio elegante (sem KV local); troque o período e confira que não quebra; 390px empilha. Se tiver KV disponível (produção após deploy), confira que os números batem com o Kanban.
 
@@ -1957,7 +1957,7 @@ memória por `lib/funnel-graph-adapter.ts`. O motor é `lib/funnel-graph-engine.
 Leia `AGENTS.md` e `docs/HANDOFF.md`.
 ```
 
-- [ ] **Step 4: Verificar e commitar**
+- [x] **Step 4: Verificar e commitar**
 
 Run: `npx tsc --noEmit && npm test && npm run build`.
 
