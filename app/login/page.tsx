@@ -37,7 +37,7 @@ function LoginForm() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, background: "var(--bg)" }}>
+    <div className="in-app" style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, background: "var(--bg)" }}>
       <form onSubmit={handleSubmit} className="b-section" style={{ width: "100%", maxWidth: 360 }}>
         <p className="eyebrow">RADAR JURÍDICO</p>
         <h1 style={{ fontSize: "1.3rem", fontWeight: 700, margin: "6px 0 18px" }}>Entrar no painel</h1>

@@ -89,7 +89,7 @@ export default function BancoDeLeadsPage() {
   }
 
   return (
-    <div>
+    <div className="in-app">
       <AppNav current="banco" />
       <div style={{ padding: "24px 24px 48px" }}>
         <p className="eyebrow">BANCO DE LEADS</p>

@@ -181,7 +181,7 @@ git commit -m "Docs de entrada, protocolo de handoff e runner de testes (node:te
 **Interfaces:**
 - Produces: variáveis CSS `--c-*`, `--font-ui`, `--r-*`, `--sh-modal` usadas por todas as tarefas seguintes; classe `.in-app` (wrapper do app interno) e `.in-container` (1280px / gutter 32px → 16px no celular).
 
-- [ ] **Step 1: Mover as linhas 1–385 do `globals.css` para `app/quiz.css`**
+- [x] **Step 1: Mover as linhas 1–385 do `globals.css` para `app/quiz.css`**
 
 Run (PowerShell):
 
@@ -193,7 +193,7 @@ Move-Item -Force app/globals.tmp app/globals.css
 
 Confira que `app/quiz.css` começa em `:root{` e termina no bloco `.demo-note{ ... }` (linha ~385), e que `app/globals.css` agora começa em `/* ---------- builder ---------- */`.
 
-- [ ] **Step 2: Em `app/quiz.css`, escopar o que era `body` pra `.quiz-page`**
+- [x] **Step 2: Em `app/quiz.css`, escopar o que era `body` pra `.quiz-page`**
 
 Localize:
 
@@ -219,7 +219,7 @@ Substitua por (o reset sai daqui e vai pro `globals.css` no Step 4):
 
 (`.quiz-page` já define `background:var(--bg)` e `min-height:100vh` mais abaixo no mesmo arquivo — não duplique.) Se o bloco `@media (prefers-reduced-motion: reduce){...}` estiver em `quiz.css`, remova-o daqui — ele passa a viver só no `globals.css`.
 
-- [ ] **Step 3: Criar `app/tokens.css`**
+- [x] **Step 3: Criar `app/tokens.css`**
 
 ```css
 /* Tokens do app interno (Intake). Fonte: NOTION DESIGN.md. Prefixo --c- evita colisão
@@ -268,7 +268,7 @@ Substitua por (o reset sai daqui e vai pro `globals.css` no Step 4):
 }
 ```
 
-- [ ] **Step 4: Cabeçalho novo do `globals.css`**
+- [x] **Step 4: Cabeçalho novo do `globals.css`**
 
 No topo do `app/globals.css` (antes do que sobrou), insira:
 
@@ -296,7 +296,7 @@ body{ min-height:100vh; }
 @media (max-width:720px){ .in-container{ padding:0 16px; } }
 ```
 
-- [ ] **Step 5: `app/layout.tsx` — Inter, título, importar `quiz.css`**
+- [x] **Step 5: `app/layout.tsx` — Inter, título, importar `quiz.css`**
 
 ```tsx
 import type { Metadata } from "next";
@@ -324,7 +324,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-- [ ] **Step 6: Envolver as telas internas em `.in-app`**
+- [x] **Step 6: Envolver as telas internas em `.in-app`**
 
 Em `app/page.tsx`, `app/kanban/page.tsx`, `app/kanban/banco/page.tsx`, `app/login/page.tsx`: o `<div>` mais externo do retorno ganha `className="in-app"`. Em `app/builder/page.tsx` o `<div className="b-shell">` vira `className="in-app b-shell"`. O quiz (`app/quiz/**`) **não** ganha.
 
@@ -335,7 +335,7 @@ Expected: limpo.
 
 Navegador: `/quiz/default/preview`, `/quiz/salario-maternidade/preview`, `/quiz/salario-maternidade-avancada/preview` — percorra do início ao fim (alta e baixa intenção). Compare com o que era: mesmas telas, fonte Inter Tight no quiz, cores/tema iguais. Depois abra `/`, `/builder`, `/kanban`: devem continuar funcionando (feios/mistos é aceitável nesta tarefa; quebrados não).
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add app/quiz.css app/tokens.css app/globals.css app/layout.tsx app/page.tsx app/builder/page.tsx app/kanban/page.tsx app/kanban/banco/page.tsx app/login/page.tsx

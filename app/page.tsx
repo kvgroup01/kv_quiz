@@ -15,7 +15,7 @@ export default async function Home() {
   const items = await listAllFunnels();
 
   return (
-    <div>
+    <div className="in-app">
       <AppNav current="painel" />
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 24px 64px" }}>
         <p className="eyebrow">SEUS FUNIS</p>

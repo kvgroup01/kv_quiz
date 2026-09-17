@@ -1,0 +1,44 @@
+/* Tokens do app interno (Intake). Fonte: NOTION DESIGN.md. Prefixo --c- evita colisão
+   com as variáveis do quiz (--bg, --ink, ...), que continuam existindo em quiz.css. */
+:root{
+  --c-canvas:#ffffff;
+  --c-surface:#f6f5f4;
+  --c-surface-soft:#fafaf9;
+  --c-hairline:#e5e3df;
+  --c-hairline-soft:#ede9e4;
+  --c-hairline-strong:#c8c4be;
+
+  --c-ink:#1a1a1a;
+  --c-charcoal:#37352f;
+  --c-slate:#5d5b54;
+  --c-steel:#787671;
+  --c-stone:#a4a097;
+  --c-muted:#bbb8b1;
+
+  --c-primary:#5645d4;
+  --c-primary-pressed:#4534b3;
+  --c-on-primary:#ffffff;
+
+  --c-success:#1aae39;
+  --c-warning:#dd5b00;
+  --c-error:#e03131;
+
+  --c-tint-lavender:#e6e0f5;
+  --c-tint-peach:#ffe8d4;
+  --c-tint-mint:#d9f3e1;
+  --c-tint-rose:#fde0ec;
+  --c-tint-gray:#f0eeec;
+  --c-purple-800:#391c57;
+  --c-orange-deep:#793400;
+
+  --font-ui:"Inter", -apple-system, system-ui, "Segoe UI", Helvetica, sans-serif;
+
+  --r-tag:6px;
+  --r-btn:8px;
+  --r-input:8px;
+  --r-card:20px;
+  --r-pill:9999px;
+
+  --sh-modal:rgba(15,15,15,0.16) 0 16px 48px -8px;
+  --sh-card-hover:rgba(15,15,15,0.06) 0 2px 8px;
+}

@@ -265,7 +265,7 @@ function BuilderInner() {
   const dragAreaIndex = { current: null as number | null };
 
   return (
-    <div className="b-shell">
+    <div className="in-app b-shell">
       <AppNav current="builder" />
       <div className="b-topbar">
         <div className="b-topbar-left">
