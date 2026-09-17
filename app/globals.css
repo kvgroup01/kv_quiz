@@ -483,3 +483,8 @@ textarea.b-inline-edit{ resize:vertical; }
   .ui-table td::before{ content:attr(data-label); font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--c-stone); }
   .ui-table-chevron{ display:none; }
 }
+
+/* ---------- histórico ---------- */
+.hist-months{ overflow-x:auto; padding-bottom:8px; margin-bottom:16px; }
+.hist-months .ui-pills{ flex-wrap:nowrap; }
+.hist-table{ margin-bottom:48px; }

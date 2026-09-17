@@ -1,6 +1,11 @@
 # Handoff
 
 ## 2026-09-17 · Codex
+- Parei em: Tasks 7 e 8 implementadas até os passos de código/CSS. A divergência foi resolvida renomeando o Histórico para classes `hist-*`; Kanban e Histórico usam os primitivos novos e não há referências `kanban-banco-*` ou `kanban-card*` em JSX.
+- Próximo: concluir as verificações visuais pendentes das Tasks 2 Step 7, 3 Step 8, 4 Step 6, 6 Step 4, 7 Step 4 e 8 Step 3; depois iniciar Task 9.
+- Cuidado com: `npx tsc --noEmit`, `npm test` (6 testes) e `npm run build` passaram. O CUA segue sem navegador exposto (`apps: []`, `browsers: []`), então os passos visuais continuam sem execução. Não fazer push antes da Task 14.
+
+## 2026-09-17 · Codex
 - Parei em: Task 7 do plano `docs/superpowers/plans/2026-09-17-intake-redesign-app-interno.md`; Steps 1–2 concluídos. LeadCard/modal e Kanban usam os primitivos novos, mantendo drag-and-drop, exclusão e modal.
 - Próximo: resolver a divergência do Step 3: ele pede remover `.kanban-banco-*` embora a Task 8 seja a responsável por trocar essas classes no Histórico; depois concluir CSS/verificação da Task 7.
 - Cuidado com: `npx tsc --noEmit`, `npm test` e `npm run build` passaram. CUA segue sem navegador (`apps: []`, `browsers: []`); Tasks 2 Step 7, 3 Step 8, 4 Step 6 e 6 Step 4 aguardam inspeção visual. Não fazer push antes da Task 14.

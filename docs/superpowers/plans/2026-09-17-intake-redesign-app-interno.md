@@ -1144,7 +1144,7 @@ Mantenha `ColumnsEditor`, `load`, `moveLead`, `handleDelete`, `onDragStart/onDro
 
 Adapte os nomes (`funnelNames`, `openLead`, `editingColumns`, `error`, `loading`) aos que já existem no arquivo; se o arquivo não tiver `funnelNames`, ele já busca `/api/funnels` — reaproveite o mapa existente. No `ColumnsEditor`, troque os `<button className="btn ...">` por `<Button ...>` equivalentes (`primary` no "Salvar colunas").
 
-- [ ] **Step 3: CSS — substitua a seção `/* ---------- kanban de leads ---------- */` inteira (e o bloco `RESPONSIVE: kanban`) por**
+- [x] **Step 3: CSS — substitua a seção `/* ---------- kanban de leads ---------- */` inteira (e o bloco `RESPONSIVE: kanban`) por**
 
 ```css
 /* ---------- leads (kanban) e componentes de lead ---------- */
@@ -1207,7 +1207,7 @@ git commit -m "Leads: colunas como cards, lead compacto com badges, modal nos to
 **Interfaces:**
 - Consumes: `Card`, `PillTabs`, `DataTable`, `Badge`, `PageHeader`, `LeadDetailModal`, `fmtDate`.
 
-- [ ] **Step 1: JSX de `app/kanban/banco/page.tsx`**
+- [x] **Step 1: JSX de `app/kanban/banco/page.tsx`**
 
 Mantenha `monthKey`, `monthLabel`, `MONTH_NAMES`, `load`, `months`, `currentMonth`, `selectedMonth` (+ efeito de padrão), `columnLabel`, `monthLeads`, `handleDelete`. Troque o retorno por:
 
@@ -1250,7 +1250,7 @@ Mantenha `monthKey`, `monthLabel`, `MONTH_NAMES`, `load`, `months`, `currentMont
 
 Remova o import de `LeadCard` se não for mais usado aqui. Adapte nomes de estado aos existentes.
 
-- [ ] **Step 2: CSS (fim do `globals.css`)**
+- [x] **Step 2: CSS (fim do `globals.css`)**
 
 ```css
 /* ---------- histórico ---------- */
