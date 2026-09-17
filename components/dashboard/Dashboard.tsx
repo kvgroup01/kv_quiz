@@ -20,6 +20,7 @@ export default function Dashboard() {
   const [columns, setColumns] = useState<KanbanColumn[]>([]);
   const [funnelNames, setFunnelNames] = useState<Record<string, string>>({});
   const [kvError, setKvError] = useState<string | null>(null);
+  const [needsLogin, setNeedsLogin] = useState(false);
   const [period, setPeriod] = useState<Period>("month");
   const [open, setOpen] = useState<Lead | null>(null);
   const now = useMemo(() => new Date(), []);
@@ -30,7 +31,8 @@ export default function Dashboard() {
         const [l, c, f] = await Promise.all([fetch("/api/leads"), fetch("/api/kanban/columns"), fetch("/api/funnels")]);
         const ld = await l.json(); const cd = await c.json(); const fd = await f.json();
         setLeads(ld.leads || []); setColumns(cd.columns || []);
-        if (ld.ok === false) setKvError(ld.error);
+        if (l.status === 401) setNeedsLogin(true);
+        else if (ld.ok === false) setKvError(ld.error);
         const map: Record<string, string> = {};
         (fd.funnels || []).forEach((x: { slug: string; nome: string }) => { map[x.slug] = x.nome; });
         setFunnelNames(map);
@@ -64,6 +66,9 @@ export default function Dashboard() {
           subtitle="Aqui está o que precisa da sua atenção hoje."
           actions={<PillTabs items={PERIODS} active={period} onChange={(id) => setPeriod(id as Period)} ariaLabel="Período" />}
         />
+        {needsLogin && (
+          <p className="in-notice in-notice-row">Entre pra ver seus leads e dúvidas. <Button size="sm" variant="primary" href="/login?redirect=/">Entrar</Button></p>
+        )}
         {kvError && <p className="in-notice">{kvError}</p>}
 
         <div className="dash-row-1">

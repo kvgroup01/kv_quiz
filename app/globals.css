@@ -204,6 +204,7 @@ body{ min-height:100vh; }
 .b-placeholder{ color:var(--c-stone); font-style:italic; }
 
 /* ---------- início ---------- */
+.in-notice-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
 .in-notice{ font-size:13px; color:var(--c-slate); background:var(--c-surface); border-radius:8px; padding:8px 12px; margin:0 0 16px; }
 .dash-row-1{ display:grid; grid-template-columns:2fr 1fr; gap:16px; margin-bottom:16px; }
 .dash-row-2{ margin-bottom:48px; }
