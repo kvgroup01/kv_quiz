@@ -276,7 +276,7 @@ git commit -m "Calcula progresso do quiz por caminho do grafo"
 - `FunnelGraphEngine` mantém as props atuais e continua aceitando `previewMode`/`previewNodeId`.
 - O motor NÃO cria `.quiz-page` (as páginas e o `PhonePreview` já criam). O motor aplica `--q-accent` em style no `#app-shell`.
 
-- [ ] **Step 1: Aplicar accent no `#app-shell`**
+- [x] **Step 1: Aplicar accent no `#app-shell`**
 
 No topo de `lib/funnel-graph-engine.tsx`, adicione `import type { CSSProperties } from "react"` e `import { accentHex } from "./quiz-theme";`. Antes do `return` final, crie:
 
@@ -286,7 +286,7 @@ const quizStyle = { "--q-accent": accentHex(data.config.accent) } as CSSProperti
 
 Troque somente a linha `<div id="app-shell">` por `<div id="app-shell" style={quizStyle}>`. Não crie nenhum `.quiz-page` dentro do motor: `/quiz/[slug]/page.tsx`, `/quiz/[slug]/preview/page.tsx` e `components/builder/PhonePreview.tsx` já envolvem o motor nesse wrapper com a classe de tema, e continuam assim. (Divergência do spec resolvida em 2026-09-17 — spec §5 atualizado.)
 
-- [ ] **Step 2: Barra de progresso como primeiro filho do shell**
+- [x] **Step 2: Barra de progresso como primeiro filho do shell**
 
 Importe `progressFor` e substitua o cálculo local `visibleHistoryCount`/`progressPct` por:
 
@@ -304,7 +304,7 @@ No primeiro filho de `#app-shell`, antes de `#topbar`, renderize:
 
 Não manter `#progress-track`/`#progress-fill` no motor, pois são a barra antiga e o CSS novo deve controlar apenas `.q-progress`.
 
-- [ ] **Step 3: Remover fontes antigas do layout**
+- [x] **Step 3: Remover fontes antigas do layout**
 
 Em `app/layout.tsx`, mantenha `Inter` e remova as famílias antigas:
 

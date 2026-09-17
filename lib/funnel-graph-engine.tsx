@@ -6,10 +6,12 @@
 // forma de decidir "qual é a próxima tela" muda, de um switch(step) fixo pra
 // uma resolução de arestas orientada a dado.
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { FunnelData } from "./funnel-schema";
 import { toGraph } from "./funnel-graph-adapter";
+import { accentHex } from "./quiz-theme";
+import { progressFor } from "./quiz-progress";
 import {
   type FunnelGraph, type GraphNode, type Answers,
   interpolateTemplate, evalCondition, computeGraphScore
@@ -193,30 +195,8 @@ export default function FunnelGraphEngine({ data, previewMode, previewNodeId }: 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentId]);
 
-  const visibleCount = useMemo(() => {
-    // Estimativa de progresso: caminho mais curto do start até um terminal
-    // seguindo só arestas padrão/primeira opção — grafos com ramificação real
-    // não têm um "total de telas" exato, então isso é só uma referência.
-    let count = 0;
-    let cur = startNode ? resolveNext(graph, startNode.id, undefined) : null;
-    const seen = new Set<string>();
-    while (cur && !seen.has(cur) && count < 40) {
-      seen.add(cur);
-      const node = byId.get(cur);
-      if (!node) break;
-      if (node.type !== "score") count++;
-      if (node.type === "terminalLead" || node.type === "terminalDoubt") break;
-      if (node.type === "condition") {
-        cur = node.data.defaultNodeId;
-      } else {
-        cur = resolveNext(graph, cur, undefined);
-      }
-    }
-    return Math.max(count, 1);
-  }, [graph, startNode, byId]);
-
-  const visibleHistoryCount = history.filter((id) => byId.get(id)?.type !== "score").length + 1;
-  const progressPct = Math.min(100, Math.round((visibleHistoryCount / visibleCount) * 100));
+  const progress = progressFor(graph, currentId);
+  const quizStyle = { "--q-accent": accentHex(data.config.accent) } as CSSProperties;
 
   function fireEvent(kind: "lead" | "doubt", metaEvent: string, extra: Record<string, unknown>) {
     if (!metaEvent || previewMode) return;
@@ -506,8 +486,10 @@ export default function FunnelGraphEngine({ data, previewMode, previewNodeId }: 
   }
 
   return (
-    <div id="app-shell">
-      <div id="progress-track"><div id="progress-fill" style={{ width: progressPct + "%" }} /></div>
+    <div id="app-shell" style={quizStyle}>
+      <div className="q-progress" aria-hidden="true">
+        <span style={{ width: `${progress * 100}%` }} />
+      </div>
       <div id="topbar">
         {history.length > 0 && (
           <button id="back-btn" type="button" onClick={goBack}>← Voltar</button>
