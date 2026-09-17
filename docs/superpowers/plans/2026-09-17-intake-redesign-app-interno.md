@@ -1573,7 +1573,7 @@ git commit -m "Mapa do fluxo horizontal com layout automático, zoom, duplo cliq
 **Interfaces:**
 - Produces: `FunnelGraphEngine({ data, previewMode?, previewNodeId? })`; `PhonePreview({ data: FunnelData; nodeId: string | null })`.
 
-- [ ] **Step 1: Prop `previewNodeId` no motor**
+- [x] **Step 1: Prop `previewNodeId` no motor**
 
 Em `lib/funnel-graph-engine.tsx`:
 
@@ -1599,7 +1599,7 @@ if (previewMode && previewNodeId && byId.has(previewNodeId)) { setCurrentId(prev
 
 Adicione `previewMode`, `previewNodeId` e `byId` às dependências desse efeito (se `byId` não for memoizado, memoize com `useMemo`). Nada mais muda — a remontagem por `key` no `PhonePreview` reinicia o estado quando o bloco muda.
 
-- [ ] **Step 2: `components/builder/PhonePreview.tsx`**
+- [x] **Step 2: `components/builder/PhonePreview.tsx`**
 
 ```tsx
 "use client";
@@ -1624,7 +1624,7 @@ export function PhonePreview({ data, nodeId }: { data: FunnelData; nodeId: strin
 
 Confira em `app/quiz/[slug]/preview/page.tsx` como o tema é aplicado hoje (classe `theme-light`/`theme-dark` num wrapper `.quiz-page`) e replique exatamente a mesma estrutura de classes aqui.
 
-- [ ] **Step 3: CSS (fim do `globals.css`)**
+- [x] **Step 3: CSS (fim do `globals.css`)**
 
 ```css
 /* ---------- prévia do celular ---------- */
@@ -1636,7 +1636,7 @@ Confira em `app/quiz/[slug]/preview/page.tsx` como o tema é aplicado hoje (clas
 @media (min-width:1600px){ .phone-wrap{ --phone-scale:.85; } }
 ```
 
-- [ ] **Step 4: Verificar e commitar**
+- [x] **Step 4: Verificar e commitar**
 
 Run: `npx tsc --noEmit && npm run build`. Regressão: `/quiz/default/preview` e `/quiz/default` (sem a prop) se comportam exatamente como antes. O componente será visto integrado na Task 12.
 

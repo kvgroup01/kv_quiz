@@ -78,7 +78,7 @@ function questionFor(
   return node.data.question;
 }
 
-export default function FunnelGraphEngine({ data, previewMode }: { data: FunnelData; previewMode?: boolean }) {
+export default function FunnelGraphEngine({ data, previewMode, previewNodeId }: { data: FunnelData; previewMode?: boolean; previewNodeId?: string }) {
   const graph = useMemo(() => toGraph(data), [data]);
   const byId = useMemo(() => nodesById(graph), [graph]);
   const startNode = useMemo(() => graph.nodes.find((n) => n.type === "start"), [graph]);
@@ -87,7 +87,13 @@ export default function FunnelGraphEngine({ data, previewMode }: { data: FunnelD
   const [history, setHistory] = useState<string[]>([]);
   const [direction, setDirection] = useState(1);
   const navLocked = useRef(false);
-  const [answers, setAnswers] = useState<Answers>({});
+  const [answers, setAnswers] = useState<Answers>(() => {
+    if (previewMode && previewNodeId) {
+      const firstArea = data.areaOrder?.length ? data.areaOrder[0] : Object.keys(data.areas)[0];
+      return firstArea ? { area: firstArea } : ({} as Answers);
+    }
+    return {} as Answers;
+  });
   const [loadingDone, setLoadingDone] = useState(false);
   const [ringDone, setRingDone] = useState(false);
   const utmRef = useRef<Utm>({});
@@ -109,9 +115,10 @@ export default function FunnelGraphEngine({ data, previewMode }: { data: FunnelD
 
   useEffect(() => {
     if (currentId !== null || !startNode) return;
+    if (previewMode && previewNodeId && byId.has(previewNodeId)) { setCurrentId(previewNodeId); return; }
     const first = resolveNext(graph, startNode.id, undefined);
     if (first) setCurrentId(first);
-  }, [currentId, startNode, graph]);
+  }, [currentId, startNode, graph, previewMode, previewNodeId, byId]);
 
   function withNavLock(fn: () => void) {
     if (navLocked.current) return;

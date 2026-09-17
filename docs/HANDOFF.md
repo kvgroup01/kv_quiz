@@ -1,6 +1,11 @@
 # Handoff
 
 ## 2026-09-17 · Codex
+- Parei em: Task 11 concluída. O motor aceita `previewNodeId` com estado inicial compatível, e `PhonePreview` renderiza o funil no frame de 390px com o tema do funil e reset por bloco.
+- Próximo: Task 12 — unificar o Construtor com cabeçalho, autosave/status, três colunas, prévia e configurações.
+- Cuidado com: `npx tsc --noEmit`, `npm test` (10 testes), `npm run build` e HTTP 200 em `/builder?slug=default`, `/`, `/quiz/default/preview`, `/quiz/salario-maternidade/preview` e `/quiz/salario-maternidade-avancada/preview` passaram. O CUA continua sem navegador (`apps: []`, `browsers: []`), então a inspeção visual 1440/390px permanece pendente. Não fazer push antes da Task 14.
+
+## 2026-09-17 · Codex
 - Parei em: Task 10 implementada até o código e verificação técnica. O mapa do fluxo agora usa `layoutLeftToRight`, é horizontal, não arrastável, tem zoom/fitView, duplo clique para aproximar, seleção exposta, placeholder do Inspector e nós compactos abaixo de zoom 0,6.
 - Próximo: concluir o Step 4 visual da Task 10 em 1440px e 390px; depois seguir para Task 11 (`previewNodeId` e prévia de celular por bloco).
 - Cuidado com: `npx tsc --noEmit`, `npm test` (10 testes), `npm run build` e HTTP 200 em `/builder?slug=default`, `/` e nos três previews passaram. O CUA não expõe navegador (`apps: []`, `browsers: []`), portanto zoom, duplo clique, arraste e inspeção visual permanecem sem validação. Não fazer push antes da Task 14.
